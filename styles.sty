@@ -1,0 +1,86 @@
+%Export this style template
+\ProvidesPackage{styles}
+
+%Document format
+\usepackage[a4paper, total={6in, 9in}]{geometry}
+
+%Encoding containing Umlauts
+\usepackage[utf8]{inputenc}
+
+%Word hyphenation
+\usepackage[ngerman]{babel}
+
+\usepackage{hyperref}
+\usepackage{scrextend}
+\usepackage{lmodern}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+
+%Used for Code-Snippets
+\usepackage{listings}
+\usepackage{color}
+\usepackage{xcolor}	
+
+%Used for Markdown
+\usepackage{markdown}
+
+% Support landscape orientation & correct place for line number
+\usepackage{pdflscape}
+%\usepackage{rotating}
+
+%Line spacing
+\usepackage{setspace}
+
+%Margin in description
+\usepackage{calc}  
+\usepackage{enumitem}
+  
+%Multiline description titles
+\usepackage{blindtext}
+\usepackage{mdwlist}
+
+%Rowspan in tables
+\usepackage{multirow}
+\usepackage{longtable}
+
+%Allow paragraph as extra title
+\usepackage{titlesec}
+%Headers/Footers
+\usepackage{fancyhdr}
+
+
+%include external pdfs
+\usepackage{pdfpages}
+
+%Select sans-serif font
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{sectsty}
+
+\definecolor{title-color}{RGB}{43, 147, 255}
+\sectionfont{\color{title-color}}  % sets colour of sections
+\subsectionfont{\color{title-color}}
+\subsubsectionfont{\color{title-color}}
+\paragraphfont{\color{title-color}}
+
+%Listings style
+\definecolor{OliveGreen}{cmyk}{0.64,0,0.95,0.40}
+\definecolor{lightlightgray}{gray}{0.9}
+\definecolor{textgray}{gray}{0.3}
+\lstdefinestyle{sharpc}{
+	language=[Sharp]C,
+	frame=ltrb,
+	rulecolor=\color{black},
+	basicstyle=\ttfamily,
+	keywordstyle=\color{blue},
+	commentstyle=\color{gray},
+	numbers=left,
+	numberstyle=\scriptsize,
+	backgroundcolor=\color{lightlightgray},
+	showspaces=false,
+	morekeywords={var},
+}
+
+\lstset{style=sharpc, tabsize=1}
+

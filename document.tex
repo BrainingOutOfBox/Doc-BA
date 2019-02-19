@@ -1,0 +1,49 @@
+\documentclass[12pt,a4paper,hidelinks]{article}
+\usepackage{styles}
+\author{Elias Brunner \& Oliver Dias}
+\title{Methode 635 als Cross Plattform App mit Xamarin}
+
+\setcounter{secnumdepth}{4}
+\titleformat{\paragraph}
+{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
+\titlespacing*{\paragraph}
+{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+\color{textgray}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{}
+\chead{\nouppercase{\rightmark}}
+\lfoot{\today}
+\rfoot{\thepage}
+
+
+\renewcommand{\footrulewidth}{0.4pt}
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+\begin{document}
+	\color{black}
+	\include{./tex/title/title}
+
+	\color{textgray}
+	\newpage
+	\include{./tex/sa_description/sa_description}
+	\include{./tex/abstract/abstract}
+	\tableofcontents
+	
+	\include{./tex/ms/management_summary}
+	\include{./tex/techn_bericht/technischer_bericht}
+	
+	\newpage
+	\addcontentsline{toc}{section}{Literatur}
+	
+	\bibliography{literature}
+	\bibliographystyle{ieeetr}
+	
+	\newpage
+	\addcontentsline{toc}{section}{Abbildungsverzeichnis}
+	\listoffigures
+	
+	\newpage
+	\include{./tex/appendix/appendix}
+	
+\end{document}
