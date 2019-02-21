@@ -1,19 +1,28 @@
 \section{Projektplan}
 
 \subsubsection*{Zweck dieses Dokuments}
-Dieses Dokument beschreibt den Projektplan des Projekts «Methode 635 als Cross Plattform App mit Xamarin». Es beinhaltet die Planung, die Organisation sowie weitere Aspekte und liefert damit eine Übersicht über das Projekt. Es dient daher als Grundlage für den Verlauf des Projekts.
+Dieses Dokument beschreibt den Projektplan des Projekts «Solution Strategy mit der Methode 635 als Cross Plattform App». Es beinhaltet die Planung, die Organisation sowie weitere Aspekte und liefert damit eine Übersicht über das Projekt. Es dient daher als Grundlage für den Verlauf des Projekts.
 
 \subsubsection*{Gültigkeitsbereich}
+Der Gültigkeitsbereich erstreckt sich über die gesamte Dauer des Projekts. Der Zeitraum geht vom 18. Februar 2019 bis zum 14. Juni 2019. Das Projekt findet im Rahmen des Moduls «Bachelorarbeit» im Frühlingssemester 2019 statt.
 
 \subsubsection*{Verweise}
 An dieser Stelle ist noch zu anzumerken, dass einzelne Textstellen von eigenen, älteren Projektplänen verwendet wurden. Dabei handelt es sich um Projektpläne von Engineering-Projekten oder Studienarbeiten.
 
+Im Speziellen zu erwähnen ist die Tatsache, dass dieser Bachelorarbeit eine Studienarbeit («Methode 635 als Cross Plattform App mit Xamarin») vorherging. Es kann daher sein, dass in einigen Textstellen auf diese Studienarbeit verwiesen wird. 
+
 \subsection{Projektziel}
+Die papiergestützte Methode 635 ist eine Kreativitäts- und Brainwriting-Technik, für die es bisher noch keine Unterstützung in mobilen Apps gab. Eine Studienarbeit im Herbstsemester 2018/2019 konzipierte und implementierte daher einen ersten Prototyp einer SmartPhone App für die Methode 635; Cross Platform Support (Android- und iOS) wurde durch Verwendung von Xamarin erreicht. Ein Vorteil einer derartigen mobilen Anwendung ist, dass Anwender die Methode 635 nutzen können, wenn sie sich nicht ständig an einem Ort befinden.
+ 
+In dieser Bachelorarbeit sollen weitere Features implementiert werden auf Basis der Testergebnisse für den bestehenden Prototypen. Im Fokus steht dabei insbesondere die Software Engineering Aktivität "Solution Strategy" aus dem Buch „Effektive Softwarearchitekturen“ von G. Starke, die in der HSR-Vorlesung Application Architecture behandelt wird.
 
-
+Mehr zum Thema Projektziel ist dem Anhang \ref{sec:aufgabenstellung} zu entnehmen.
 
 \subsubsection*{Einschränkungen}
+Dieses Projekt ist auf die Dauer des Frühlingssemesters 2019 begrenzt (bis 14. Juni 2019). Der Gesamtaufwand für diese Arbeit sollte 360 Arbeitsstunden pro Person (gesamthaft 720 Stunden) nicht übersteigen. Bleibt am Ende Zeit übrig, werden optionale Features implementiert.
+
 \subsection{Projektorganisation}
+In unserem Projekt arbeiten wir in einer flachen Organisationsstruktur, wobei die wesentlichen Entscheide im ganzen Projektteam und/oder mit dem Dozenten an den wöchentlichen Besprechungen getroffen werden. An den Besprechungen getroffene Entscheidungen werden in Protokollen dokumentiert. Die Projektmitglieder sind innerhalb des Teams gleichgestellt.
 
 \subsubsection*{Organisationsstruktur}
 Die Projektmitglieder sowie deren Verantwortung sind der Abbildung \ref{fig:organisation} zu entnehmen.
@@ -26,7 +35,7 @@ Die Projektmitglieder sowie deren Verantwortung sind der Abbildung \ref{fig:orga
 
 
 \subsubsection*{Ansprechspartner}
-Im Projekt «Methode 635 als Cross Plattform App mit Xamarin» ist folgender Ansprechpartner vorhanden.
+Da diese Arbeit eine Weiterführung der Studienarbeit darstellt, bleibt der bisherige Ansprechpartner bestehen.
 
 \begin{description}[leftmargin=!,labelwidth=\widthof{\bfseries Betreuer}]
 	\item[Betreuer] Prof. Dr. Olaf Zimmermann ist der betreuende Dozent für diese Bachelorarbeit. Er ist neben der Betreuung auch für die Bewertung des Projekts verantwortlich. 
@@ -43,15 +52,14 @@ Wie das Projekt selbst, werden auch sämtliche Dokumente ständig überarbeitet 
 \begin{description}[leftmargin=!,labelwidth=\widthof{\bfseries Architekturdokumentation}]
 	\item[Projektplan] Der Projektplan umfasst den groben Ablauf des Projektes und legt unter anderem das Vorgehen bei der Entwicklung fest oder wie mit Risiken umgegangen wird.
 	\item[Anforderungsspezifikation] In der Anforderungsspezifikation werden funktionale sowie nicht-funktionale Anforderungen definiert.
-
 	\item[Architekturdokumentation] Hier wird dokumentiert wie die Architektur des gesamten Systems aufgebaut ist.
-	\item[Architekturentscheide] Hier wird erklärt warum wir uns für diese Architektur entschieden haben.
+	\item[Architekturentscheide] Hier wird aufgezeigt warum wir uns für diese Architektur entschieden haben.
 	\item[Installationsanleitung] In der Installationsanleitung wird gezeigt, wie die Applikation auf dem eigenen Smartphone installiert werden kann.
 \end{description}
  
 
 \subsubsection*{Besprechungen}
-Das Projektteam trifft sich einmal in der Woche um sich über den aktuellen Stand des Projekts auszutauschen, Fragen zu klären, Probleme anzugehen oder die nächsten Schritte zu planen. 
+Das Projektteam trifft sich einmal in der Woche, um sich über den aktuellen Stand des Projekts auszutauschen, Fragen zu klären, Probleme anzugehen oder die nächsten Schritte zu planen. 
 
 Diese wöchentlichen Besprechungen finden, falls nicht anders vorgesehen, jeden Dienstagmorgen um 09:00 Uhr statt. 
 
@@ -61,7 +69,7 @@ Diese wöchentlichen Besprechungen finden, falls nicht anders vorgesehen, jeden 
 \subsubsection*{Umgang mit Risiken}
 Um auch auf unbekannte Risiken vorbereitet zu sein, ist am Ende des Projektes eine Reserve eingeplant. Zudem haben sich beide Teilnehmer bereit erklärt ihr Engagement punktuell zu erhöhen, falls die Situation dies erfordert. Diese Erhöhung sollte jedoch nur Phasenweise erfolgen und in einer folgenden Phase kompensiert werden. 
 
-Die häufigsten Risiken wurden mit einer Risikotabelle (Unterkapitel \ref{risiko-tabelle} ) be\-rück\-sichtigt, die aktuell gehalten wird und beim Planen in Betracht gezogen wird. 
+Die häufigsten Risiken wurden mit einer Risikotabelle (Unterkapitel \ref{risiko-tabelle}) be\-rück\-sichtigt, die aktuell gehalten wird und beim Planen miteinbezogen gezogen wird. 
 
 \subsubsection*{Qualitätsmassnahmen}
 Das Endprodukt dieses Projekts soll von möglichst hoher Qualität sein. Wie in Tabelle \ref{tab:Massnahmen} zu sehen ist, treffen wir folgende Massnahmen, um diese Qualität zu erreichen.
@@ -82,7 +90,7 @@ Das Endprodukt dieses Projekts soll von möglichst hoher Qualität sein. Wie in 
 \end{table}
 
 \subsubsection*{Arbeitspakete}
-Die gesamte Arbeit ist in Arbeitspakete unterteilt, die auf Jira getrackt sind. Dabei sind relevante Informationen wie die Komplexität, Dauer, der damit verbundene Epic und die Unterteilung in Arbeitskategorie erfasst.
+Die gesamte Arbeit ist in Arbeitspakete unterteilt, die auf Jira verwaltet werden. Dabei sind relevante Informationen wie die Komplexität, Dauer, der damit verbundene Epic und die Unterteilung in Arbeitskategorie erfasst.
 
 Für die Abschätzung der Komplexität der Arbeiten verwenden wir \textbf{Story Points}. Dabei einigen wir uns auf folgendes Schema:
 
@@ -102,13 +110,13 @@ Für die Abschätzung der Komplexität der Arbeiten verwenden wir \textbf{Story 
 	\label{tab:story-points}
 \end{table}
 
-Das Unterteilen in drei Punkte pro Zeile ermöglicht ein genaueres Abschätzen innerhalb der Komplexitätskategorie. Story Points können nicht direkt in zeitlichen Aufwand umgerechnet werden. Für den Aufwand existiert ein separates Feld.
+Das Unterteilen in drei Punkte pro Komplexitätsgrad ermöglicht ein genaueres Abschätzen innerhalb des Komplexitätsgrades. Story Points können nicht direkt in zeitlichen Aufwand umgerechnet werden. Für den benötigten Zeitaufwand existiert ein separates Feld.
 
 Um die Pakete logisch unterteilen zu können, existieren Arbeitskategorien. Diese werden mit Labels auf den Tickets markiert und können folgende Werte annehmen:
 \begin{description}[leftmargin=!,labelwidth=\widthof{\bfseries ProjektManagement}]
 	\item[ProjektManagement] Alle Aufgaben, die im Zusammenhang mit Projektmanagement stehen, zum Beispiel das Risikomanagement.
-	\item[Planung] Planungsaufgaben. Zum Beispiel steht jede Woche ein Planungsmeeting an, welches dieser Kategorie zugeordnet ist.
-	\item[Dokumentation] Arbeiten an der Dokumentation des Projektes.
+	\item[Planung] Planungsaufgaben. Zum Beispiel steht jede Woche ein Teammeeting an, welches dieser Kategorie zugeordnet ist.
+	\item[Dokumentation] Arbeiten, welche für Dokumentation des Projektes gemacht werden.
 	\item[Infrastruktur] Diejenigen Arbeitspakete, die für die Entwicklung und für den Betrieb des Projekts notwendig sind. Ein Beispiel dafür kann das Einrichten eines Codequalitätstools sein. 
 	\item[Entwicklung] Arbeitspakete welche mit der Programmierung der Applikation in Zusammenhang stehen.
 	\item[Testing] Arbeitspakete wie zum Beispiel das Schreiben von Testfällen kann dieser Arbeitskategorie zugewiesen werden.
@@ -120,7 +128,7 @@ Um die Pakete logisch unterteilen zu können, existieren Arbeitskategorien. Dies
 Um ein gutes Arbeiten zu ermöglichen, stehen viele Tools zur Verfügung, die im Folgenden beschrieben sind. Die primäre Entwicklungsumgebung ist Visual Studio und \href{https://visualstudio.microsoft.com/de/vs/mac/}{Visual Studio for Mac}.
 
 \subsection{Entwicklung}
-Der Entwicklungscode wird in öffentlichen Github Repositories unter der Organisation \textbf{BrainingOutOfBox }gehalten. Für alle einzelnen Teile des Projekts gibt es ein eigenes Repository.
+Der Entwicklungscode wird in öffentlichen Github Repositories unter der Organisation \textbf{BrainingOutOfBox} gehalten. Für alle einzelnen Teile des Projekts gibt es ein eigenes Repository.
 
 \begin{description}[leftmargin=!,labelwidth=2cm]
 \item [Doc] \href{https://github.com/BrainingOutOfBox/Doc-BA}{Dieses Repository} enthält alle relevanten Dateien, welche für die Dokumentation von Relevanz sind.
@@ -147,14 +155,44 @@ Für das automatisierte Builden und Testen nach einem Commit wird auf \href{http
 \subsection{Zeitliche Planung}
 
 \subsubsection*{Phasen}
-In unserem Projekt verwenden wir die vier Phasen von Rational Unified Process \cite{RUP}. Innerhalb der einzelnen Phasen wenden wir allerdings das Konzept von SCRUM \cite{SCRUM} an.  
+In unserem Projekt verwenden wir die vier Phasen von Rational Unified Process (RUP) \cite{RUP} mit dem Zusatz einer Testing Phase, welche in RUP nicht vorgesehen ist. Innerhalb der einzelnen Phasen wenden wir allerdings das Konzept von SCRUM \cite{SCRUM} an.  
 \begin{description}[leftmargin=!,labelwidth=\widthof{\bfseries Construction Phase}]
 	\item [Inception Phase] In der Inception Phase geht es hauptsächlich darum, Jira einzurichten und den Projektplan zu schreiben. Diese Phase beinhaltet den Sprint Inception-1.
-	\item [Elaboration Phase] Die Elaboration Phase umfasst den Sprint Elaboration-1. Hier werden die Anforderungen an die Applikation definiert, den Proof-of-Concept durchgeführt und weitere konzeptionelle Arbeiten erledigt. Am Ende der Phase müssen alle konzeptionellen Fragen geklärt sein. 
-	\item [Construction Phase] In der Phase der Construction geht es an die Umsetzung sowie das Testing der Applikation. Hierfür sind 4.5 Sprints eingerechnet. Dafür stehen die Sprints Construction-1, Construction-2, Con\-struc\-tion-3, Construction-4 und Testing-1 zur Verfügung.
+	\item [Elaboration Phase] Die Elaboration Phase umfasst den Sprint Elaboration-1. Hier werden die Anforderungen an die Applikation definiert, den Proof-of-Concept für die Skizzenfunktion durchgeführt und weitere konzeptionelle Arbeiten erledigt. Am Ende der Phase müssen alle konzeptionellen Fragen geklärt sein. 
+	\item [Construction Phase] In der Phase der Construction geht es an die Umsetzung der Applikation. Hierfür sind 5 Sprints eingerechnet. Dafür stehen die Sprints Construction-0, Construction-1, Construction-2, Con\-struc\-tion-3, Construction-4 zur Verfügung.
+	\item [Testing] In der Testing Phase bzw. im Sprint Testing-1 wird die gesamte Applikation einem User Test unterzogen.
 	\item [Transition Phase] In der letzen Phase werden alle abzugebende Dokumente nochmals durchgelesen und allenfalls überarbeitet. Dies geschieht im Sprint Transition-1.
 \end{description}
 
 \subsubsection*{Sprints}
 Ein einzelner Sprint dauert zwei Wochen. So stehen pro Woche insgesamt 48 Stunden für die Bachelorarbeit zur Verfügung. In unserem Projekt sind folgende Sprints geplant:
-%TODO: Projektplan + Projektrisiken
+
+\begin{center}
+	\begin{longtable}{| l | p{10cm} |}
+		\hline
+		\textbf{Sprint} & \textbf{Arbeiten}\\
+		\hline
+		\textit{Inception-1 } & 
+			\begin{itemize}[noitemsep]
+				\item Projektplan erstellen
+				\item Jira einrichten
+				\item einzelne Risikos einschätzen
+			\end{itemize}\\
+		\hline
+	\end{longtable}
+\end{center}
+
+\begin{landscape}
+	\thispagestyle{empty}
+	\label{subsec:timeline}
+		\begin{figure}[h]
+			\centering
+			\includegraphics[width=1\linewidth, height=9.6cm]{img/projekt-plan/projekt-plan}
+			\caption[Projektplan]{Projektplan}
+			\label{fig:projekt-plan}
+		\end{figure}
+	\vspace{0.5cm}
+	
+\end{landscape}
+
+%TODO:  Projektrisiken
