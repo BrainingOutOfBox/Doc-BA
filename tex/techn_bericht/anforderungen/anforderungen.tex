@@ -13,8 +13,163 @@
 
 \paragraph{Fully-Dressed Use-Cases}
 
+Die fully-dressed Use-Cases folgen den im Modul \textit{Software Engineering 1} empfohlenen Punkten.
+\renewcommand{\arraystretch}{1.35}
+\begin{center}
+	\begin{longtable}{| c | p{7cm} |}
+		\hline
+		\multicolumn{2}{|c|}{\textbf{Use-Case 8a: Insert Weblink}}\\
+		\hline\hline
+		\textit{Primary Actor} & Participant\\
+		\hline
+		\textit{Stakeholders \& Interests} & Ein Participant wünscht als Teil seiner Brainwave einen Weblink zu teilen. \\
+		\hline
+		\textit{Preconditions} & Participant existiert im System (UC3), ist eingeloggt (UC1) und einer Gruppe beigetreten (UC5). Des weiteren existiert mindestens ein BrainstormingFinding (UC12), welches schon gestartet ist (UC9).\\
+		\hline
+		\textit{Post Conditions/Success Guarantee} & Der Weblink ist erfolgreich in der Brainwave gespeichert und kann in einer nächsten Runde von den anderen Participants angesehen werden.\\
+		\hline
+		\textit{Main Success Scenario/Basic Flow} & 
+		\begin{enumerate}[noitemsep]
+			\item Der Participant speichert sich den gewünschten Weblink in den Zwischenspeicher des Smartphones.
+			\item Der Participant fügt mittels Einfügen den Text in das Textfeld ein.
+			\item Der Participant speichert den Link mittels commit in seiner Brainwave ab.
+		\end{enumerate}\\
+		\hline
+		\textit{Alternative Flows} &
+		-\\
+		\hline
+		\textit{Frequency of Occurrence} & gelegentlich, erweiterte Kernfunktionalität.\\
+		\hline
+	\end{longtable}
+\end{center}
+
+\renewcommand{\arraystretch}{1.35}
+\begin{center}
+	\begin{longtable}{| c | p{7cm} |}
+		\hline
+		\multicolumn{2}{|c|}{\textbf{Use-Case 8b: Insert Picture}}\\
+		\hline\hline
+		\textit{Primary Actor} & Participant\\
+		\hline
+		\textit{Stakeholders \& Interests} & Ein Participant wünscht als Teil seiner Brainwave einen Bild zu teilen. \\
+		\hline
+		\textit{Preconditions} & Participant existiert im System (UC3), ist eingeloggt (UC1) und einer Gruppe beigetreten (UC5). Des weiteren existiert mindestens ein BrainstormingFinding (UC12), welches schon gestartet ist (U9).\\
+		\hline
+		\textit{Post Conditions/Success Guarantee} & Das Bild ist erfolgreich in der Brainwave gespeichert und kann in einer nächsten Runde von den anderen Participants angesehen werden.\\
+		\hline
+		\textit{Main Success Scenario/Basic Flow} & 
+		\begin{enumerate}[noitemsep]
+			\item Der Participant klickt den Plus-Button (o.Ä) neben dem Text-Eingabefeld.
+			\item Das System zeigt ein Menü mit weiteren Ideentypen (unteranderem das Bild) an.
+			\item Der Participant klickt auf den Menüeintrag, um ein Bild aufzunehmen.
+			\item Das Smartphone öffnet die Kamerafunktion.
+			\item Der Participant macht ein Foto und speichert das Bild mit dem entsprechenden Button in seine Brainwave.
+		\end{enumerate}\\
+		\hline
+		\textit{Alternative Flows} &
+		-\\
+		\hline
+		\textit{Frequency of Occurrence} & gelegentlich, erweiterte Kernfunktionalität.\\
+		\hline
+	\end{longtable}
+\end{center}
+
+\renewcommand{\arraystretch}{1.35}
+\begin{center}
+	\begin{longtable}{| c | p{7cm} |}
+		\hline
+		\multicolumn{2}{|c|}{\textbf{Use-Case 8c: Insert Sketch}}\\
+		\hline\hline
+		\textit{Primary Actor} & Participant\\
+		\hline
+		\textit{Stakeholders \& Interests} & Ein Participant wünscht als Teil seiner Brainwave eine eigene Skizze zu zeichnen. \\
+		\hline
+		\textit{Preconditions} & Participant existiert im System (UC3), ist eingeloggt (UC1) und einer Gruppe beigetreten (UC5). Des weiteren existiert mindestens ein BrainstormingFinding (UC12), welches schon gestartet ist (U9).\\
+		\hline
+		\textit{Post Conditions/Success Guarantee} & Die gezeichnete Skizze ist erfolgreich in der Brainwave gespeichert und kann in einer nächsten Runde von den anderen Participants angesehen (aber nicht bearbeitet) werden.\\
+		\hline
+		\textit{Main Success Scenario/Basic Flow} & 
+		\begin{enumerate}[noitemsep]
+			\item Der Participant klickt den Plus-Button (o.Ä) neben dem Text-Eingabefeld.
+			\item Das System zeigt ein Menü mit weiteren Ideentypen (unteranderem die Skizze) an.
+			\item Der Participant klickt auf den Menüeintrag, um eine Skizze zu zeichnen.
+			\item Das Smartphone öffnet eine entsprechende View, um Bilder zu zeichnen.
+			\item Ist der Participant zufrieden mit der Skizze, speichert diese mit dem entsprechenden Button in seine Brainwave.
+		\end{enumerate}\\
+		\hline
+		\textit{Alternative Flows} &
+		-\\
+		\hline
+		\textit{Frequency of Occurrence} & gelegentlich, erweiterte Kernfunktionalität.\\
+		\hline
+	\end{longtable}
+\end{center}
+
+\renewcommand{\arraystretch}{1.35}
+\begin{center}
+	\begin{longtable}{| c | p{7cm} |}
+		\hline
+		\multicolumn{2}{|c|}{\textbf{Use-Case 8e: Insert Pattern}}\\
+		\hline\hline
+		\textit{Primary Actor} & Participant\\
+		\hline
+		\textit{Stakeholders \& Interests} & Ein Participant wünscht als Teil seiner Brainwave einen bekanntes Pattern zu teilen. \\
+		\hline
+		\textit{Preconditions} & Participant existiert im System (UC3), ist eingeloggt (UC1) und einer Gruppe beigetreten (UC5). Des weiteren existiert mindestens ein BrainstormingFinding (UC12), welches schon gestartet ist (U9) und vom Typ SoftwareLösung ist.\\
+		\hline
+		\textit{Post Conditions/Success Guarantee} & Das Pattern ist erfolgreich in der Brainwave gespeichert und kann in einer nächsten Runde von den anderen Participants angesehen und auf einer externen Webseite genauer begutachtet werden.\\
+		\hline
+		\textit{Main Success Scenario/Basic Flow} & 
+		\begin{enumerate}[noitemsep]
+			\item Der Participant klickt den Plus-Button (o.Ä) neben dem Text-Eingabefeld.
+			\item Das System zeigt ein Menü mit weiteren Ideentypen (unteranderem das Pattern) an.
+			\item Der Participant klickt auf den Menüeintrag, um eine Auswahl von verschiedenen Pattern zu erhalten.
+			\item Er wählt das passende Pattern aus und speichert dieses mit dem entsprechenden Button in seine Brainwave.
+		\end{enumerate}\\
+		\hline
+		\textit{Alternative Flows} &
+		-\\
+		\hline
+		\textit{Frequency of Occurrence} & gelegentlich, erweiterte Kernfunktionalität.\\
+		\hline
+	\end{longtable}
+\end{center}
+
+\renewcommand{\arraystretch}{1.35}
+\begin{center}
+	\begin{longtable}{| c | p{7cm} |}
+		\hline
+		\multicolumn{2}{|c|}{\textbf{Use-Case 8b: Insert Video}}\\
+		\hline\hline
+		\textit{Primary Actor} & Participant\\
+		\hline
+		\textit{Stakeholders \& Interests} & Ein Participant wünscht als Teil seiner Brainwave ein Video aufzunehmen. \\
+		\hline
+		\textit{Preconditions} & Participant existiert im System (UC3), ist eingeloggt (UC1) und einer Gruppe beigetreten (UC5). Des weiteren existiert mindestens ein BrainstormingFinding (UC12), welches schon gestartet ist (U9). Die Länge des Videos wird auf wenige Sekunden limitiert, da sonst das Video länger werden kann als die zur Verfügung stehende Zeit.\\
+		\hline
+		\textit{Post Conditions/Success Guarantee} & Das Video ist erfolgreich in der Brainwave gespeichert und kann in einer nächsten Runde von den anderen Participants angesehen werden.\\
+		\hline
+		\textit{Main Success Scenario/Basic Flow} & 
+		\begin{enumerate}[noitemsep]
+			\item Der Participant klickt den Plus-Button (o.Ä) neben dem Text-Eingabefeld.
+			\item Das System zeigt ein Menü mit weiteren Ideentypen (unteranderem das Video) an.
+			\item Der Participant klickt auf den Menüeintrag, um ein Video aufzunehmen.
+			\item Das Smartphone öffnet die Kamerafunktion.
+			\item Der Participant macht ein kurzes Video und speichert dieses mit dem entsprechenden Button in seine Brainwave.
+		\end{enumerate}\\
+		\hline
+		\textit{Alternative Flows} &
+		-\\
+		\hline
+		\textit{Frequency of Occurrence} & selten, erweiterte Kernfunktionalität.\\
+		\hline
+	\end{longtable}
+\end{center}
+
+
 
 \paragraph{Abuse-Cases}
+
 \paragraph{Sequenzdiagramm}
 
 \subsubsection{Nicht-Funktionale Anforderungen}
