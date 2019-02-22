@@ -1,17 +1,49 @@
 \subsection{Anforderungsspezifikation}
+In dieser Sektion werden die Ergebnisse der Anforderungsanalyse in Form von diversen Diagrammen und Tabellen festgehalten. Ziel ist es, nötige Einschränkungen für das System zu definieren während genug Spielraum für die Umsetzung gelassen wird. 
 
 \subsubsection{Funktionale Anforderungen}
-\begin{figure}
+Aufgrund der Fortsetzung der Arbeit existieren viele Überlappungen. Im Folgenden werden die Gemeinsamkeiten und Unterschiede beschrieben und detailliert auf Neuigkeiten eingegangen. 
+
+
+\begin{figure}[h]
 	\centering
-	\includegraphics[width=0.7\linewidth]{./img/anforderungen/UC-Methode635.png}
+	\includegraphics[width=1\linewidth]{./img/anforderungen/UC-Methode635.png}
 	\caption{Use-Case Diagramm Methode 635}
 	\label{fig:uc-methode635}
 \end{figure}
-%TODO: Hellfarbene UC erklären dass neu, schwachfarbene erklären, UC12 sagen dass mapping pro team 1 finding nicht mehr gültig ist, leave team unnötig, neue insert ideas (Pattern, Video)
+Abbildung \ref{fig:uc-methode635} zeigt das Use-Case Diagramm für diese Arbeit. Es gibt einige Abweichungen zur Studienarbeit. Im Diagramm sind einige Use-Cases in blasser Farbe, bei diesen handelt es sich um bereits implementierte Features im Umfang der Studienarbeit. 
+
+Wichtig zu erwähnen ist dabei, dass UC12: Create Brainstorming Finding erst im Nachhinein hinzugekommen ist. Dies ist so, weil zu Beginn der Entwicklung wir die Annahme trafen, dass für jedes Team genau ein Brainstorming entsteht und zwar zum Zeitpunkt des Starts des Brainstorming Findings (UC9). Wie wir aber im Verlaufe der Zeit feststellten, war die Umsetzung mit mehreren Brainstorming Findings pro Team keinen grossen Aufwand. So entstand ein zusätzlicher Use-Case, der nicht mehr implizit mit UC9: Start Brainstorming Finding ausgeführt wurde.
+
+Weiter sind Use-Cases in satter Farbe erkennbar. Bei diesen handelt es sich um diejenigen, welche in dieser Arbeit im Fokus liegen. Komplett neu hinzugekommen sind UC8e: Insert Pattern und UC8f: Insert Video. Als zentralen Use-Case wird zudem UC8c: Insert Sketch angesehen. Im folgenden Kapitel werden nun die in dieser Arbeit relevanten Use-Cases kurz beschrieben. Im Kapitel \ref{par:fully-dressed-uc} sind alle zu implementierenden Sub-Use-Cases von UC8: Create Brainwave im fully-dressed Stil detailliert erläutert.
 \paragraph{Brief Use-Cases}
 
+\begin{basedescript}{
+		\desclabelstyle{\multilinelabel}
+		\desclabelwidth{4.5cm}
+		\setlength{\itemsep}{5ex}}
+	
+	\item[\textit{UC2: }Logout] Als eingeloggter Participant will ich mich ausloggen, sodass das Startfenster wieder erscheint.
+	
+	\item[\textit{UC6: }Leave Brainstorming Team] Als Participant will ich ein beigetretenes Team verlassen können.
+		
+	\item[\textit{UC8: }Create Brainwave] Als Participant will ich während einer Brainstorming Session ein Brainwave (bestehend aus mehreren Ideen) erstellen und einreichen können. 
+	
+	\item[\textit{UC8a: }Insert Weblink] Als Participant will ich einen Weblink in mein aktuelles Sheet einfügen können.
+	
+	\item[\textit{UC8b: }Insert Picture] Als Participant will ich ein Bild in mein aktuelles Sheet einfügen können.
+	
+	\item[\textit{UC8c: }Insert Sketch] Als Participant will ich in mein aktuelles Sheet zeichnen können.
+	
+	\item[\textit{UC8e: }Insert Pattern] Als Participant will ich aus Vorlagen software-relevante Patterns in mein aktuelles Sheet einfügen können.
+	
+	\item[\textit{UC8f: }Insert Video] Als Participant will ich ein Video aufnehmen und in mein aktuelles Sheet einfügen können.
+	
+	\item[\textit{UC11: }Delete Brainstorming Team] Als Moderator will ich ein Brainstorming Team löschen können.
+\end{basedescript}
+\vspace{1cm}
 
-\paragraph{Fully-Dressed Use-Cases}
+\paragraph{Fully-Dressed Use-Cases}\label{par:fully-dressed-uc}
 
 
 \paragraph{Abuse-Cases}
