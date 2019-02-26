@@ -1,0 +1,33 @@
+\subsection{Vorstudie}
+Dieser Abschnitt dokumentiert die Vorarbeiten in verschiedenen Bereichen, die für das Abwickeln dieses Projektes relevant sein könnten. Dabei werden die entsprechenden Themen analysiert und es wird abgewägt, inwiefern diese für den Projekterfolg von Nutzen sein könnten. Stellt sich heraus, dass eines der analysierten Themen sinnvoll und machbar ist, wird es in das Projekt integriert.
+\subsubsection{arc42 Solution Strategy}
+%TODO:	* Explain solution strategy, based on arc42 and starke?
+%		* Bezugnahme auf unser projekt, wie kann es nützlich sein?
+%		* Modularer Aufbau, sodass nicht zu fest eingeschränkt (Software problem, general problem)
+% 		* 
+In der von Gernot Starke entwickelten Vorlage zur Software Architektur Dokumentation arc42 \cite{arc-42}, befindet sich ein für uns besonders interessanten Abschnitt namens \textit{Solution Strategy}. Darin ist ein Vorschlag angeboten, wie man in Software die Ansätze zur Lösungsfindung erarbeitet und dokumentiert. Dieser Vorschlag besteht aus mehreren Tipps zum Inhalt, zur Darstellung und zur Entwicklung dieser Ansätze. Da dieses Projekt sich intensiv mit Lösungsfindungsmethoden auseinander setzt, könnte das eine nützliche Herangehensweise für diese Applikation sein. 
+
+Eine mögliche Erweiterung unserer Applikation wäre, ein zusätzliches Modul für eine Lösungsfindungsvariante anzubieten. Dabei käme beim Erstellen eines Brainstormingfindings die Auswahl zwischen zwei Typen von Lösungsfindungen: ``Software Architektur Lösung`` und ``Generelle Lösung``. Bei der Software Lösung würden dann die Tipps von arc42 eingearbeitet sein, wobei eine Abbildung gemäss Tabelle \ref{tab:arc42-mapping} vom Kontext des arc42-Templates in den Applikationskontext denkbar wäre.
+\renewcommand{\arraystretch}{1.5}
+\begin{table}
+	\centering
+	\begin{tabular}{|p{6cm}|p{6cm}|}
+		\hline
+		\textbf{arc42-Kontext} & \textbf{Applikationskontext}\\
+		\hline
+		Solution Strategy so genau wie möglich erklären (z.B. als Liste von Keywords) & Liste von Keywords mittels Textinput \\
+		\hline
+		Lösungsansatz als Tabelle beschreiben & Tabellarische Darstellung mithilfe der Skizzenfunktion\\
+		\hline
+		Lösungsansatz im Kontext der Qualtätsattribute beschreiben & Verwendung des Textinputs\\
+		\hline
+		Konzepte, Views oder Code referenzieren & (Microservices-API-)Patterns als Input verwenden\\
+		\hline
+		Lösungsansatz inkrementell und iterativ wachsen lassen & Durch rundenbasiertes Brainwriting gegeben\\
+		\hline
+		Lösungsansatz rechtfertigen & Teil der nachträglichen Diskussion, nicht Teil der Applikation (Wertung sollte nicht in Brainwriting einfliessen)\\
+		\hline
+	\end{tabular}
+	\caption{Abbildung der arc42 Lösungsansätze auf Brainstorming Applikation}
+	\label{tab:arc42-mapping}
+\end{table}
