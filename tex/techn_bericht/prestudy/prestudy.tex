@@ -1,15 +1,13 @@
 \subsection{Vorstudie}
 Dieser Abschnitt dokumentiert die Vorarbeiten in verschiedenen Bereichen, die für das Abwickeln dieses Projektes relevant sein könnten. Dabei werden die entsprechenden Themen analysiert und es wird abgewägt, inwiefern diese für den Projekterfolg von Nutzen sein könnten. Stellt sich heraus, dass eines der analysierten Themen sinnvoll und machbar ist, wird es in das Projekt integriert.
 \subsubsection{arc42 Solution Strategy}
-%TODO:	* Explain solution strategy, based on arc42 and starke?
-%		* Bezugnahme auf unser projekt, wie kann es nützlich sein?
-%		* Modularer Aufbau, sodass nicht zu fest eingeschränkt (Software problem, general problem)
-% 		* 
-In der von Gernot Starke entwickelten Vorlage zur Software Architektur Dokumentation arc42 \cite{arc-42}, befindet sich ein für uns besonders interessanten Abschnitt namens \textit{Solution Strategy}. Darin ist ein Vorschlag angeboten, wie man in Software die Ansätze zur Lösungsfindung erarbeitet und dokumentiert. Dieser Vorschlag besteht aus mehreren Tipps zum Inhalt, zur Darstellung und zur Entwicklung dieser Ansätze. Da dieses Projekt sich intensiv mit Lösungsfindungsmethoden auseinander setzt, könnte das eine nützliche Herangehensweise für diese Applikation sein. 
+
+In der von Gernot Starke entwickelten Vorlage zur Software Architektur Dokumentation arc42 \cite{arc-42}, befindet sich ein für uns besonders interessanten Abschnitt namens \textit{Solution Strategy}. Darin ist ein Vorschlag angeboten, wie man in Software die Ansätze zur Lösungsfindung erarbeitet und dokumentiert. Dieser Vorschlag besteht aus mehreren Tipps zum Inhalt, zur Darstellung und zur Entwicklung dieser Ansätze. Da sich dieses Projekt intensiv mit Lösungsfindungsmethoden auseinander setzt, könnte arc42 Solution Strategy eine nützliche Herangehensweise für diese Applikation sein. 
 
 Eine mögliche Erweiterung unserer Applikation wäre, ein zusätzliches Modul für eine Lösungsfindungsvariante anzubieten. Dabei käme beim Erstellen eines Brainstormingfindings die Auswahl zwischen zwei Typen von Lösungsfindungen: ``Software Architektur Lösung`` und ``Generelle Lösung``. Bei der Software Lösung würden dann die Tipps von arc42 eingearbeitet sein, wobei eine Abbildung gemäss Tabelle \ref{tab:arc42-mapping} vom Kontext des arc42-Templates in den Applikationskontext denkbar wäre.
-\renewcommand{\arraystretch}{1.5}
-\begin{table}
+
+\renewcommand{\arraystretch}{1.7}
+\begin{table}[h]
 	\centering
 	\begin{tabular}{|p{6cm}|p{6cm}|}
 		\hline
@@ -31,3 +29,5 @@ Eine mögliche Erweiterung unserer Applikation wäre, ein zusätzliches Modul f�
 	\caption{Abbildung der arc42 Lösungsansätze auf Brainstorming Applikation}
 	\label{tab:arc42-mapping}
 \end{table}
+\paragraph{Fazit}~\\
+Durch die verschiedenen geplanten Erweiterungen bezüglich den Input-Varianten (siehe Use Case 8 im Kapitel \ref{sec:functional-requirements} Funktionale Anforderungen) lässt sich diese Vorlage sinnvoll in die Applikation integrieren. Dies erfordert allerdings eine erweiterbare Grundlage, um das erwähnte Modul (``Software Architektur Lösung``) zu implementieren. Durch eine saubere Abstraktion sollte die Architektur der Applikation aber auch andere Lösungstypen unterstützen.
