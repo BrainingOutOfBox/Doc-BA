@@ -32,13 +32,13 @@ Die für diese Arbeit relevanten Use-Cases sind hier beschrieben.
 	
 	\item[\textit{UC8a: }Insert Weblink] Als Participant will ich einen Weblink in mein aktuelles Sheet einfügen können.
 	
-	\item[\textit{UC8b: }Insert Picture] Als Participant will ich ein Bild in mein aktuelles Sheet einfügen können.
+	\item[\textit{UC8b: }Integrate Picture] Als Participant will ich ein Bild in mein aktuelles Sheet integrieren können.
 	
-	\item[\textit{UC8c: }Insert Sketch] Als Participant will ich in mein aktuelles Sheet zeichnen können.
+	\item[\textit{UC8c: }Draw Sketch] Als Participant will ich in mein aktuelles Sheet zeichnen können.
 	
 	\item[\textit{UC8e: }Insert Pattern] Als Participant will ich aus Vorlagen software-relevante Patterns in mein aktuelles Sheet einfügen können.
 	
-	\item[\textit{UC8f: }Insert Video] Als Participant will ich ein Video aufnehmen und in mein aktuelles Sheet einfügen können.
+	\item[\textit{UC8f: }Record Video] Als Participant will ich ein Video aufnehmen und in mein aktuelles Sheet einfügen können.
 	
 	\item[\textit{UC11: }Delete Brainstorming Team] Als Moderator will ich ein Brainstorming Team löschen können.
 \end{basedescript}
@@ -46,7 +46,7 @@ Die für diese Arbeit relevanten Use-Cases sind hier beschrieben.
 
 \paragraph{Fully-Dressed Use-Cases}
 \label{par:fully-dressed-uc}~\\
-Die fully-dressed Use-Cases folgen den im Modul \textit{Software Engineering 1} empfohlenen Punkten.
+Die fully-dressed Use-Cases folgen den im HSR-Modul \textit{Software Engineering 1} empfohlenen Punkten.
 \renewcommand{\arraystretch}{1.35}
 \begin{center}
 	\begin{longtable}{| c | p{7cm} |}
@@ -80,7 +80,7 @@ Die fully-dressed Use-Cases folgen den im Modul \textit{Software Engineering 1} 
 \begin{center}
 	\begin{longtable}{| c | p{7cm} |}
 		\hline
-		\multicolumn{2}{|c|}{\textbf{Use-Case 8b: Insert Picture}}\\
+		\multicolumn{2}{|c|}{\textbf{Use-Case 8b: Integrate Picture}}\\
 		\hline\hline
 		\textit{Primary Actor} & Participant\\
 		\hline
@@ -96,11 +96,11 @@ Die fully-dressed Use-Cases folgen den im Modul \textit{Software Engineering 1} 
 			\item Das System zeigt ein Menü mit weiteren Ideentypen (unter anderem das Bild) an.
 			\item Der Participant klickt auf den Menüeintrag, um ein Bild aufzunehmen.
 			\item Das Smartphone öffnet die Kamerafunktion.
-			\item Der Participant macht ein Foto und speichert das Bild mit dem entsprechenden Button in seine Brainwave.
+			\item Der Participant macht ein Foto und speichert das Bild mit dem entsprechenden Button in seine Brainwave. 
 		\end{enumerate}\\
 		\hline
 		\textit{Alternative Flows} &
-		-\\
+		- \\
 		\hline
 		\textit{Frequency of Occurrence} & gelegentlich, erweiterte Kernfunktionalität.\\
 		\hline
@@ -111,7 +111,7 @@ Die fully-dressed Use-Cases folgen den im Modul \textit{Software Engineering 1} 
 \begin{center}
 	\begin{longtable}{| c | p{7cm} |}
 		\hline
-		\multicolumn{2}{|c|}{\textbf{Use-Case 8c: Insert Sketch}}\\
+		\multicolumn{2}{|c|}{\textbf{Use-Case 8c: Draw Sketch}}\\
 		\hline\hline
 		\textit{Primary Actor} & Participant\\
 		\hline
@@ -126,7 +126,7 @@ Die fully-dressed Use-Cases folgen den im Modul \textit{Software Engineering 1} 
 			\item Der Participant klickt den Plus-Button (o.Ä) neben dem Text-Eingabefeld.
 			\item Das System zeigt ein Menü mit weiteren Ideentypen (unter anderem die Skizze) an.
 			\item Der Participant klickt auf den Menüeintrag, um eine Skizze zu zeichnen.
-			\item Das Smartphone öffnet eine entsprechende View, um Bilder zu zeichnen.
+			\item Das Smartphone öffnet im App selbst eine entsprechende View, um Bilder zu zeichnen.
 			\item Ist der Participant zufrieden mit der Skizze, speichert diese mit dem entsprechenden Button in seine Brainwave.
 		\end{enumerate}\\
 		\hline
@@ -172,13 +172,13 @@ Die fully-dressed Use-Cases folgen den im Modul \textit{Software Engineering 1} 
 \begin{center}
 	\begin{longtable}{| c | p{7cm} |}
 		\hline
-		\multicolumn{2}{|c|}{\textbf{Use-Case 8b: Insert Video}}\\
+		\multicolumn{2}{|c|}{\textbf{Use-Case 8b: Record Video}}\\
 		\hline\hline
 		\textit{Primary Actor} & Participant\\
 		\hline
 		\textit{Stakeholders \& Interests} & Ein Participant wünscht als Teil seiner Brainwave ein Video aufzunehmen. \\
 		\hline
-		\textit{Preconditions} & Participant existiert im System (UC3), ist eingeloggt (UC1) und einer Gruppe beigetreten (UC5). Des weiteren existiert mindestens ein BrainstormingFinding (UC12), welches schon gestartet ist (U9). Die Länge des Videos wird auf wenige Sekunden limitiert, da sonst das Video länger werden kann als die zur Verfügung stehende Zeit.\\
+		\textit{Preconditions} & Participant existiert im System (UC3), ist eingeloggt (UC1) und einer Gruppe beigetreten (UC5). Des weiteren existiert mindestens ein BrainstormingFinding (UC12), welches schon gestartet ist (U9). Die Länge des Videos wird auf wenige Sekunden limitiert, da dieses sonst länger werden kann als die zur Verfügung stehende Zeit. Des Weitern muss der nächste Participant genügend Zeit haben sich das Video anzuschauen und eine Rückmeldung abzugeben. Nur schon aus diesem Grund darf das Video nur wenige Sekunden dauern.\\
 		\hline
 		\textit{Post Conditions/Success Guarantee} & Das Video ist erfolgreich in der Brainwave gespeichert und kann in einer nächsten Runde von den anderen Participants angesehen werden.\\
 		\hline
