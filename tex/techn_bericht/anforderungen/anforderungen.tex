@@ -15,7 +15,7 @@ Abbildung \ref{fig:uc-methode635} zeigt das Use-Case Diagramm für diese Arbeit.
 
 Wichtig zu erwähnen ist dabei, dass UC12: Create Brainstorming Finding erst im Nachhinein hinzugekommen ist. Dies ist so, weil zu Beginn der Entwicklung wir die Annahme trafen, dass für jedes Team genau ein Brainstorming entsteht und zwar zum Zeitpunkt des Starts des Brainstorming Findings (UC9). Wie wir aber im Verlaufe der Zeit feststellten, war die Umsetzung mit mehreren Brainstorming Findings pro Team innert vertretbarer Zeit möglich. So entstand ein zusätzlicher Use-Case, der nicht mehr implizit mit UC9: Start Brainstorming Finding ausgeführt wurde.
 
-Weiter sind Use-Cases in satter Farbe erkennbar. Bei diesen handelt es sich um diejenigen, welche in dieser Arbeit im Fokus liegen. Komplett neu hinzugekommen sind UC8e: Insert Pattern und UC8f: Insert Video. Als zentralen Use-Case wird zudem UC8c: Insert Sketch angesehen. Im folgenden Kapitel werden nun die in dieser Arbeit relevanten Use-Cases kurz beschrieben. Im Kapitel \ref{par:fully-dressed-uc} sind alle zu implementierenden Sub-Use-Cases von UC8: Create Brainwave im fully-dressed Stil detailliert erläutert.
+Weiter sind Use-Cases in satter Farbe erkennbar. Bei diesen handelt es sich um diejenigen, welche in dieser Arbeit im Fokus liegen. Komplett neu hinzugekommen sind UC8e: Insert Pattern, UC8f: Insert Video und UC13: Export BrainstormingFinding. Als zentraler Use-Case wird zudem UC8c: Draw Sketch angesehen. Im folgenden Kapitel werden nun die in dieser Arbeit relevanten Use-Cases kurz beschrieben. Im Kapitel \ref{par:fully-dressed-uc} sind alle zu implementierenden Sub-Use-Cases von UC8: Create Brainwave im fully-dressed Stil detailliert erläutert.
 \paragraph{Brief Use-Cases}~\\
 Die für diese Arbeit relevanten Use-Cases sind hier beschrieben.
 
@@ -41,12 +41,14 @@ Die für diese Arbeit relevanten Use-Cases sind hier beschrieben.
 	\item[\textit{UC8f: }Record Video] Als Participant will ich ein Video aufnehmen und in mein aktuelles Sheet einfügen können.
 	
 	\item[\textit{UC11: }Delete Brainstorming Team] Als Moderator will ich ein Brainstorming Team löschen können.
+	
+	\item[\textit{UC13: }Export Brainstorming Finding] Als Participant will ich ein abgeschlossenes \textit{BrainstormingFinding }exportieren können. 
 \end{basedescript}
 \vspace{1cm}
 
 \paragraph{Fully-Dressed Use-Cases}
 \label{par:fully-dressed-uc}~\\
-Die fully-dressed Use-Cases folgen den im HSR-Modul \textit{Software Engineering 1} empfohlenen Punkten.
+Die fully-dressed Use-Cases folgen den im Modul \textit{Software Engineering 1} des Bachelorstudiums Informatik der HSR empfohlenen Punkten.
 \renewcommand{\arraystretch}{1.35}
 \begin{center}
 	\begin{longtable}{| c | p{7cm} |}
@@ -150,14 +152,14 @@ Die fully-dressed Use-Cases folgen den im HSR-Modul \textit{Software Engineering
 		\hline
 		\textit{Preconditions} & Participant existiert im System (UC3), ist eingeloggt (UC1) und einer Gruppe beigetreten (UC5). Des weiteren existiert mindestens ein BrainstormingFinding (UC12), welches schon gestartet ist (U9) und vom Typ SoftwareLösung ist.\\
 		\hline
-		\textit{Post Conditions/Success Guarantee} & Das Pattern ist erfolgreich in der Brainwave gespeichert und kann in einer nächsten Runde von den anderen Participants angesehen und auf einer externen Webseite genauer begutachtet werden.\\
+		\textit{Post Conditions/Success Guarantee} & Das Microservice-API-Pattern (Symbol und Name von MAP\cite{microservices-api}) ist erfolgreich in der Brainwave gespeichert und kann in einer nächsten Runde von den anderen Participants angesehen und auf einer externen Webseite genauer begutachtet werden.\\
 		\hline
 		\textit{Main Success Scenario/Basic Flow} & 
 		\begin{enumerate}[noitemsep]
 			\item Der Participant klickt den Plus-Button (o.Ä) neben dem Text-Eingabefeld.
 			\item Das System zeigt ein Menü mit weiteren Ideentypen (unter anderem das Pattern) an.
-			\item Der Participant klickt auf den Menüeintrag, um eine Auswahl von verschiedenen Pattern zu erhalten.
-			\item Er wählt das passende Pattern aus und speichert dieses mit dem entsprechenden Button in seine Brainwave.
+			\item Der Participant klickt auf den Menüeintrag, um eine Auswahl von verschiedenen Patterns zu erhalten.
+			\item Er wählt das passende Microservice-API-Pattern aus und speichert dieses mit dem entsprechenden Button in seine Brainwave.
 		\end{enumerate}\\
 		\hline
 		\textit{Alternative Flows} &
@@ -178,7 +180,7 @@ Die fully-dressed Use-Cases folgen den im HSR-Modul \textit{Software Engineering
 		\hline
 		\textit{Stakeholders \& Interests} & Ein Participant wünscht als Teil seiner Brainwave ein Video aufzunehmen. \\
 		\hline
-		\textit{Preconditions} & Participant existiert im System (UC3), ist eingeloggt (UC1) und einer Gruppe beigetreten (UC5). Des weiteren existiert mindestens ein BrainstormingFinding (UC12), welches schon gestartet ist (U9). Die Länge des Videos wird auf wenige Sekunden limitiert, da dieses sonst länger werden kann als die zur Verfügung stehende Zeit. Des Weitern muss der nächste Participant genügend Zeit haben sich das Video anzuschauen und eine Rückmeldung abzugeben. Nur schon aus diesem Grund darf das Video nur wenige Sekunden dauern.\\
+		\textit{Preconditions} & Participant existiert im System (UC3), ist eingeloggt (UC1) und einer Gruppe beigetreten (UC5). Des weiteren existiert mindestens ein BrainstormingFinding (UC12), welches schon gestartet ist (U9). Die Länge des Videos wird auf wenige Sekunden limitiert, da dieses sonst länger werden kann als die zur Verfügung stehende Zeit.\\
 		\hline
 		\textit{Post Conditions/Success Guarantee} & Das Video ist erfolgreich in der Brainwave gespeichert und kann in einer nächsten Runde von den anderen Participants angesehen werden.\\
 		\hline
