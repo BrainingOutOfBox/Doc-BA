@@ -201,6 +201,34 @@ Die fully-dressed Use-Cases folgen den im Modul \textit{Software Engineering 1} 
 	\end{longtable}
 \end{center}
 
+\renewcommand{\arraystretch}{1.35}
+\begin{center}
+	\begin{longtable}{| c | p{7cm} |}
+		\hline
+		\multicolumn{2}{|c|}{\textbf{Use-Case 13: Export BrainstormingFinding}}\\
+		\hline\hline
+		\textit{Primary Actor} & Participant\\
+		\hline
+		\textit{Stakeholders \& Interests} & Ein Participant wünscht die ausgearbeiteten Ideen zu exportieren. \\
+		\hline
+		\textit{Preconditions} & Participant existiert im System (UC3), ist eingeloggt (UC1) und einer Gruppe beigetreten (UC5). Des weiteren existiert mindestens ein BrainstormingFinding (UC12), welches schon abgeschlossen ist.\\
+		\hline
+		\textit{Post Conditions/Success Guarantee} & Alle Ideen des ausgewählten BrainstormingFinding werden in einem passenden Format exportiert (vorstellbar wäre Markdown), sodass diese für andere Tätigkeiten weitergenutzt werden können.\\
+		\hline
+		\textit{Main Success Scenario/Basic Flow} & 
+		\begin{enumerate}[noitemsep]
+			\item Der Participant navigiert zum gewünschten BrainstormingFinding, welches er exportieren möchte.
+			\item Er klickt auf den Button export (o.Ä).
+			\item Das System exportiert alle eingereichten Ideen an einen Ort nach Wahl.
+		\end{enumerate}\\
+		\hline
+		\textit{Alternative Flows} &
+		-\\
+		\hline
+		\textit{Frequency of Occurrence} & gelegentlich, erweiterte Kernfunktionalität.\\
+		\hline
+	\end{longtable}
+\end{center}
 
 
 \paragraph{Abuse-Cases}~\\
