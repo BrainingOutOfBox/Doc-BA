@@ -1,32 +1,34 @@
 \subsection{Vorstudie}
-Dieser Abschnitt dokumentiert die Vorarbeiten in verschiedenen Bereichen, die für das Abwickeln dieses Projektes relevant sein könnten. Dabei werden die entsprechenden Themen analysiert und es wird abgewägt, inwiefern diese für den Projekterfolg von Nutzen sein könnten. Stellt sich heraus, dass eines der analysierten Themen sinnvoll und machbar ist, wird es in das Projekt integriert.
-\subsubsection{arc42 Solution Strategy}
+Dieser Abschnitt dokumentiert die Vorarbeiten in verschiedenen Bereichen, die für das Abwickeln dieses Projektes relevant sein können. Dabei werden die entsprechenden Themen analysiert und es wird abgewägt, inwiefern diese für den Projekterfolg von Nutzen sein können. Stellt sich heraus, dass eines der analysierten Themen sinnvoll und machbar ist, wird es in das Projekt integriert.
+\subsubsection{Solution Strategy}
 
-In der von Gernot Starke entwickelten Vorlage zur Software Architektur Dokumentation arc42 \cite{arc-42}, befindet sich ein für uns besonders interessanten Abschnitt namens \textit{Solution Strategy}. Darin ist ein Vorschlag angeboten, wie man in Software die Ansätze zur Lösungsfindung erarbeitet und dokumentiert. Dieser Vorschlag besteht aus mehreren Tipps zum Inhalt, zur Darstellung und zur Entwicklung dieser Ansätze. Da sich dieses Projekt intensiv mit Lösungsfindungsmethoden auseinander setzt, könnte arc42 Solution Strategy eine nützliche Herangehensweise für diese Applikation sein. 
+In der von Gernot Starke entwickelten Vorlage zur Software Architektur Dokumentation arc42 \cite{arc-42} sowie in seinem Buch \textit{Effektive Softwarearchitekturen} \cite{eswa}, befindet sich ein für uns besonders interessanten Abschnitt namens \textit{Solution Strategy}. Darin ist ein Vorschlag angeboten, wie man in der Synthese der Software Architektur die Ansätze zur Lösungsfindung erarbeitet und dokumentiert. Dieser Vorschlag besteht aus mehreren Tipps zum Inhalt, zur Darstellung und zur Entwicklung dieser Ansätze. Als Beispiel beinhaltet dieser Vorschlag folgenden Tipp: ``Erkläre die Lösungsstrategie so kompakt wie möglich (z.B. als Liste von Schlüsselwörtern)``. Da sich dieses Projekt intensiv mit Lösungsfindungsmethoden auseinandersetzt, könnte die Solution Strategy nützlichen Input bieten, wie der Lösungfindungsprozess in unserer Applikation gestaltet werden könnte. 
 
 Eine mögliche Erweiterung unserer Applikation wäre, ein zusätzliches Modul für eine Lösungsfindungsvariante anzubieten. Dabei käme beim Erstellen eines Brainstormingfindings die Auswahl zwischen zwei Typen von Lösungsfindungen: ``Software Architektur Lösung`` und ``Generelle Lösung``. Bei der Software Lösung würden dann die Tipps von arc42 eingearbeitet sein, wobei eine Abbildung gemäss Tabelle \ref{tab:arc42-mapping} vom Kontext des arc42-Templates in den Applikationskontext denkbar wäre.
 
 \renewcommand{\arraystretch}{1.7}
-\begin{table}[h]
+\begin{table}
 	\centering
 	\begin{tabular}{|p{6cm}|p{6cm}|}
 		\hline
-		\textbf{arc42-Kontext} & \textbf{Applikationskontext}\\
+		\textbf{arc42 \& eswa\tablefootnote{Buch Effektive Softwarearchitekturen}-Kontext} & \textbf{Applikationskontext}\\
+		\hline
+		Lösungsansatz finden & Aufgabe von Benutzer, Kreativität ist von Benutzer gefragt\\
 		\hline
 		Solution Strategy so genau wie möglich erklären (z.B. als Liste von Keywords) & Liste von Keywords mittels Textinput \\
 		\hline
 		Lösungsansatz als Tabelle beschreiben & Tabellarische Darstellung mithilfe der Skizzenfunktion\\
 		\hline
-		Lösungsansatz im Kontext der Qualtätsattribute beschreiben & Verwendung des Textinputs\\
+		Lösungsansatz im Kontext der Qualtätsattribute beschreiben & Bezugnahme auf Qualitätsattribute mittels Textinput, oder Auswahlliste mit definierten Qualitätsattribute anbieten\\
 		\hline
-		Konzepte, Views oder Code referenzieren & (Microservices-API-)Patterns\cite{microservices-api} als Input verwenden\\
+		Konzepte, Views oder Code referenzieren & Liste von definierten (Microservices-API-)Patterns\cite{microservices-api} als Input anbieten (z.B. \textit{Frontend Integration}, mit Icon und kurzem Beschrieb des Patterns)\\
 		\hline
-		Lösungsansatz inkrementell und iterativ wachsen lassen & Durch rundenbasiertes Brainwriting gegeben\\
+		Lösungsansatz inkrementell und iterativ wachsen lassen & Durch rundenbasiertes Brainwriting gegeben. \\
 		\hline
-		Lösungsansatz rechtfertigen & Teil der nachträglichen Diskussion, nicht Teil der Applikation (Wertung sollte nicht in Brainwriting einfliessen)\\
+		Lösungsansatz rechtfertigen, vergleichen, entscheiden und begründen & Teil der nachträglichen Diskussion, nicht Teil der Applikation (Wertung und definitive Entscheide sollten nicht in Brainwriting einfliessen), Exportfunktion \\
 		\hline
 	\end{tabular}
-	\caption{Abbildung der arc42 Lösungsansätze auf Brainstorming Applikation}
+	\caption{Abbildung der Solution Strategy gemäss arc42 und eswa auf Brainstorming Applikation}
 	\label{tab:arc42-mapping}
 \end{table}
 \paragraph{Fazit}~\\
