@@ -206,7 +206,7 @@ Die fully-dressed Use-Cases folgen den im Modul \textit{Software Engineering 1} 
 \paragraph{Sequenzdiagramm}~\\
 
 \subsubsection{Nicht-Funktionale Anforderungen}
-Wie schon in unserer Studienarbeit halten wir uns auch hier wieder an die Standards ISO 9126\cite{ISO9126} bzw. dessen Nachfolger ISO 25010\cite{ISO9126_ISO25010}. Beide ISO-Normen sind sich sehr ähnlich und liefern eine gute Checkliste für jegliche Art von Systemanforderungen.
+Wie schon in unserer Studienarbeit halten wir uns auch hier wieder an die Standards ISO 9126\cite{ISO9126} bzw. dessen Nachfolger ISO 25010\cite{ISO9126_ISO25010}, welcher Gegensatz zum Standard ISO 9126 noch ausführlicher ist. Beide ISO-Normen liefern daher eine gute Checkliste für jegliche Art von Systemanforderungen.
 
 \begin{figure}[h]
 	\centering
@@ -219,20 +219,22 @@ Im Gegensatz zur Studienarbeit wollen wir uns bei dieser Arbeit aber vor allem a
 
 Die bekannten nicht-funktionale Anforderungen aus der Studienarbeit bleiben allerdings weiter bestehen. Um genaue und erfüllbare nicht-funktionale Anforderungen zu definieren, müssen die SMART-Kriterien \cite{SMART} erfüllt sein.
 
+Um die SMART-Kriterien noch besser zu erfüllen, haben wir uns in dieser Arbeit dazu entschieden, sogenannte Landing Zones (gemäss HSR-Vorlesung: Application Architecture vom 25.09.2018) zu definieren. Diese erlauben es flexibler auf Ziele einzugehen und Toleranzen für akzeptable Werte festzusetzen.
+
 \begin{center}
     \begin{tabular}{ | p{6cm} | p{2.5cm} | p{2.5cm} | p{2.5cm} |}
     	\hline
     Kriterium & Minimum & Optimal & Übertroffen \\ 
     	\hline
-    \textbf{Zeitverhalten} \newline Zeitkritische Kommunikation (Abgabe von Ideen/Brainsheets) zwischen Server und App beträgt: & 2 Sekunden & 1 Sekunden & weniger als 1 Sekunde \\
+    \textbf{Zeitverhalten} \newline Zeitkritische Kommunikation (Abgabe von Ideen/Brainsheets) zwischen Server und App beträgt & 2 Sekunden & 1 Sekunden & weniger als 1 Sekunde \\
     	\hline
-    \textbf{Erweiterbarkeit} \newline Die Anzahl an neuen Modularten (Problem-Arten), welche mit der bestehenden Architektur als umsetzbar gelten, wird als ... angesehen: & zu wenig (0-1) & ausreichend (1-5) & unbegrenzt ($>$5)\\
+    \textbf{Erweiterbarkeit} \newline Die Anzahl an neuen Modularten (Problem-Arten), welche mit der bestehenden Architektur als umsetzbar gelten, wird als ... angesehen & zu wenig (0-1) & ausreichend (1-5) & unbegrenzt ($>$5)\\
     	\hline
-    \textbf{Modularität} \newline Die App ist innert ... Tagen um ein neues Modul (Problem-Art) erweitert: & 5 Tage & 2 Tage & weniger als 1 Tag \\
+    \textbf{Modularität} \newline Die App ist innert ... Tagen um ein neues Modul (Problem-Art) erweitert & 5 Tage & 2 Tage & weniger als 1 Tag \\
     	\hline
-    \textbf{Ästhetik} \newline Die Anziehungskraft gegenüber dem Endnutzer wird als ... charakterisiert: & gering & in Ordnung & süchtig \\
+    \textbf{Ästhetik} \newline Die Anziehungskraft gegenüber dem Endnutzer wird als ... charakterisiert & ausreichend für eine kritische Masse an Nutzern & nachhaltig & tägliche Nutzung in kritischen Projekten \\
     	\hline
-    \textbf{Ausgereiftheit} \newline Der Grad der Ausgereiftheit oder Reife wird als ... angesehen: & ungenügend für den produktiven Einsatz (Prototypen-Stadium) & genügend für den produktiven Einsatz, kann aber immer noch in Fehlerzustände gelangen & kaum Fehlerzustände und somit keine Abstürze der App  \\
+    \textbf{Ausgereiftheit} \newline Der Grad der Ausgereiftheit oder Reife wird als ... angesehen & ungenügend für den produktiven Einsatz (Prototypen-Stadium) & genügend für den produktiven Einsatz, kann aber immer noch in Fehlerzustände gelangen & kaum Fehlerzustände und somit keine Abstürze der App  \\
     	\hline
     \end{tabular}
 \end{center}
