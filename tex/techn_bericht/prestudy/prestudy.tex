@@ -33,3 +33,33 @@ Eine mögliche Erweiterung unserer Applikation wäre, ein zusätzliches Modul f�
 \end{table}
 \paragraph{Fazit}~\\
 Durch die verschiedenen geplanten Erweiterungen bezüglich den Input-Varianten (siehe Use Case 8 im Kapitel \ref{sec:functional-requirements} Funktionale Anforderungen) lässt sich diese Vorlage sinnvoll in die Applikation integrieren. Dies erfordert allerdings eine erweiterbare Grundlage, um das erwähnte Modul (``Software Architektur Lösung``) zu implementieren. Durch eine saubere Abstraktion sollte die Architektur der Applikation aber auch andere Lösungstypen unterstützen.
+
+\newpage
+\subsubsection{Code Review durch Senior Entwickler}
+Der Quellcode der gesamten Applikation, der im Umfang der Studienarbeit entstand, wurde durch Silvan Gehrig, ein wissenschaftlicher Mitarbeiter des Instituts für Software, geprüft. Dadurch konnten einige Mängel und Unschönheiten identifiziert werden. Die wichtigsten Kritikpunkte sind in den folgenden zwei Paragraphen aufgelistet und erläutert.
+
+\paragraph{Server}~\\
+Auf dem Backend wurden diese Punkte bemängelt:
+\begin{basedescript}{
+		\desclabelstyle{\multilinelabel}
+		\desclabelwidth{4.5cm}
+		\setlength{\itemsep}{5ex}}
+		\item[Layering] Unsauberes Layering: Controller greift direkt auf Datenbank zu.
+		\item[Keine DTOs vorhanden] Controller arbeiten teilweise direkt mit JSON Nodes anstatt mit DTOs.
+		
+		\item[Technologie zielgerichtet einsetzen] Zum Teil zu lange Controller-Klassen, des Weiteren existieren keine Unit Tests
+		
+\end{basedescript}
+\paragraph{Client}~\\
+Clientseitig gibt es folgende Punkte zu verbessern:
+\begin{basedescript}{
+	\desclabelstyle{\multilinelabel}
+	\desclabelwidth{4.5cm}
+	\setlength{\itemsep}{5ex}}
+\item[UI-Strings nicht in Resource Files] Besser als die UI-Strings im ViewModel zu definieren ist das Verwenden von Resource Manifests.
+\item[Layering] Business Services sind im ViewModel implementiert, anstelle von separaten Business Logik Klassen. Zum Teil wird direkt vom ViewModel auf den DAL zugegriffen.
+\item[Technologie zielgerichtet einsetzen] Separate Projekte pro Layer, Unit Tests fehlen.
+\end{basedescript}
+\vspace{0.5cm}
+\paragraph{Fazit}~\\
+Da zu Beginn der Construction RUP Phase einen gesamten Sprint geplant ist, werden diese Punkte, die teilweise mit den schon geplanten überlappen, verbessert. Dadurch verhoffen wir uns eine ausgereiftere Plattform, wo sich zukünfigt geplante aber auch ungeplante Features effizient entwickeln werden können. 
