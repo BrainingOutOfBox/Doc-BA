@@ -36,22 +36,24 @@ Durch die verschiedenen geplanten Erweiterungen bezüglich den Input-Varianten (
 
 \newpage
 \subsubsection{Code Review durch Senior Entwickler}
-Der Quellcode der gesamten Applikation, der im Umfang der Studienarbeit entstand, wurde durch Silvan Gehrig, ein wissenschaftlicher Mitarbeiter des Instituts für Software, geprüft. Dadurch konnten einige Mängel und Unschönheiten identifiziert werden. Die wichtigsten Kritikpunkte sind in den folgenden zwei Paragraphen aufgelistet und erläutert.
+Der Quellcode der gesamten Applikation, welcher im Umfang der Studienarbeit entstand, wurde durch Silvan Gehrig, ein wissenschaftlicher Mitarbeiter des Instituts für Software, geprüft. Dadurch konnten einige Mängel und Unschönheiten identifiziert werden. Die wichtigsten Kritikpunkte sind in den folgenden zwei Paragraphen aufgelistet und erläutert.
+
+Der komplette Bericht von Silvan Gehrig kann im Anhang \ref{sec:code-review} nachgelesen werden.
 
 \paragraph{Server}~\\
-Auf dem Backend wurden diese Punkte bemängelt:
+Auf dem Backend wurden folgende Punkte bemängelt:
 \begin{basedescript}{
 		\desclabelstyle{\multilinelabel}
 		\desclabelwidth{4.5cm}
 		\setlength{\itemsep}{5ex}}
-		\item[Layering] Unsauberes Layering: Controller greift direkt auf Datenbank zu.
+		\item[Unsauberes Layering] Controller greift direkt auf Datenbank zu.
 		\item[Keine DTOs vorhanden] Controller arbeiten teilweise direkt mit JSON Nodes anstatt mit DTOs.
 		
 		\item[Technologie zielgerichtet einsetzen] Zum Teil zu lange Controller-Klassen, des Weiteren existieren keine Unit Tests
 		
 \end{basedescript}
 \paragraph{Client}~\\
-Clientseitig gibt es folgende Punkte zu verbessern:
+Clientseitig gilt es folgende Punkte zu verbessern:
 \begin{basedescript}{
 	\desclabelstyle{\multilinelabel}
 	\desclabelwidth{4.5cm}
@@ -62,4 +64,4 @@ Clientseitig gibt es folgende Punkte zu verbessern:
 \end{basedescript}
 \vspace{0.5cm}
 \paragraph{Fazit}~\\
-Da zu Beginn der Construction RUP Phase einen gesamten Sprint geplant ist, werden diese Punkte, die teilweise mit den schon geplanten überlappen, verbessert. Dadurch verhoffen wir uns eine ausgereiftere Plattform, wo sich zukünfigt geplante aber auch ungeplante Features effizient entwickeln werden können. 
+Da zu Beginn der Construction Phase (siehe \ref{subsec:timeline}) ein gesamter Sprint für die Überarbeitung und Verbesserung des bestehenden Codes geplant ist, werden diese und weitere Punkte in dieser Zeit verbessert. Dadurch erhoffen wir uns eine ausgereiftere Plattform, für die sich zukünftige Features effizient und einfach entwickeln lassen. 
