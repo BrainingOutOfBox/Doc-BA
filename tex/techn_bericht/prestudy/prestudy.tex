@@ -1,5 +1,6 @@
 \subsection{Vorstudie}
 Dieser Abschnitt dokumentiert die Vorarbeiten in verschiedenen Bereichen, die für das Abwickeln dieses Projektes relevant sein können. Dabei werden die entsprechenden Themen analysiert und es wird abgewägt, inwiefern diese für den Projekterfolg von Nutzen sein können. Stellt sich heraus, dass eines der analysierten Themen sinnvoll und machbar ist, wird es in das Projekt integriert.
+
 \subsubsection{Solution Strategy}
 
 In der von Gernot Starke entwickelten Vorlage zur Software Architektur Dokumentation arc42 \cite{arc-42} sowie in seinem Buch \textit{Effektive Softwarearchitekturen} \cite{eswa}, befindet sich ein für uns besonders interessanten Abschnitt namens \textit{Solution Strategy}. Darin ist ein Vorschlag angeboten, wie man in der Synthese der Software Architektur die Ansätze zur Lösungsfindung erarbeitet und dokumentiert. Dieser Vorschlag besteht aus mehreren Tipps zum Inhalt, zur Darstellung und zur Entwicklung dieser Ansätze. Als Beispiel beinhaltet dieser Vorschlag folgenden Tipp: ``Erkläre die Lösungsstrategie so kompakt wie möglich (z.B. als Liste von Schlüsselwörtern)``. Da sich dieses Projekt intensiv mit Lösungsfindungsmethoden auseinandersetzt, könnte die Solution Strategy nützlichen Input bieten, wie der Lösungfindungsprozess in unserer Applikation gestaltet werden könnte. 
@@ -33,8 +34,29 @@ Eine mögliche Erweiterung unserer Applikation wäre, ein zusätzliches Modul f�
 \end{table}
 \paragraph{Fazit}~\\
 Durch die verschiedenen geplanten Erweiterungen bezüglich den Input-Varianten (siehe Use Case 8 im Kapitel \ref{sec:functional-requirements} Funktionale Anforderungen) lässt sich diese Vorlage sinnvoll in die Applikation integrieren. Dies erfordert allerdings eine erweiterbare Grundlage, um das erwähnte Modul (``Software Architektur Lösung``) zu implementieren. Durch eine saubere Abstraktion sollte die Architektur der Applikation aber auch andere Lösungstypen unterstützen.
+\newpage
+
+\subsubsection{Dateien in Datenbank speichern}
+Da der wesentliche Bestandteil dieser Bachelorarbeit darin besteht, die bestehende Applikation um verschiedene Medien wie Bilder, Skizzen, Videos oder Links etc. zu erweitern, mussten wir uns zuerst klar werden, wie wir dies erreichen könnten.
+
+Da wir uns während der Studienarbeit für MongoDB als No-SQL Datenbank entschieden haben, sahen wir es als sinnvoll an, wieder auf diese Technologie zu setzen, zumal wir auch gute Erfahrungen damit gemacht hatten.
+
+Mit GridFS\cite{gridfs-mongodb}\cite{gridfs-mongodb-async-driver} fanden wir eine Spezifikation, welche es ermöglicht verschiedenste Dateien in eine MongoDB zu speichern oder von dort wieder herzustellen. Einer der Vorteile von GridFS liegt darin, dass auch grosse Dateien (GB an Daten) in der Datenbank abgelegt werden können. Dabei zerlegt GridFS eine solche Datei in kleinere Teile sogenannte Chunks und speichert jedes dieser Chunks in einem eigenen Document ab\cite{gridfs-mongodb}.
+
+GridFS kann daher nicht nur jegliche Art von Dateien speichern, welche die Standard-Documentgrösse von 16MB übersteigen, sondern kann diese auch wieder zur Verfügung stellen ohne dass die komplette Datei in den Memory geladen werden muss. GridFS bietet somit die Möglichkeit von Streaming\cite{gridfs-chunking}.
+
+Ausserdem limitiert GridFS nicht die Anzahl an Dateien, welche gespeichert werden können, wie es teilweise bei Filesystemen der Fall ist.
+
+Zudem können mit GridFS auch nur Teile einer Datei zur Verfügung gestellt werden. So kann z.B. bei einem Video mittels Range Queries bis zur Mitte ``gesprungen`` werden ohne das die erste Hälfte (herunter)geladen werden muss\cite{gridfs-mongodb}.
+
+GridFS ist laut \href{https://docs.mongodb.com/manual/core/gridfs/}{docs.mongodb.com} allerdings nicht geeignet, falls man den Inhalt einer Datei atomar updaten möchte oder muss. In solch einem Fall muss man die aktualisierte Datei erneut in die Datenbank speichern und als neue Version ablegen.
+Des Weiteren sollten keine Dateien, welche kleiner als 16MB sind als einzelne Chunks gespeichert werden. Stattdessen wird empfohlen, diese wie gewohnt in einem Document abzuspeichern.
+
+\paragraph{Fazit}~\\
+Mit GridFS steht uns eine Spezifikation zur Verfügung, welche nicht nur alle unsere Bedürfnisse abdeckt sondern auch die Möglichkeit von Streaming bietet, was der Performance unserer gesamten Applikation sicherlich zugute kommen könnte. Der ausschlaggebende Punkt warum wir uns zum Schluss aber für GridFS entschieden haben, war die Tatsache, dass diese Spezifikation schon in unserem verwendeten Treiber implementiert ist. So konnten wir praktisch mit null Aufwand GridFS für unser Projekt verwenden.
 
 \newpage
+
 \subsubsection{Code Review durch Senior Entwickler}
 Der Quellcode der gesamten Applikation, welcher im Umfang der Studienarbeit entstand, wurde durch Silvan Gehrig, ein wissenschaftlicher Mitarbeiter des Instituts für Software, geprüft. Dadurch konnten einige Mängel und Unschönheiten identifiziert werden. Die wichtigsten Kritikpunkte sind in den folgenden zwei Paragraphen aufgelistet und erläutert.
 
