@@ -230,11 +230,58 @@ Die fully-dressed Use-Cases folgen den im Modul \textit{Software Engineering 1} 
 	\end{longtable}
 \end{center}
 
-
-\paragraph{Abuse-Cases}~\\
-
 \paragraph{Sequenzdiagramm}~\\
+Der Vollständigkeits halber haben wir in Abbildung \ref{fig:Seq-Methode635} nochmals das erarbeitete Sequenzdiagramm unserer Studienarbeit \cite{methode635-sa} dargestellt. Darin ist der Prozess vom Erstellen des BrainstormingTeams bis zum Abschliessen der Brainwave modelliert. 
 
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=1\linewidth]{img/anforderungen/Seq-Methode635}
+	\caption[Ablauf der Kernlogik]{Ablauf der Kernlogik}
+	\label{fig:Seq-Methode635}
+\end{figure}
+
+Zusätzlich dazu haben wir in Abbildung \ref{fig:Seq-Draw-Sketch} und \ref{fig:Seq-Insert-Pattern}, die aus unserer Sicht wichtigsten neuen Use-Cases (UC8c und UC8e) als Ablaufdiagramm gezeichnet und beschreiben, wo diese im Ablauf zum Tragen kommen.
+
+\begin{basedescript}{
+		\desclabelstyle{\multilinelabel}
+		\desclabelwidth{4.5cm}
+		\setlength{\itemsep}{5ex}}
+	
+	\item[\textit{UC8c Draw Sketch:}] Nachdem eine Brainwave gestartet ist (siehe 12 in Abbildung \ref{fig:Seq-Methode635}) und sich der Participant dazu entschlossen hat, eine Skizze zu zeichnen und damit zufrieden ist, speichert er diese in seine Brainwave. Dabei wird ein POST-Request an das API gesendet, welcher das gezeichnete Bild in der Datenbank speichert. Als Antwort wird eine ID an den Participant bzw. an die Applikation zurück geschickt.
+	In einem nächsten Schritt wird wie bis anhin (siehe 12.1 in Abbildung \ref{fig:Seq-Methode635}) das gesamte Brainsheet, welches nun auch die ID in der entsprechenden SketchIdee gespeichert hat, an die API geschickt.
+\end{basedescript}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=1\linewidth]{img/anforderungen/Seq-Draw-Sketch}
+	\caption[Ablauf beim Skizzieren]{Ablauf beim Skizzieren}
+	\label{fig:Seq-Draw-Sketch}
+\end{figure}
+
+\begin{basedescript}{
+		\desclabelstyle{\multilinelabel}
+		\desclabelwidth{4.5cm}
+		\setlength{\itemsep}{5ex}}	
+	\item[\textit{UC8e Insert Pattern:}] Nachdem eine Brainwave gestartet ist (siehe 12 in Abbildung \ref{fig:Seq-Methode635}) und sich der Participant dazu entschlossen hat, ein Pattern als Idee zu nutzen, klickt er auf das Plus-Zeichen neben der Texteingabe und wählt das Pattern als Ideentyp aus. Nun wird ein GET-Request an das API gesendet, was als Antwort eine Liste aller verfügbaren Patterns zur Folge hat. Der Participant kann nun das gewünschte Pattern auswählen.
+	Auch hier wird nun wieder, wie bis anhin (siehe 12.1 in Abbildung \ref{fig:Seq-Methode635}), das gesamte Brainsheet, welches nun auch das Pattern in der entsprechenden PatternIdee gespeichert hat, an die API geschickt.
+\end{basedescript}
+
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=1\linewidth]{img/anforderungen/Seq-Draw-Sketch}
+	\caption[Ablauf beim Skizzieren]{Ablauf beim Skizzieren}
+	\label{fig:Seq-Draw-Sketch}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=1\linewidth]{img/anforderungen/Seq-Insert-Pattern}
+	\caption[Ablauf beim Einfügen eines Patterns]{Ablauf beim Einfügen eines Patterns}
+	\label{fig:Seq-Insert-Pattern}
+\end{figure}
+
+\newpage
 \subsubsection{Nicht-Funktionale Anforderungen}
 Wie schon in unserer Studienarbeit halten wir uns auch hier wieder an die Standards ISO 9126\cite{ISO9126} bzw. dessen Nachfolger ISO 25010\cite{ISO9126_ISO25010}, welcher Gegensatz zum Standard ISO 9126 noch ausführlicher ist. Beide ISO-Normen liefern daher eine gute Checkliste für jegliche Art von Systemanforderungen.
 
