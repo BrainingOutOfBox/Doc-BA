@@ -1,4 +1,156 @@
 \subsection{Ergebnisse}
+Das Kapitel der Ergebnisse befasst sich mit der konkreten Umsetzung der gesamten Applikation und dokumentiert die grundlegenden Ergebnisse oder Resultate, welche aus dieser Arbeit hervorgegangen sind. 
+
+Auch hier soll nochmals erwähnt sein, dass diese Arbeit auf der Studienarbeit \cite{methode635-sa} aufbaut und grundlegende Informationen dort nachzulesen sind. 
+
+Zunächst gehen wir in diesem Kapitel auf die Änderungen während der Refactoring-Phase ein und schildern was dies für die Wartung und Erweiterung des Codes bedeutet. 
+
+Anschliessend sind weitere Features dokumentiert, welche im Verlauf dieser Arbeit an der Applikation durchgeführt wurden.
+
+Das Kapitel wird durch eine Gegenüberstellung der erreichten und geplanten Arbeit abgeschlossen.
+
+Zur besseren Übersicht wurde der Code vereinzelt gekürzt. Dies ist durch 3 Punkte (...) gekennzeichnet.
+
+\subsubsection{Refactoring zu Beginn der Arbeit}
+Wie aus dem Projektplan (siehe Abbildung \ref{fig:projekt-plan}) zu entnehmen ist, haben wir uns zu Beginn unserer Arbeit dazu entschieden, zwei Sprints für das Refactoring unsere Applikation zu nutzen. Das Ziel war es, den Code welcher aus der Studienarbeit hervorgegangen ist, zu prüfen und zu verbessern. Dies sollte uns helfen, die Erweiterbarkeit für zukünftig geplante Features zu gewähren. Für die Überprüfung konnte Silvan Gehrig gewonnen werden. Seine Rückmeldungen, welche im Anhang \ref{sec:code-review} nachgelesen werden können, wurden wie nachfolgend beschrieben umgesetzt.
+ 
+\paragraph*{Refactoring Backend}~\\
+Das nachfolgende Listing \ref{participantErstellenVorRef} zeigen einen Ausschnitt aus der \texttt{Participant\-Controller\-.java} Klasse wie es vor dem Refactoring war. Das Listing \ref{participantErstellenNachRef} zeigt dieselbe Methode nach dem Refactoring.
+
+\lstset{language=JAVA, showstringspaces=false, frame=single, captionpos=b, label=createParticipant, breaklines=true, numbers=left}
+\begin{lstlisting}[caption={Participant erstellen vor Refactoring}, label=participantErstellenVorRef]
+public Result createParticipant(){
+
+    JsonNode body = request().body().asJson();
+
+    if (body == null ) {
+        return forbidden(Json.toJson(new ErrorMessage("Error", "json body is null")));
+    } else if(  body.hasNonNull("username") &&
+            	body.hasNonNull("password") &&
+            	body.hasNonNull("firstname") &&
+            	body.hasNonNull("lastname")) {
+
+    Participant participant = new Participant(body.get("username").asText(), body.get("password").asText(), body.get("firstname").asText(), body.get("lastname").asText());
+
+    participantCollection.insertOne(participant, new SingleResultCallback<Void>() {
+        @Override
+        public void onResult(Void result, Throwable t) {
+            Logger.info("Inserted Participant!");
+        }
+    });
+
+    return ok(Json.toJson(new SuccessMessage("Success", "Participant successfully inserted")));
+    }
+
+    return forbidden(Json.toJson(new ErrorMessage("Error", "json body not as expected")));
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Participant erstellen nach Refactoring}, label=participantErstellenNachRef]
+@BodyParser.Of(ParticipantDTOBodyParser.class)
+public Result createParticipant() throws ExecutionException, InterruptedException {
+
+        ParticipantDTO participantDTO = request().body().as(ParticipantDTO.class);
+        Participant participant = modelsMapper.toParticipant(participantDTO);
+        CompletableFuture<Participant> future = service.getParticipant(participant.getUsername());
+
+        if (future.get() == null){
+            service.insertParticipant(participant);
+            return ok(Json.toJson(new SuccessMessage("Success", "Participant successfully inserted")));
+        } else {
+            Logger.info("Username already exists");
+            return internalServerError(Json.toJson(new ErrorMessage("Error", "Username already exists")));
+        }
+    }
+\end{lstlisting}
+
+Das Erstellen des Participants wurde komplett in den \texttt{Participant\-DTO\-Body\-Parser\-.class} ausgelagert. Dieser erstellt nun aus dem angelieferten JSON ein Data-Transfer-Object \cite{DTO}, welches in einem nächsten Schritt zu einem Business Object aufgelöst wird (Zeile 5).
+
+Jegliche Überprüfungen aus Listing \ref{participantErstellenVorRef} (Zeilen 5 und 7-9) konnten so zentral in den BodyParser ausgelagert werden.
+
+Bei den nachfolgenden Listings \ref{putBrainsheetVorRef} und \ref{putBrainsheetNachRef}, welche einen Ausschnitt aus dem \texttt{Brain\-storming\-Finding\-Controller\-.java} zeigen, ist der Unterschied noch stärker zu sehen. So konnte zum Beispiel die \texttt{putBraisheet} Methode von zirka 40 Zeilen auf 15 Zeilen gekürzt werden. 
+
+\begin{lstlisting}[caption={PutBrainsheet vor Refactoring}, label=putBrainsheetVorRef]
+public Result putBrainsheet(String findingIdentifier) throws ExecutionException, InterruptedException {
+
+JsonNode body = request().body().asJson();
+JsonNode brainwaves = body.findPath("brainwaves");
+JsonNode nrOfSheet = body.findPath("nrOfSheet");
+
+if (body == null ) {
+    return forbidden(Json.toJson(new ErrorMessage("Error", "json body is null")));
+} else if(  !brainwaves.isNull() &&
+            !nrOfSheet.isNull()){
+
+	BrainstormingFinding finding = getBrainstormingFinding(findingIdentifier);
+
+    if (finding == null){
+        return internalServerError(Json.toJson(new ErrorMessage("Error", "No brainstormingFinding found")));
+    }
+
+    Brainsheet oldBrainsheet = finding.getBrainsheets().get(nrOfSheet.asInt());
+    Brainsheet newBrainsheet = createBrainsheet(body);
+
+
+    findingCollection.updateOne(eq("identifier", findingIdentifier),pullByFilter(Filters.eq("brainsheets", oldBrainsheet)), new SingleResultCallback<UpdateResult>() {
+        @Override
+        public void onResult(final UpdateResult result, final Throwable t) {
+            Logger.info(result.getModifiedCount() + " Brainsheet successfully deleted");
+        }
+    });
+
+    findingCollection.updateOne(eq("identifier", findingIdentifier),combine(pushEach("brainsheets", Arrays.asList(newBrainsheet), new PushOptions().position(newBrainsheet.getNrOfSheet())), inc("deliveredBrainsheetsInCurrentRound", 1)), new SingleResultCallback<UpdateResult>() {
+        @Override
+        public void onResult(final UpdateResult result, final Throwable t) {
+            Logger.info(result.getModifiedCount() + " Brainsheet successfully inserted");
+        }
+    });
+
+    return ok(Json.toJson(new SuccessMessage("Success", "Brainsheet successfully updated")));
+}
+
+return forbidden(Json.toJson(new ErrorMessage("Error", "json body not as expected")));
+}
+\end{lstlisting}
+
+
+\begin{lstlisting}[caption={PutBrainsheet nach Refactoring}, label=putBrainsheetNachRef]
+@BodyParser.Of(BrainsheetDTOBodyParser.class)
+public Result putBrainsheet(String findingIdentifier) throws ExecutionException, InterruptedException {
+    BrainsheetDTO brainsheetDTO = request().body().as(BrainsheetDTO.class);
+    Brainsheet newBrainsheet = modelsMapper.toBrainsheet(brainsheetDTO);
+
+    BrainstormingFinding finding = getBrainstormingFinding(findingIdentifier);
+
+    if (finding == null){
+        return internalServerError(Json.toJson(new ErrorMessage("Error", "No brainstormingFinding found")));
+    }
+
+    Brainsheet oldBrainsheet = finding.getBrainsheets().get(brainsheetDTO.getNrOfSheet());
+    service.exchangeBrainsheet(finding, oldBrainsheet, newBrainsheet);
+
+    return ok(Json.toJson(new SuccessMessage("Success", "Brainsheet successfully updated")));
+}
+\end{lstlisting}
+
+Diese zwei Beispiele stellen noch lange nicht alle überarbeiteten Codestellen dar, geben aber eine gute Übersicht, wie der gesamte Code vereinfacht werden konnte.
+
+\paragraph*{Refactoring Frontend}
+
+\subsubsection{Implementation Skizzen Feature}
+\paragraph*{Implementation Backend}
+
+\paragraph*{Implementation Frontend}
+
+\subsubsection{Implementation Pattern Feature}
+\paragraph*{Implementation Backend}
+
+\paragraph*{Implementation Frontend}
+
+\subsubsection{Implementation Export Feature}
+\paragraph*{Implementation Backend}
+
+\paragraph*{Implementation Frontend}
 
 \subsubsection{Verwendete Bibliotheken im Backend}
 Tabelle \ref{tab:verwendete-libraries-play} zeigt die Bibliotheken auf, die im Backend verwendet werden. 
@@ -11,14 +163,13 @@ Tabelle \ref{tab:verwendete-libraries-play} zeigt die Bibliotheken auf, die im B
 		swagger-play2 & 1.6.0 & \href{https://mvnrepository.com/artifact/io.swagger/swagger-play2_2.12/1.6.0}{mvnrepository.com} & Apache 2.0 \\
 		java-jwt & 3.2.0 & \href{https://mvnrepository.com/artifact/com.auth0/java-jwt/3.2.0}{mvnrepository.com} & MIT \\
 		mongodb-driver-async & 3.8.0 & \href{https://mvnrepository.com/artifact/org.mongodb/mongodb-driver-async/3.8.0}{mvnrepository.com} & MIT \\
+		modelmapper & 2.3.2 & \href{https://mvnrepository.com/artifact/org.modelmapper/modelmapper/2.3.2}{mvnrepository.com} & Apache 2.0 \\
 		\hline
 	\end{tabular}
 	\caption[Story-Points]{Verwendete Bibliotheken Backend}
 	\label{tab:verwendete-libraries-play}
 \end{table}
 
-\subsubsection{Implementierung der Xamarin App}
-\paragraph*{Umsetzung Brainstorming}
 \subsubsection{Verwendete Bibliotheken im Frontend}
 In Tabelle \ref{tab:verwendete-libraries-frontend} sind die verwendeten Libraries und Frameworks des Frontends aufgelistet.
 \begin{table}[!h]
@@ -46,3 +197,4 @@ In Tabelle \ref{tab:verwendete-libraries-frontend} sind die verwendeten Librarie
 
 
 \subsubsection{Vergleich Soll/Ist}
+%TODO
