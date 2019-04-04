@@ -48,20 +48,21 @@ public Result createParticipant(){
 
 \begin{lstlisting}[caption={Participant erstellen nach Refactoring}, label=participantErstellenNachRef]
 @BodyParser.Of(ParticipantDTOBodyParser.class)
-public Result createParticipant() throws ExecutionException, InterruptedException {
+public Result createParticipant() {
+    ParticipantDTO participantDTO = request().body().as(ParticipantDTO.class);
+    Participant participant = modelsMapper.toParticipant(participantDTO);
 
-        ParticipantDTO participantDTO = request().body().as(ParticipantDTO.class);
-        Participant participant = modelsMapper.toParticipant(participantDTO);
-        CompletableFuture<Participant> future = service.getParticipant(participant.getUsername());
-
-        if (future.get() == null){
-            service.insertParticipant(participant);
+    try {
+        if (service.insertParticipant(participant)){
             return ok(Json.toJson(new SuccessMessage("Success", "Participant successfully inserted")));
         } else {
             Logger.info("Username already exists");
-            return internalServerError(Json.toJson(new ErrorMessage("Error", "Username already exists")));
+            return badRequest(Json.toJson(new ErrorMessage("Error", "Username already exists")));
         }
+    } catch (ExecutionException | InterruptedException e) {
+        return internalServerError(Json.toJson(new ErrorMessage("Error", e.getMessage())));
     }
+}
 \end{lstlisting}
 
 Das Erstellen des Participants wurde komplett in den \texttt{Participant\-DTO\-Body\-Parser\-.class} ausgelagert. Dieser erstellt nun aus dem angelieferten JSON ein Data-Transfer-Object \cite{DTO}, welches in einem nächsten Schritt zu einem Business Object aufgelöst wird (Zeile 5).
@@ -116,22 +117,58 @@ return forbidden(Json.toJson(new ErrorMessage("Error", "json body not as expecte
 
 \begin{lstlisting}[caption={PutBrainsheet nach Refactoring}, label=putBrainsheetNachRef]
 @BodyParser.Of(BrainsheetDTOBodyParser.class)
-public Result putBrainsheet(String findingIdentifier) throws ExecutionException, InterruptedException {
+public Result putBrainsheet(String findingIdentifier){
     BrainsheetDTO brainsheetDTO = request().body().as(BrainsheetDTO.class);
     Brainsheet newBrainsheet = modelsMapper.toBrainsheet(brainsheetDTO);
 
-    BrainstormingFinding finding = getBrainstormingFinding(findingIdentifier);
+    try {
 
-    if (finding == null){
-        return internalServerError(Json.toJson(new ErrorMessage("Error", "No brainstormingFinding found")));
+        if (service.exchangeBrainsheet(findingIdentifier, newBrainsheet)) {
+            return ok(Json.toJson(new SuccessMessage("Success", "Brainsheet successfully updated")));
+        } else {
+            return badRequest(Json.toJson(new ErrorMessage("Error", "No Brainsheet updated")));
+        }
+
+    } catch (ExecutionException | InterruptedException e) {
+        return internalServerError(Json.toJson(new ErrorMessage("Error", e.getMessage())));
     }
-
-    Brainsheet oldBrainsheet = finding.getBrainsheets().get(brainsheetDTO.getNrOfSheet());
-    service.exchangeBrainsheet(finding, oldBrainsheet, newBrainsheet);
-
-    return ok(Json.toJson(new SuccessMessage("Success", "Brainsheet successfully updated")));
 }
 \end{lstlisting}
+
+Die gesamte Logik für den Austausch der Brainsheets wurde in die \texttt{FindingService\-.java} Klasse ausgelagert.
+
+\begin{lstlisting}[caption={Exchange Brainsheet im Business Layer}, label=exchangeBrainsheetBusinessLayer]
+public boolean exchangeBrainsheet(String findingIdentifier, Brainsheet newBrainsheet) {
+BrainstormingFinding finding = service.getFinding(findingIdentifier).get();
+
+if (finding == null){
+    return false;
+} else {
+    if (newBrainsheet.getNrOfSheet() < finding.getBrainsheets().size()) {
+        Brainsheet oldBrainsheet = finding.getBrainsheets().get(newBrainsheet.getNrOfSheet());
+        service.exchangeBrainsheet(finding, oldBrainsheet, newBrainsheet);
+        return true;
+    }
+    return false;
+}
+
+}
+\end{lstlisting}
+
+Auch wurde die Implementation für das Einfügen in die Datenbank in eine separate Klasse (\texttt{MongoDBFindingservice.java}) ausgelagert, um eine bessere Übersicht und ein besseres Layering zu gewähren.
+
+\begin{lstlisting}[caption={Exchange Brainsheet im Data Access Layer}, label=exchangeBrainsheetDAL]
+public void exchangeBrainsheet(BrainstormingFinding finding, Brainsheet oldBrainsheet, Brainsheet newBrainsheet){
+    
+    //delete old Brainsheet
+    findingCollection.updateOne(eq("identifier", finding.getIdentifier()),pullByFilter(Filters.eq("brainsheets", oldBrainsheet)), (result, t) -> Logger.info(result.getModifiedCount() + " old Brainsheet successfully deleted"));
+    
+    //insert new Brainsheet at the same place
+    findingCollection.updateOne(eq("identifier", finding.getIdentifier()),combine(pushEach("brainsheets", Arrays.asList(newBrainsheet), new PushOptions().position(newBrainsheet.getNrOfSheet())), inc("deliveredBrainsheetsInCurrentRound", 1)), (result, t) -> Logger.info(result.getModifiedCount() + " new Brainsheet successfully inserted"));
+}
+\end{lstlisting}
+
+Gerade das Beispiel vom Austausch der Brainsheets (Listing \ref{putBrainsheetVorRef}) verdeutlicht, dass was vorher in einer Klasse war, in verschiedene Klassen ausgelagert wurde. Damit konnte die Übersicht und Komplexität deutlich verbessert werden.
 
 Diese zwei Beispiele stellen noch lange nicht alle überarbeiteten Codestellen dar, geben aber eine gute Übersicht, wie der gesamte Code vereinfacht werden konnte.
 
