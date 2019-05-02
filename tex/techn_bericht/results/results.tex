@@ -3,7 +3,7 @@ Das Kapitel der Ergebnisse befasst sich mit der konkreten Umsetzung der gesamten
 
 Auch hier soll nochmals erwähnt sein, dass diese Arbeit auf der Studienarbeit \cite{methode635-sa} aufbaut und grundlegende Informationen dort nachzulesen sind. 
 
-Zunächst gehen wir in diesem Kapitel auf die Änderungen während der Refactoring-Phase ein und schildern was dies für die Wartung und Erweiterung des Codes bedeutet. 
+In diesem Kapitel gehen wir zunächst auf die Änderungen während der Refactoring-Phase ein und schildern was dies für die Wartung und Erweiterung des Codes bedeutet. 
 
 Anschliessend sind weitere Features dokumentiert, welche im Verlauf dieser Arbeit an der Applikation durchgeführt wurden.
 
@@ -12,10 +12,17 @@ Das Kapitel wird durch eine Gegenüberstellung der erreichten und geplanten Arbe
 Zur besseren Übersicht wurde der Code vereinzelt gekürzt. Dies ist durch 3 Punkte (...) gekennzeichnet.
 
 \subsubsection{Refactoring zu Beginn der Arbeit}
-Wie aus dem Projektplan (siehe Abbildung \ref{fig:projekt-plan}) zu entnehmen ist, haben wir uns zu Beginn unserer Arbeit dazu entschieden, zwei Sprints für das Refactoring unsere Applikation zu nutzen. Das Ziel war es, den Code welcher aus der Studienarbeit hervorgegangen ist, zu prüfen und zu verbessern. Dies sollte uns helfen, die Erweiterbarkeit für zukünftig geplante Features zu gewähren. Für die Überprüfung konnte Silvan Gehrig gewonnen werden. Seine Rückmeldungen, welche im Anhang \ref{sec:code-review} nachgelesen werden können, wurden wie nachfolgend beschrieben umgesetzt.
+Wie aus dem Projektplan (siehe Abbildung \ref{fig:projekt-plan}) zu entnehmen ist, haben wir uns zu Beginn unserer Arbeit dazu entschieden, zwei Sprints für das Refactoring unsere Applikation zu nutzen. Die Entscheidung überhaupt ein Refactoring durchzuführen entstand aus der Tatsache, dass wir schon gegen Ende der Studienarbeit gemerkt hatten, dass bei einer allfälligen Weiterführung der Arbeit ein Refactoring von grossem Wert sein wird. Auch haben wir diesbezüglich schon während der Studienarbeit einzelne Vorschläge für ein Refactoring beschrieben.
+
+
+Das Ziel der Refactoring-Phase war es daher, den Code welcher aus der Studienarbeit hervorgegangen ist, zu prüfen und zu verbessern. Dies sollte uns helfen, die Erweiterbarkeit für zukünftig geplante Features zu gewähren. Für die Überprüfung konnte Silvan Gehrig gewonnen werden. Seine Rückmeldungen, welche im Anhang \ref{sec:code-review} nachgelesen werden können, wurden wie nachfolgend beschrieben umgesetzt.
+
+Auch konnten wir die in der Studienarbeit beschriebenen Vorschläge erfolgreich in der App umsetzen.
  
 \paragraph*{Refactoring Backend}~\\
-Das nachfolgende Listing \ref{participantErstellenVorRef} zeigen einen Ausschnitt aus der \texttt{Participant\-Controller\-.java} Klasse wie es vor dem Refactoring war. Das Listing \ref{participantErstellenNachRef} zeigt dieselbe Methode nach dem Refactoring.
+Dieser Abschnitt ist so aufgebaut, dass anhand von zwei Beispielen aufgezeigt werden soll, wie der Code im Backend vor und nach dem Refactoring ausgesehen hat. Auch wird am Ende des Abschnitts kurz erwähnt, was dies für Verbesserungen zur Folge hatte.
+
+Das nachfolgende Listing \ref{participantErstellenVorRef} zeigt einen Ausschnitt aus der \texttt{Participant\-Controller\-.java} Klasse wie es vor dem Refactoring war. Das Listing \ref{participantErstellenNachRef} zeigt dieselbe Methode nach dem Refactoring.
 
 \lstset{language=JAVA, showstringspaces=false, frame=single, captionpos=b, label=createParticipant, breaklines=true, numbers=left}
 \begin{lstlisting}[caption={Participant erstellen vor Refactoring}, label=participantErstellenVorRef]
@@ -67,7 +74,7 @@ public Result createParticipant() {
 
 Das Erstellen des Participants wurde komplett in den \texttt{Participant\-DTO\-Body\-Parser\-.class} ausgelagert. Dieser erstellt nun aus dem angelieferten JSON ein Data-Transfer-Object \cite{DTO}, welches in einem nächsten Schritt zu einem Business Object aufgelöst wird (Zeile 5).
 
-Jegliche Überprüfungen aus Listing \ref{participantErstellenVorRef} (Zeilen 5 und 7-9) konnten so zentral in den BodyParser ausgelagert werden.
+Jegliche Überprüfungen aus Listing \ref{participantErstellenVorRef} (Zeilen 5 und 7-10) konnten so zentral in den BodyParser ausgelagert werden.
 
 Bei den nachfolgenden Listings \ref{putBrainsheetVorRef} und \ref{putBrainsheetNachRef}, welche einen Ausschnitt aus dem \texttt{Brain\-storming\-Finding\-Controller\-.java} zeigen, ist der Unterschied noch stärker zu sehen. So konnte zum Beispiel die \texttt{putBraisheet} Methode von zirka 40 Zeilen auf 15 Zeilen gekürzt werden. 
 
@@ -167,10 +174,14 @@ public void exchangeBrainsheet(BrainstormingFinding finding, Brainsheet oldBrain
     findingCollection.updateOne(eq("identifier", finding.getIdentifier()),combine(pushEach("brainsheets", Arrays.asList(newBrainsheet), new PushOptions().position(newBrainsheet.getNrOfSheet())), inc("deliveredBrainsheetsInCurrentRound", 1)), (result, t) -> Logger.info(result.getModifiedCount() + " new Brainsheet successfully inserted"));
 }
 \end{lstlisting}
-
-Gerade das Beispiel vom Austausch der Brainsheets (Listing \ref{putBrainsheetVorRef}) verdeutlicht, dass was vorher in einer Klasse war, in verschiedene Klassen ausgelagert wurde. Damit konnte die Übersicht und Komplexität deutlich verbessert werden.
-
 Diese zwei Beispiele stellen noch lange nicht alle überarbeiteten Codestellen dar, geben aber eine gute Übersicht, wie der gesamte Code vereinfacht werden konnte.
+
+\paragraph*{Fazit}
+Gerade das Beispiel vom Austausch der Brainsheets (Listing \ref{putBrainsheetVorRef}) verdeutlicht, dass das Layering stark verbessert wurde. Vieles was vorher in einer Klasse war, konnte in verschiedene Klassen ausgelagert werden. Damit konnte die Übersicht und Komplexität deutlich verbessert werden.
+
+Auch wurden im gesamten Backend Data-Transfer-Obekte (DTO) \cite{DTO} eingefügt. Dies ermöglicht eine stärkere Trennung von relevanten Informationen für Business-Objekte (BO) und relevanten Informationen für Data-Transfer-Obekte. Dies war vor allem im späteren Verlauf der Arbeit von grossem Wert.
+
+Mit Hilfe der BodyParser-Klassen konnte die komplette Überprüfung und Deserialisierung der angelieferten JSON-Daten zentral geregelt werden. Somit ist immer sichergestellt, dass das DTO korrekt (alle erwarteten Informationen sind vorhanden und das Format stimmt) erstellt wird. 
 
 \paragraph*{Refactoring Frontend}
 
@@ -201,6 +212,7 @@ Tabelle \ref{tab:verwendete-libraries-play} zeigt die Bibliotheken auf, die im B
 		java-jwt & 3.2.0 & \href{https://mvnrepository.com/artifact/com.auth0/java-jwt/3.2.0}{mvnrepository.com} & MIT \\
 		mongodb-driver-async & 3.8.0 & \href{https://mvnrepository.com/artifact/org.mongodb/mongodb-driver-async/3.8.0}{mvnrepository.com} & MIT \\
 		modelmapper & 2.3.2 & \href{https://mvnrepository.com/artifact/org.modelmapper/modelmapper/2.3.2}{mvnrepository.com} & Apache 2.0 \\
+		markdowngenerator & 1.3.1.1 & \href{https://mvnrepository.com/artifact/net.steppschuh.markdowngenerator/markdowngenerator}{mvnrepository.com} & Apache 2.0 \\
 		\hline
 	\end{tabular}
 	\caption[Story-Points]{Verwendete Bibliotheken Backend}
