@@ -183,12 +183,103 @@ Auch wurden im gesamten Backend Data-Transfer-Obekte (DTO) \cite{DTO} eingefügt
 
 Mit Hilfe der BodyParser-Klassen konnte die komplette Überprüfung und Deserialisierung der angelieferten JSON-Daten zentral geregelt werden. Somit ist immer sichergestellt, dass das DTO korrekt (alle erwarteten Informationen sind vorhanden und das Format stimmt) erstellt wird. 
 
-\paragraph*{Refactoring Frontend}
+\paragraph*{Refactoring Frontend}~\\
 
 \subsubsection{Implementation Skizzen Feature}
-\paragraph*{Implementation Backend}
+Nachdem die Refactoring-Phase beendet war, begannen wir die Skizzen-Funktion in unsere Applikation zu integrieren. Diese Funktion sollte es dem Endnutzer ermöglichen, nebst den \texttt{NoteIdeas} auch \texttt{SketchIdeas} (siehe Abbildung \ref{fig:domainmodell-methode635}) zu erfassen. Mit den \texttt{SketchIdeas} wird dem Endnutzer die Möglichkeit gegeben, Skizzen als Teil der Brainstorming-Runden zu zeichnen.
 
-\paragraph*{Implementation Frontend}
+Da es sich bei den einzelnen Skizzen um Bilder handelt, musste zunächst eine Möglichkeit geschaffen werden, diese Bilder in der Datenbank abzulegen. Dafür wurden in der Elaboration-Phase Analysen (siehe Kapitel \ref{seq:save_file_in_db}) durchgeführt und ein Prototyp erstellt, um die technische Machbarkeit zu verifizieren.
+
+\paragraph*{Implementation Backend}~\\
+In den nachfolgenden Listing wird aufgezeigt, wie die Sketch-Funktion im Backend umgesetzt wurde.
+Der genaue Ablauf kann der Abbildung \ref{fig:Seq-Draw-Sketch} entnommen werden.
+
+\begin{lstlisting}[caption={Upload File im File Controller}, label=uploadFileController]
+@BodyParser.Of(MultipartFormDataBodyParser.class)
+public Result uploadFile(){
+    try {
+
+    final Http.MultipartFormData<File> formData = request().body().asMultipartFormData();
+    final Http.MultipartFormData.FilePart<File> filePart = formData.getFile("name");
+    final File file = filePart.getFile();
+
+    final byte[] fileData = Files.readAllBytes(file.toPath());
+    final String fileName = file.getName();
+
+    String fileId = service.uploadFileAsStream(fileData, fileName);
+    return ok(Json.toJson(new SuccessMessage("Success", fileId)));
+
+    } catch (IOException | InterruptedException | ExecutionException  e) {
+        return internalServerError(Json.toJson(new ErrorMessage("Error", e.getMessage())));
+    }
+}
+\end{lstlisting}
+
+Ähnlich wie bei den JSON-Daten, wird auch hier zunächst das Bild mittels eines BodyParsers (Zeile 1) in ein File umgewandelt (Zeilen 5-7), welches dann als Byte-Array dem File-Service (Zeile 12) übergeben werden kann. 
+
+\begin{lstlisting}[caption={Upload File im File Service}, label=uploadFileService]
+public String uploadFileAsStream(byte[] stream, String fileName) ... {
+    return service.uploadFileAsStream(stream,fileName);
+}
+\end{lstlisting}
+
+Der File-Service nimmt diesen Stream entgegen und gibt diesen unverändert dem Datenbank-Service weiter.
+
+\begin{lstlisting}[caption={Upload File im DB Service}, label=uploadFileDBService]
+@Override
+public String uploadFileAsStream(byte[] stream, String fileName) ... {
+    ByteBuffer data = ByteBuffer.wrap(stream);
+    CompletableFuture<String> future = new CompletableFuture<>();
+
+    final GridFSUploadStream uploadStream = gridFSBucket.openUploadStream(fileName);
+    uploadStream.write(data, (result, t) -> {
+        Logger.info("File successfully inserted; ID: " + uploadStream.getObjectId().toHexString());
+        future.complete(uploadStream.getObjectId().toHexString());
+
+        uploadStream.close((result1, t1) -> {
+            // stream close
+        });
+    });
+
+    return future.get();
+}
+\end{lstlisting}
+
+Der Datenbank-Service speichert anschliessend den Stream in die Datenbank (Zeile 7) und liefert bei erfolgreicher Speicherung die ObjektID zurück (Zeile 9). Am Ende wird noch der uploadStream zur Datenbank geschlossen (Zeile 11).
+
+Die Smartphone-Applikation speichert nun die ObjektID als Teil einer \texttt{SketchIdea} und sendet das \texttt{Brainsheet} wie gewohnt nach Ablauf der Zeit an das Backend.
+
+Das Herunterladen der gespeicherten Bilder funktioniert auf ganz ähnliche Weise. Da die ObjektID in der \texttt{SketchIdea} abgelegt ist, kann das eigentliche Bild problemlos wiedergefunden werden.
+
+\begin{lstlisting}[caption={Download File im DB Service}, label=uploadFileDBService]
+@Override
+public byte[] downloadFileAsStream(String id) ...{
+    ObjectId fileId = new ObjectId(id);
+    final ByteBuffer dstByteBuffer = ByteBuffer.allocate(1024 * 1024);
+    final GridFSDownloadStream downloadStream = gridFSBucket.openDownloadStream(fileId);
+    CompletableFuture<byte[]> future = new CompletableFuture<>();
+
+    downloadStream.read(dstByteBuffer, (result, t) -> {
+        dstByteBuffer.flip();
+        byte[] bytes = new byte[result];
+        dstByteBuffer.get(bytes);
+        Logger.info("Found file to download; Size: " + result);
+        future.complete(bytes);
+
+        downloadStream.close((result1, t1) -> {
+            // stream closed
+        });
+    });
+
+    return future.get();
+}
+\end{lstlisting}
+
+Hierbei wird ein downloadStream geöffnet, welcher die Daten mittels ID aus der Datenbank liest und in ein Byte-Array schreibt (Zeile 8). Auch hier wird am Ende der Stream wieder geschlossen (Zeile 15).
+
+Der zurückgelieferte Byte-Array wird anschliessend unverändert an den Client zurückgeschickt. Allfällige Fehler während der Ausführung sowohl beim Hochladen wie auch beim Herunterladen werden im File-Controller abgefangen und als Fehler an den Client geschickt.
+
+\paragraph*{Implementation Frontend}~\\
 
 \subsubsection{Implementation Pattern Feature}
 \paragraph*{Implementation Backend}
@@ -199,6 +290,8 @@ Mit Hilfe der BodyParser-Klassen konnte die komplette Überprüfung und Deserial
 \paragraph*{Implementation Backend}
 
 \paragraph*{Implementation Frontend}
+
+
 
 \subsubsection{Verwendete Bibliotheken im Backend}
 Tabelle \ref{tab:verwendete-libraries-play} zeigt die Bibliotheken auf, die im Backend verwendet werden. 
