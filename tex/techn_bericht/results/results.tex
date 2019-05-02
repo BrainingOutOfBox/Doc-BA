@@ -347,10 +347,73 @@ Der DB-Service wiederum findet alle Pattern und gibt diese nach Kategorie sortie
 \paragraph*{Implementation Frontend}~\\
 
 \subsubsection{Implementation Export Feature}
+Die letzte Funktion, welche wir in unserer Bachelorarbeit verwirklichen wollten, war die Möglichkeit, die erarbeiteten Lösungsvorschläge in geeigneter Form zu exportieren.
+
+Nach einer kleineren Analysephase und einer Beratungsrunde mit unserem Betreuer fiel die Wahl nach der geeigneten Form auf Markdown \cite{markdown}. Der Vorteil von Markdown sahen wir vor allem darin, dass man Markdown schnell und einfach z.B. auf GitHub hochladen kann. Da man als Entwickler tendenziell viel mit GitHub oder ähnlichen Tools/Webseiten arbeitet, empfanden wir diese Umsetzung am  einfachsten und intuitivsten von der Handhabung.
+
 \paragraph*{Implementation Backend}~\\
+Die Möglichkeit des Exports wird hauptsächlich durch das Backend bereit gestellt. Dabei wurden die Business-Objekte um eine Serialize-Methode erweitert, welche beschreibt, wie die Objekte im Markdown aussehen sollten bzw. welche Informationen wie (Text, BoldText, ItalicText, Header, etc.) dargestellt werden sollten. 
+
+Im nachfolgenden Listing wird aufgezeigt, wie die Export-Funktion und die Serialize-Methode im Speziellen für das \texttt{BrainstormingFinding} im Backend umgesetzt wurde. Die Umsetzung für die anderen Business-Objekte ist entsprechend gleich aufgebaut. 
+
+\begin{lstlisting}[caption={Serialize-Methode von BrainstormingFinding}, label=markdownBrainstormingFinding]
+public class BrainstormingFinding implements MarkdownCascadable {
+...
+public String getPredecessor() {
+    return new Heading(getName(),1).toString() + "\n";
+}
+
+...
+public String getSuccessor() {
+    StringBuilder successor = new StringBuilder();
+
+    successor.append(new BoldText("Basic Information").toString()).append("\n")
+    .append(new Text("Description: ").toString())
+    .append(getProblemDescription()).append("\n")
+            ...
+    return successor.toString();
+}
+
+...
+public String serialize() throws MarkdownSerializationException {
+
+    if (getName().equals("") || getNrOfIdeas() == 0 || getType().equals("") || getBrainstormingTeam().equals("")) {
+        throw new MarkdownSerializationException("name is null or description");
+    }
+
+    StringBuilder brainsheets = new StringBuilder();
+
+    for (Brainsheet brainsheet: getBrainsheets()){
+        brainsheets.append(brainsheet.serialize());
+    }
+    
+    return getPredecessor() + getSuccessor() + brainsheets.toString();
+	}
+}
+
+\end{lstlisting}
+
+Im \textit{FindingController} kann nun in der entsprechenden Export-Methode nur noch die Serialize-Methode des BrainstormingFindings (Zeile 6) aufgerufen werden.
+
+\begin{lstlisting}[caption={Export-Methode vom FindingController}, label=markdownFindingController]
+public Result exportBrainstorming(...){
+try {
+    BrainstormingFinding finding = service.getFinding(findingIdentifier).get();
+
+    if (finding != null) {
+        StringBuilder sb = new StringBuilder().append(finding.serialize());
+        return ok(sb.toString());
+    } else {
+        return badRequest(Json.toJson(new ErrorMessage("Error", "No brainstormingFinding found")));
+    }
+
+} catch (InterruptedException | ... e) {
+    return internalServerError(Json.toJson(new ErrorMessage("Error", e.getMessage())));
+}
+}
+\end{lstlisting}
 
 \paragraph*{Implementation Frontend}~\\
-
 
 
 \subsubsection{Verwendete Bibliotheken im Backend}
