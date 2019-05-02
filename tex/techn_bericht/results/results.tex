@@ -72,7 +72,7 @@ public Result createParticipant() {
 }
 \end{lstlisting}
 
-Das Erstellen des Participants wurde komplett in den \texttt{Participant\-DTO\-Body\-Parser\-.class} ausgelagert. Dieser erstellt nun aus dem angelieferten JSON ein Data-Transfer-Object \cite{DTO}, welches in einem nächsten Schritt zu einem Business Object aufgelöst wird (Zeile 5).
+Das Erstellen des Participants wurde komplett in den \texttt{Participant\-DTO\-Body\-Parser\-.class} ausgelagert. Dieser erstellt nun aus dem angelieferten JSON (JavaScript Object Notation) ein Data-Transfer-Object \cite{DTO}, welches in einem nächsten Schritt zu einem Business Object aufgelöst wird (Zeile 5).
 
 Jegliche Überprüfungen aus Listing \ref{participantErstellenVorRef} (Zeilen 5 und 7-10) konnten so zentral in den BodyParser ausgelagert werden.
 
@@ -191,7 +191,7 @@ Nachdem die Refactoring-Phase beendet war, begannen wir die Skizzen-Funktion in 
 Da es sich bei den einzelnen Skizzen um Bilder handelt, musste zunächst eine Möglichkeit geschaffen werden, diese Bilder in der Datenbank abzulegen. Dafür wurden in der Elaboration-Phase Analysen (siehe Kapitel \ref{seq:save_file_in_db}) durchgeführt und ein Prototyp erstellt, um die technische Machbarkeit zu verifizieren.
 
 \paragraph*{Implementation Backend}~\\
-In den nachfolgenden Listing wird aufgezeigt, wie die Sketch-Funktion im Backend umgesetzt wurde.
+In den nachfolgenden Listings wird aufgezeigt, wie die Sketch-Funktion im Backend umgesetzt wurde.
 Der genaue Ablauf kann der Abbildung \ref{fig:Seq-Draw-Sketch} entnommen werden.
 
 \begin{lstlisting}[caption={Upload File im File Controller}, label=uploadFileController]
@@ -247,7 +247,7 @@ public String uploadFileAsStream(byte[] stream, String fileName) ... {
 
 Der Datenbank-Service speichert anschliessend den Stream in die Datenbank (Zeile 7) und liefert bei erfolgreicher Speicherung die ObjektID zurück (Zeile 9). Am Ende wird noch der uploadStream zur Datenbank geschlossen (Zeile 11).
 
-Die Smartphone-Applikation speichert nun die ObjektID als Teil einer \texttt{SketchIdea} und sendet das \texttt{Brainsheet} wie gewohnt nach Ablauf der Zeit an das Backend.
+Die Smartphone-Applikation speichert nun die ObjektID als Teil der \texttt{SketchIdea} und sendet das \texttt{Brainsheet} wie gewohnt nach Ablauf der Zeit an das Backend.
 
 Das Herunterladen der gespeicherten Bilder funktioniert auf ganz ähnliche Weise. Da die ObjektID in der \texttt{SketchIdea} abgelegt ist, kann das eigentliche Bild problemlos wiedergefunden werden.
 
@@ -275,21 +275,81 @@ public byte[] downloadFileAsStream(String id) ...{
 }
 \end{lstlisting}
 
-Hierbei wird ein downloadStream geöffnet, welcher die Daten mittels ID aus der Datenbank liest und in ein Byte-Array schreibt (Zeile 8). Auch hier wird am Ende der Stream wieder geschlossen (Zeile 15).
+Hierbei wird ein downloadStream geöffnet, welcher die Daten anhand der ID aus der Datenbank liest und in ein Byte-Array schreibt (Zeile 8). Auch hier wird am Ende der Stream wieder geschlossen (Zeile 15).
 
 Der zurückgelieferte Byte-Array wird anschliessend unverändert an den Client zurückgeschickt. Allfällige Fehler während der Ausführung sowohl beim Hochladen wie auch beim Herunterladen werden im File-Controller abgefangen und als Fehler an den Client geschickt.
 
 \paragraph*{Implementation Frontend}~\\
 
 \subsubsection{Implementation Pattern Feature}
-\paragraph*{Implementation Backend}
+Nebst der Skizzen-Funktion war es unser Ziel, dem Endnutzer eine Funktion anzubieten, welche es ihm ermöglicht, aus einer Liste von verschiedensten Pattern ein passendes Pattern auszuwählen. 
 
-\paragraph*{Implementation Frontend}
+Wir erweiterten unsere Applikation daher um eine \texttt{PatternIdea}. Die verwendeten Pattern stammen ausschliesslich von der Webseite \href{https://microservice-api-patterns.org}{Microservice API Patterns}. Dabei ist es aber durchaus auch denkbar Pattern von anderen Quellen zu nehmen oder sich gar auf nicht-software Pattern zu konzentrieren.
+
+\paragraph*{Implementation Backend}~\\
+In den nachfolgenden Listings wird aufgezeigt, wie die Pattern-Funktion im Backend umgesetzt wurde.
+Der genaue Ablauf kann der Abbildung \ref{fig:Seq-Insert-Pattern} entnommen werden.
+
+\begin{lstlisting}[caption={Alle Pattern holen im Pattern Controller}, label=getAllPatternInController]
+ public Result getAllPatternIdeas(){
+    CompletableFuture<Queue<PatternIdea>> future = service.getAllPatternIdeas();
+    ArrayList<JsonNode> list = new ArrayList<>();
+
+    try {
+
+        for (PatternIdea patternIdea : future.get()) {
+            PatternIdeaDTO patternIdeaDTO = modelsMapper.toPatternIdeaDTO(patternIdea);
+            JsonNode node = Json.toJson(patternIdeaDTO);
+            ((ObjectNode)node).put("type", "patternIdea");
+            list.add(node);
+        }
+
+        return ok(Json.toJson(list));
+
+    } catch (InterruptedException | ExecutionException e) {
+        return internalServerError(Json.toJson(new ErrorMessage("Error", e.getMessage())));
+    }
+}
+\end{lstlisting}
+
+Um alle verfügbaren Pattern abzurufen wird auf dem Pattern-Service (Zeile 2) die Methode \textit{getAllPatternIdeas} aufgerufen. Anschliessend werden die gefundenen Pattern lediglich in ein DTO umgewandelt (Zeile 8) und fast unverändert als JSON an den Client gesendet (Zeile 14).
+
+Der Endnutzer kann nun aus einer Liste der verfügbaren Pattern das gewünschte Pattern auswählen. Dieses wird wie schon die \texttt{SketchIdea} oder \texttt{NoteIdea} als Teil des \texttt{Brainsheets} an das Backend geschickt. 
+
+Wie in allen Controller-Klassen werden auch hier allfällige Fehler während der Ausführung abgefangen und an den Client gesendet (Zeile 16/17).
+
+\begin{lstlisting}[caption={Alle Pattern holen im Pattern Service}, label=getAllPatternInService]
+public CompletableFuture<Queue<PatternIdea>> getAllPatternIdeas(){
+        return service.getAllPatternIdeas();
+}
+\end{lstlisting}
+
+Der Pattern-Service leitet den Aufruf seinerseits direkt an den Datenbank-Service weiter.
+
+\begin{lstlisting}[caption={Alle Pattern holen im Pattern DB Service}, label=getAllPatternInDBService]
+@Override
+public CompletableFuture<Queue<PatternIdea>> getAllPatternIdeas() {
+    CompletableFuture<Queue<PatternIdea>> future = new CompletableFuture<>();
+    Queue<PatternIdea> queue = new ConcurrentLinkedQueue<>();
+
+    patternIdeaCollection.find().sort(Sorts.ascending("category")).forEach(
+            finding -> queue.add(finding), (result, t) -> {
+                Logger.info("Get all available patterns");
+                future.complete(queue);
+            });
+
+    return future;
+}
+\end{lstlisting}
+
+Der DB-Service wiederum findet alle Pattern und gibt diese nach Kategorie sortiert (Zeile 6-12) als Resultat zurück.
+
+\paragraph*{Implementation Frontend}~\\
 
 \subsubsection{Implementation Export Feature}
-\paragraph*{Implementation Backend}
+\paragraph*{Implementation Backend}~\\
 
-\paragraph*{Implementation Frontend}
+\paragraph*{Implementation Frontend}~\\
 
 
 
