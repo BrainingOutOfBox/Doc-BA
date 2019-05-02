@@ -354,7 +354,7 @@ Nach einer kleineren Analysephase und einer Beratungsrunde mit unserem Betreuer 
 \paragraph*{Implementation Backend}~\\
 Die Möglichkeit des Exports wird hauptsächlich durch das Backend bereit gestellt. Dabei wurden die Business-Objekte um eine Serialize-Methode erweitert, welche beschreibt, wie die Objekte im Markdown aussehen sollten bzw. welche Informationen wie (Text, BoldText, ItalicText, Header, etc.) dargestellt werden sollten. 
 
-Im nachfolgenden Listing wird aufgezeigt, wie die Export-Funktion und die Serialize-Methode im Speziellen für das \texttt{BrainstormingFinding} im Backend umgesetzt wurde. Die Umsetzung für die anderen Business-Objekte ist entsprechend gleich aufgebaut. 
+In den nachfolgenden Listings wird aufgezeigt, wie die Export-Funktion und die Serialize-Methode im Speziellen für das \texttt{BrainstormingFinding} im Backend umgesetzt wurde. Die Umsetzung für die anderen Business-Objekte ist entsprechend gleich aufgebaut. 
 
 \begin{lstlisting}[caption={Serialize-Methode von BrainstormingFinding}, label=markdownBrainstormingFinding]
 public class BrainstormingFinding implements MarkdownCascadable {
