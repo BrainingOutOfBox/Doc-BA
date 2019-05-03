@@ -184,6 +184,7 @@ Auch wurden im gesamten Backend Data-Transfer-Obekte (DTO) \cite{DTO} eingefügt
 Mit Hilfe der BodyParser-Klassen konnte die komplette Überprüfung und Deserialisierung der angelieferten JSON-Daten zentral geregelt werden. Somit ist immer sichergestellt, dass das DTO korrekt (alle erwarteten Informationen sind vorhanden und das Format stimmt) erstellt wird. 
 
 \paragraph*{Refactoring Frontend}~\\
+%TODO Refactoring beschreiben
 
 \subsubsection{Implementation Skizzen Feature}
 Nachdem die Refactoring-Phase beendet war, begannen wir die Skizzen-Funktion in unsere Applikation zu integrieren. Diese Funktion sollte es dem Endnutzer ermöglichen, nebst den \texttt{NoteIdeas} auch \texttt{SketchIdeas} (siehe Abbildung \ref{fig:domainmodell-methode635}) zu erfassen. Mit den \texttt{SketchIdeas} wird dem Endnutzer die Möglichkeit gegeben, Skizzen als Teil der Brainstorming-Runden zu zeichnen.
@@ -192,7 +193,7 @@ Da es sich bei den einzelnen Skizzen um Bilder handelt, musste zunächst eine M�
 
 \paragraph*{Implementation Backend}~\\
 In den nachfolgenden Listings wird aufgezeigt, wie die Sketch-Funktion im Backend umgesetzt wurde.
-Der genaue Ablauf kann der Abbildung \ref{fig:Seq-Draw-Sketch} entnommen werden.
+Der genaue Kommunikations-Ablauf kann der Abbildung \ref{fig:Seq-Draw-Sketch} entnommen werden.
 
 \begin{lstlisting}[caption={Upload File im File Controller}, label=uploadFileController]
 @BodyParser.Of(MultipartFormDataBodyParser.class)
@@ -223,7 +224,7 @@ public String uploadFileAsStream(byte[] stream, String fileName) ... {
 }
 \end{lstlisting}
 
-Der File-Service nimmt diesen Stream entgegen und gibt diesen unverändert dem Datenbank-Service weiter.
+Der File-Service nimmt das Byte-Array entgegen und gibt dieses unverändert dem Datenbank-Service weiter.
 
 \begin{lstlisting}[caption={Upload File im DB Service}, label=uploadFileDBService]
 @Override
@@ -245,7 +246,7 @@ public String uploadFileAsStream(byte[] stream, String fileName) ... {
 }
 \end{lstlisting}
 
-Der Datenbank-Service speichert anschliessend den Stream in die Datenbank (Zeile 7) und liefert bei erfolgreicher Speicherung die ObjektID zurück (Zeile 9). Am Ende wird noch der uploadStream zur Datenbank geschlossen (Zeile 11).
+Der Datenbank-Service speichert anschliessend das Bild in die Datenbank (Zeile 7) und liefert bei erfolgreicher Speicherung die ObjektID zurück (Zeile 9). Am Ende wird noch der uploadStream zur Datenbank geschlossen (Zeile 11).
 
 Die Smartphone-Applikation speichert nun die ObjektID als Teil der \texttt{SketchIdea} und sendet das \texttt{Brainsheet} wie gewohnt nach Ablauf der Zeit an das Backend.
 
@@ -280,6 +281,7 @@ Hierbei wird ein downloadStream geöffnet, welcher die Daten anhand der ID aus d
 Der zurückgelieferte Byte-Array wird anschliessend unverändert an den Client zurückgeschickt. Allfällige Fehler während der Ausführung sowohl beim Hochladen wie auch beim Herunterladen werden im File-Controller abgefangen und als Fehler an den Client geschickt.
 
 \paragraph*{Implementation Frontend}~\\
+%TODO Sketch beschreiben
 
 \subsubsection{Implementation Pattern Feature}
 Nebst der Skizzen-Funktion war es unser Ziel, dem Endnutzer eine Funktion anzubieten, welche es ihm ermöglicht, aus einer Liste von verschiedensten Pattern ein passendes Pattern auszuwählen. 
@@ -288,7 +290,7 @@ Wir erweiterten unsere Applikation daher um eine \texttt{PatternIdea}. Die verwe
 
 \paragraph*{Implementation Backend}~\\
 In den nachfolgenden Listings wird aufgezeigt, wie die Pattern-Funktion im Backend umgesetzt wurde.
-Der genaue Ablauf kann der Abbildung \ref{fig:Seq-Insert-Pattern} entnommen werden.
+Der genaue Kommunikations-Ablauf kann der Abbildung \ref{fig:Seq-Insert-Pattern} entnommen werden.
 
 \begin{lstlisting}[caption={Alle Pattern holen im Pattern Controller}, label=getAllPatternInController]
  public Result getAllPatternIdeas(){
@@ -314,7 +316,7 @@ Der genaue Ablauf kann der Abbildung \ref{fig:Seq-Insert-Pattern} entnommen werd
 
 Um alle verfügbaren Pattern abzurufen wird auf dem Pattern-Service (Zeile 2) die Methode \textit{getAllPatternIdeas} aufgerufen. Anschliessend werden die gefundenen Pattern lediglich in ein DTO umgewandelt (Zeile 8) und fast unverändert als JSON an den Client gesendet (Zeile 14).
 
-Der Endnutzer kann nun aus einer Liste der verfügbaren Pattern das gewünschte Pattern auswählen. Dieses wird wie schon die \texttt{SketchIdea} oder \texttt{NoteIdea} als Teil des \texttt{Brainsheets} an das Backend geschickt. 
+Der Endnutzer kann nun aus einer Liste der verfügbaren Pattern das gewünschte Pattern auswählen. Dieses wird, wie schon die \texttt{SketchIdea} oder \texttt{NoteIdea}, als Teil des \texttt{Brainsheets} an das Backend geschickt. 
 
 Wie in allen Controller-Klassen werden auch hier allfällige Fehler während der Ausführung abgefangen und an den Client gesendet (Zeile 16/17).
 
@@ -345,6 +347,7 @@ public CompletableFuture<Queue<PatternIdea>> getAllPatternIdeas() {
 Der DB-Service wiederum findet alle Pattern und gibt diese nach Kategorie sortiert (Zeile 6-12) als Resultat zurück.
 
 \paragraph*{Implementation Frontend}~\\
+%TODO Pattern beschreiben
 
 \subsubsection{Implementation Export Feature}
 Die letzte Funktion, welche wir in unserer Bachelorarbeit verwirklichen wollten, war die Möglichkeit, die erarbeiteten Lösungsvorschläge in geeigneter Form zu exportieren.
@@ -413,8 +416,10 @@ try {
 }
 \end{lstlisting}
 
-\paragraph*{Implementation Frontend}~\\
+Die Tatsache, dass wir neben unseren Business-Objekten sogenannte DTOs in unsere Applikation integrierten, konnte in dieser Funktion gut ausgenutzt werden. So wurde die Serialize-Methode lediglich in den Business-Objekten implementiert, da sie einen Bestandteil der Business-Logik darstellt und weniger essenziell für die Kommunikation ist.
 
+\paragraph*{Implementation Frontend}~\\
+%TODO Export beschreiben
 
 \subsubsection{Verwendete Bibliotheken im Backend}
 Tabelle \ref{tab:verwendete-libraries-play} zeigt die Bibliotheken auf, die im Backend verwendet werden. 
@@ -462,4 +467,4 @@ In Tabelle \ref{tab:verwendete-libraries-frontend} sind die verwendeten Librarie
 
 
 \subsubsection{Vergleich Soll/Ist}
-%TODO
+%TODO soll/ist
