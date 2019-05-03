@@ -12,27 +12,59 @@ Alle nachfolgenden Anpassungen beziehen sich daher auf dieses Szenario. Andere I
 \subsection{Anpassungen am Backend}
 \begin{labeling}{Zweiter Schritt:}
 	\item [Erster Schritt:] Der erste Schritt im Backend besteht darin die entsprechenden Business-Objekte und Data-Transfer-Objekte mit all deren Attributen und Methoden anzulegen. Wichtig hierbei ist es, dass die neu erstellten Klassen von \texttt{Idea} bzw. \texttt{IdeaDTO} erben.
-	\item [Zweiter Schritt:] Ist dies geschafft, muss dem JSON-Serialisierer noch beigebracht werden, dass ein weiterer Subtyp hinzugefügt wurde. Hierzu muss in der \texttt{IdeaDTO}-Klasse ein weiterer JsonSubTyp hinzugefügt werden.
+	\item [Zweiter Schritt:] Ist dies geschafft, muss dem JSON-Serialisierer noch beigebracht werden, dass ein weiterer Subtyp hinzugefügt wurde. Hierzu muss in der \texttt{IdeaDTO}-Klasse ein weiterer JsonSubTyp hinzugefügt werden (Zeile 5).
 	
-\begin{lstlisting}[caption={weiterer Ideen-Typ hinzufügen}, label=addIdeaType]
+\begin{lstlisting}[caption={Weiterer Ideen-Typ hinzufügen in der IdeaDTO-Klasse}, label=addIdeaType]
 @JsonTypeInfo(...)
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = NoteIdeaDTO.class, name = "noteIdea"),
-        ...,
-        @JsonSubTypes.Type(value = QualityIdeaDTO.class, name = "qualityIdea"),
+    @JsonSubTypes.Type(value = NoteIdeaDTO.class, name = "noteIdea"),
+    ...,
+    @JsonSubTypes.Type(value = QualityIdeaDTO.class, name = "qualityIdea")
         
 })
 \end{lstlisting}
 
-	\item [Dritter Schritt:]
-	
+	\item [Dritter Schritt:] In einem letzten Schritt muss nur noch die \texttt{ModelsMapper}-Klasse etwas angepasst werden (Zeile 4/6-9 bzw. 14/16-19). 
+
+\begin{lstlisting}[caption={Weiterer Ideen-Typ hinzufügen in der ModelsMapper-Klasse}]
+/* FROM BO TO DTO */
+modelMapper.createTypeMap(Idea.class, IdeaDTO.class)
+    ...
+    .include(QualityIdea.class, IdeaDTO.class);
+
+modelMapper.typeMap(QualityIdea.class, IdeaDTO.class).setProvider(request -> {
+    QualityIdea idea = (QualityIdea)request.getSource();
+    return new QualityIdeaDTO(idea.getDescription(), ...);
+});
+
+/* FROM DTO TO BO */
+modelMapper.createTypeMap(IdeaDTO.class, Idea.class)
+    ...
+    .include(QualityIdeaDTO.class, Idea.class);
+
+modelMapper.typeMap(QualityIdeaDTO.class, Idea.class).setProvider(request -> {
+    QualityIdeaDTO idea = (QualityIdeaDTO)request.getSource();
+    return new QualityIdea(idea.getDescription(), ...);
+});
+\end{lstlisting}
 \end{labeling}
 
-
-
-
-
- 
-
+Diese drei Schritte sollten ausreichen, damit das Backend auch mit einer QualityIdea interagieren kann. 
 
 \subsection{Anpassungen am Frontend}
+%TODO Anpassungen für Frontend schreiben 
+
+\subsection{Exkurs: Andere Datenbank verwenden}
+Der Vollständigkeitshalber soll in diesem Kapitel auch erläutert werden, wie die momentan verwendete MongoDB Datenbank ausgewechselt werden kann, sollte dies notwendig sein.
+
+Dies kann in zwei einfachen Schritten erreicht werden.
+
+\begin{labeling}{Zweiter Schritt:}
+	\item [Erster Schritt:] Zunächst muss jedes der fünf Datenbank-Interfaces für die neue Datenbankanbindung in einer entsprechenden Klasse (z.B. MySQL\-Finding\-Service-Klasse) implementiert werden. 
+	\item [Zweiter Schritt:] In einem zweiten Schritt muss im Interface nur noch mitgeteilt werden, von welcher Klasse dieses implementiert wird.
+
+\begin{lstlisting}[caption={Andere Datenbank verwenden}, label=changeDatabase]
+@ImplementedBy(MySQLFindingService.class)
+public interface DBFindingInterface {...}
+\end{lstlisting}
+\end{labeling}
