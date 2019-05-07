@@ -396,23 +396,38 @@ public String serialize() throws MarkdownSerializationException {
 
 \end{lstlisting}
 
-Im \textit{FindingController} kann nun in der entsprechenden Export-Methode nur noch die Serialize-Methode des BrainstormingFindings (Zeile 6) aufgerufen werden.
+Im \textit{FindingController} wird nun die \texttt{exportBrainstorming}-Methode auf dem Business-Service aufgerufen (Zeile 3).
 
-\begin{lstlisting}[caption={Export-Methode vom FindingController}, label=markdownFindingController]
+\begin{lstlisting}[caption={Export-Methode im FindingController}, label=markdownFindingController]
 public Result exportBrainstorming(...){
 try {
-    BrainstormingFinding finding = service.getFinding(findingIdentifier).get();
+String result = service.exportBrainstorming(findingIdentifier);
 
-    if (finding != null) {
-        StringBuilder sb = new StringBuilder().append(finding.serialize());
-        return ok(sb.toString());
+    if (result != null) {
+        return ok(result);
     } else {
-        return badRequest(Json.toJson(new ErrorMessage("Error", "No brainstormingFinding found")));
+        return badRequest(...);
     }
-
+    
 } catch (InterruptedException | ... e) {
     return internalServerError(Json.toJson(new ErrorMessage("Error", e.getMessage())));
 }
+}
+\end{lstlisting}
+
+Der Business-Service wiederum holt das \textit{BrainstormingFinding} (Zeile 2) und das \textit{BrainstormingTeam} (Zeile 5), setzt statt der Team-ID den Namen des Teams (Zeile 6) und führt am Ende die erwähnte Serialize-Methode aus (Zeile 7). 
+
+\begin{lstlisting}[caption={Export-Methode im FindingService}, label=markdownFindingService]
+public String exportBrainstorming(String findingIdentifier) ...{
+BrainstormingFinding finding = service.getFinding(findingIdentifier).get();
+
+if (finding != null) {
+    BrainstormingTeam team = teamService.getTeam(finding.getBrainstormingTeam()).get();
+    finding.setBrainstormingTeam(team.getName());
+    return finding.serialize();
+}
+
+return null;
 }
 \end{lstlisting}
 
