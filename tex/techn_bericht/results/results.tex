@@ -22,7 +22,7 @@ Auch konnten wir die in der Studienarbeit beschriebenen Vorschläge erfolgreich 
 \paragraph*{Refactoring Backend}~\\
 Dieser Abschnitt ist so aufgebaut, dass anhand von zwei Beispielen aufgezeigt werden soll, wie der Code im Backend vor und nach dem Refactoring ausgesehen hat. Auch wird am Ende des Abschnitts kurz erwähnt, was dies für Verbesserungen zur Folge hatte.
 
-Das nachfolgende Listing \ref{participantErstellenVorRef} zeigt einen Ausschnitt aus der \texttt{Participant\-Controller\-.java} Klasse wie es vor dem Refactoring war. Das Listing \ref{participantErstellenNachRef} zeigt dieselbe Methode nach dem Refactoring.
+Das nachfolgende Listing \ref{participantErstellenVorRef} zeigt einen Ausschnitt aus der \texttt{Participant\-Controller} Klasse wie es vor dem Refactoring war. Das Listing \ref{participantErstellenNachRef} zeigt dieselbe Methode nach dem Refactoring.
 
 \lstset{language=JAVA, showstringspaces=false, frame=single, captionpos=b, label=createParticipant, breaklines=true, numbers=left}
 \begin{lstlisting}[caption={Participant erstellen vor Refactoring}, label=participantErstellenVorRef]
@@ -72,11 +72,11 @@ public Result createParticipant() {
 }
 \end{lstlisting}
 
-Das Erstellen des Participants wurde komplett in den \texttt{Participant\-DTO\-Body\-Parser\-.class} ausgelagert. Dieser erstellt nun aus dem angelieferten JSON (JavaScript Object Notation) ein Data-Transfer-Object \cite{DTO}, welches in einem nächsten Schritt zu einem Business Object aufgelöst wird (Zeile 5).
+Das Erstellen des Participants wurde komplett in den \texttt{Participant\-DTO\-Body\-Parser} ausgelagert. Dieser erstellt nun aus dem angelieferten JSON (JavaScript Object Notation) ein Data-Transfer-Object \cite{DTO}, welches in einem nächsten Schritt zu einem Business Object aufgelöst wird (Zeile 4).
 
 Jegliche Überprüfungen aus Listing \ref{participantErstellenVorRef} (Zeilen 5 und 7-10) konnten so zentral in den BodyParser ausgelagert werden.
 
-Bei den nachfolgenden Listings \ref{putBrainsheetVorRef} und \ref{putBrainsheetNachRef}, welche einen Ausschnitt aus dem \texttt{Brain\-storming\-Finding\-Controller\-.java} zeigen, ist der Unterschied noch stärker zu sehen. So konnte zum Beispiel die \texttt{putBraisheet} Methode von zirka 40 Zeilen auf 15 Zeilen gekürzt werden. 
+Bei den nachfolgenden Listings \ref{putBrainsheetVorRef} und \ref{putBrainsheetNachRef}, welche einen Ausschnitt aus dem \texttt{Brain\-storming\-Finding\-Controller} zeigen, ist der Unterschied noch stärker zu sehen. So konnte zum Beispiel die \texttt{putBraisheet} Methode von zirka 40 Zeilen auf 15 Zeilen gekürzt werden. 
 
 \begin{lstlisting}[caption={PutBrainsheet vor Refactoring}, label=putBrainsheetVorRef]
 public Result putBrainsheet(String findingIdentifier) throws ExecutionException, InterruptedException {
@@ -142,7 +142,7 @@ public Result putBrainsheet(String findingIdentifier){
 }
 \end{lstlisting}
 
-Die gesamte Logik für den Austausch der Brainsheets wurde in die \texttt{FindingService\-.java} Klasse ausgelagert.
+Die gesamte Logik für den Austausch der Brainsheets wurde in die \texttt{FindingService} Klasse ausgelagert.
 
 \begin{lstlisting}[caption={Exchange Brainsheet im Business Layer}, label=exchangeBrainsheetBusinessLayer]
 public boolean exchangeBrainsheet(String findingIdentifier, Brainsheet newBrainsheet) {
@@ -162,7 +162,7 @@ if (finding == null){
 }
 \end{lstlisting}
 
-Auch wurde die Implementation für das Einfügen in die Datenbank in eine separate Klasse (\texttt{MongoDBFindingservice.java}) ausgelagert, um eine bessere Übersicht und ein besseres Layering zu gewähren.
+Auch wurde die Implementation für das Einfügen in die Datenbank in eine separate Klasse (\texttt{MongoDBFindingservice}) ausgelagert, um eine bessere Übersicht und ein besseres Layering zu gewähren.
 
 \begin{lstlisting}[caption={Exchange Brainsheet im Data Access Layer}, label=exchangeBrainsheetDAL]
 public void exchangeBrainsheet(BrainstormingFinding finding, Brainsheet oldBrainsheet, Brainsheet newBrainsheet){
