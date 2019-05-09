@@ -3,9 +3,77 @@
 Um sicher zu stellen, dass unsere Cross-Plattform Applikation in ihrer Kernfunktionalität richtig funktioniert, wurde ein systematischer Test anhand des nachfolgenden Testprotokolls durchgeführt.
 
 \subsection{Verweise}
+Die Testfälle leiten sich von den Fully-Dressed Use Cases aus Kapitel \ref{par:fully-dressed-uc} ab.
 
 \subsection{Testaufbau}
+
 \subsection{Testfälle}
+
+\renewcommand{\arraystretch}{1.35}
+\begin{center}
+	\begin{longtable}{| p{1cm} | p{4cm} | p{5cm} | p{3cm} |}
+		\hline
+		\multicolumn{4}{|c|}{\textbf{Use Case 7: View Brainstorming Finding}}\\
+		\hline\hline
+		Test Nr & Beschreibung & Erwartetes Resultat & Beo\-bach\-te\-tes Verhalten (Bestanden?) \\
+		\hline
+		1 & Als Participant möchte ich als Letzter die letzte Runde abschliessen. & Das System speichert meine Notizen auf dem Server und zeigt mir eine Meldung an, dass das Finding einsehbar ist. & TODO. \\
+		\hline
+		2 & Als Participant möchte ich die Resultate der Gruppe ansehen. & Das System zeigt mir eine Übersicht mit allen Notizen der Teilnehmer. & TODO.\\
+		\hline
+		3 & Als Participant möchte ich nicht als Letzter die letzte Runde abschliessen. & Das System speichert meine Notizen auf dem Server und zeigt mir die verbleibende Zeit an. & TODO.\\
+		\hline
+		4 & Nach Ablauf der Zeit meldet mir das System, dass das Finding einsehbar ist. & Das System zeigt mir eine Übersicht mit allen Notizen der Teilnehmer. & TODO.\\
+		\hline
+		5 & Als Participant möchte ich nicht direkt zu den Resultaten der Gruppe navigieren sondern zurück zum Homescreen gelangen. & Das System zeigt mir den Homescreen an. Von dort aus gelange ich aber auch zu den Notizen der Teilnehmer. & TODO.  \\
+		\hline
+	\end{longtable}
+\end{center}
+
+\renewcommand{\arraystretch}{1.35}
+\begin{center}
+	\begin{longtable}{| p{1cm} | p{4cm} | p{5cm} | p{3cm} |}
+		\hline
+		\multicolumn{4}{|c|}{\textbf{Use Case 8: Create Brainwave}}\\
+		\hline\hline
+		Test Nr & Beschreibung & Erwartetes Resultat & Beo\-bach\-te\-tes Verhalten (Bestanden?) \\
+		\hline
+		1 & Als Participant möchte ich Ideen während der laufenden Rundenzeit zum aktuellen Problem erfassen. & Das System zeigt meine Ideen an. & TODO. \\
+		\hline
+		2 & Als Participant möchte ich meine Ideen frühzeitig abgeben. & Das System persistiert meine Ideen und zeigt mir eine Bestätigung an. & TODO.\\
+		\hline
+		3 & Als Participant möchte ich meine Ideen nicht frühzeitig abgeben. & Das System zeigt mir eine Meldung an, dass die Zeit der aktuellen Runde abgelaufen ist. Es persistiert die bis zu dem Zeitpunkt erfassten Ideen. & TODO. \\
+		\hline
+	\end{longtable}
+\end{center}
+
+
+\renewcommand{\arraystretch}{1.35}
+\begin{center}
+	\begin{longtable}{| p{1cm} | p{4cm} | p{5cm} | p{3cm} |}
+		\hline
+		\multicolumn{4}{|c|}{\textbf{Use Case 8c: Draw Sketch}}\\
+		\hline\hline
+		Test Nr & Beschreibung & Erwartetes Resultat & Beo\-bach\-te\-tes Verhalten (Bestanden?) \\
+		\hline
+		1 & Als Participant möchte ich eine Skizze während der laufenden Rundenezit zum aktuellen Problem erfassen. & Das System speichert meine Skizze auf dem Server und zeigt mir eine Meldung an, dass die Skizze gespeichert wurde. & TODO. \\
+		\hline
+	\end{longtable}
+\end{center}
+
+\renewcommand{\arraystretch}{1.35}
+\begin{center}
+	\begin{longtable}{| p{1cm} | p{4cm} | p{5cm} | p{3cm} |}
+		\hline
+		\multicolumn{4}{|c|}{\textbf{Use Case 8e: Insert Pattern}}\\
+		\hline\hline
+		Test Nr & Beschreibung & Erwartetes Resultat & Beo\-bach\-te\-tes Verhalten (Bestanden?) \\
+		\hline
+		1 & Als Participant möchte ich ein Pattern während der laufenden Rundenezit zum aktuellen Problem auswählen. & Das System speichert das ausgewählte Pattern und zeigt mir eine Meldung an, dass das Pattern in die Brainwave eingefügt wurde. & TODO. \\
+		\hline
+	\end{longtable}
+\end{center}
+
 \subsection{Testauswertung}
 
 
