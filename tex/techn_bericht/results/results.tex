@@ -15,7 +15,7 @@ Zur besseren Übersicht wurde der Code vereinzelt gekürzt. Dies ist durch 3 Pun
 Wie aus dem Projektplan (siehe Abbildung \ref{fig:projekt-plan}) zu entnehmen ist, haben wir uns zu Beginn unserer Arbeit dazu entschieden, zwei Sprints für das Refactoring unsere Applikation zu nutzen. Die Entscheidung überhaupt ein Refactoring durchzuführen entstand aus der Tatsache, dass wir schon gegen Ende der Studienarbeit gemerkt hatten, dass bei einer allfälligen Weiterführung der Arbeit ein Refactoring von grossem Wert sein wird. Auch haben wir diesbezüglich schon während der Studienarbeit einzelne Vorschläge für ein Refactoring beschrieben.
 
 
-Das Ziel der Refactoring-Phase war es daher, den Code welcher aus der Studienarbeit hervorgegangen ist, zu prüfen und zu verbessern. Dies sollte uns helfen, die Erweiterbarkeit für zukünftig geplante Features zu gewähren. Für die Überprüfung konnte Silvan Gehrig gewonnen werden. Seine Rückmeldungen, welche im Anhang \ref{sec:code-review} nachgelesen werden können, wurden wie nachfolgend beschrieben umgesetzt.
+Das Ziel der Refactoring-Phase war es daher, den Code, welcher aus der Studienarbeit hervorgegangen ist, zu prüfen und zu verbessern. Dies sollte uns helfen, die Erweiterbarkeit für zukünftig geplante Features zu gewähren. Für die Überprüfung konnte Silvan Gehrig gewonnen werden. Seine Rückmeldungen, welche im Anhang \ref{sec:code-review} nachgelesen werden können, wurden wie nachfolgend beschrieben umgesetzt.
 
 Auch konnten wir die in der Studienarbeit beschriebenen Vorschläge erfolgreich in der App umsetzen.
  
@@ -278,7 +278,7 @@ public byte[] downloadFileAsStream(String id) ...{
 
 Hierbei wird ein downloadStream geöffnet, welcher die Daten anhand der ID aus der Datenbank liest und in ein Byte-Array schreibt (Zeile 8). Auch hier wird am Ende der Stream wieder geschlossen (Zeile 15).
 
-Der zurückgelieferte Byte-Array wird anschliessend unverändert an den Client zurückgeschickt. Allfällige Fehler während der Ausführung sowohl beim Hochladen wie auch beim Herunterladen werden im File-Controller abgefangen und als Fehler an den Client geschickt.
+Der zurückgelieferte Byte-Array wird anschliessend unverändert an den Client zurück\-geschickt. Allfällige Fehler während der Ausführung sowohl beim Hochladen wie auch beim Herunterladen werden im File-Controller abgefangen und als Fehler an den Client geschickt.
 
 \paragraph*{Implementation Frontend}~\\
 %TODO Sketch beschreiben
