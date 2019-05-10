@@ -15,7 +15,7 @@ Zur besseren Übersicht wurde der Code vereinzelt gekürzt. Dies ist durch 3 Pun
 Wie aus dem Projektplan (siehe Abbildung \ref{fig:projekt-plan}) zu entnehmen ist, haben wir uns zu Beginn unserer Arbeit dazu entschieden, zwei Sprints für das Refactoring unsere Applikation zu nutzen. Die Entscheidung überhaupt ein Refactoring durchzuführen entstand aus der Tatsache, dass wir schon gegen Ende der Studienarbeit gemerkt hatten, dass bei einer allfälligen Weiterführung der Arbeit ein Refactoring von grossem Wert sein wird. Auch haben wir diesbezüglich schon während der Studienarbeit einzelne Vorschläge für ein Refactoring beschrieben.
 
 
-Das Ziel der Refactoring-Phase war es daher, den Code, welcher aus der Studienarbeit hervorgegangen ist, zu prüfen und zu verbessern. Dies sollte uns helfen, die Erweiterbarkeit für zukünftig geplante Features zu gewähren. Für die Überprüfung konnte Silvan Gehrig gewonnen werden. Seine Rückmeldungen, welche im Anhang \ref{sec:code-review} nachgelesen werden können, wurden wie nachfolgend beschrieben umgesetzt.
+Das Ziel der Refactoring-Phase war es daher, den Code, welcher aus der Studienarbeit hervorgegangen ist, zu prüfen und zu verbessern. Dies sollte uns helfen, die Erweiterbarkeit für zukünftig geplante Features zu gewähren.
 
 Auch konnten wir die in der Studienarbeit beschriebenen Vorschläge erfolgreich in der App umsetzen.
  
@@ -162,7 +162,7 @@ if (finding == null){
 }
 \end{lstlisting}
 
-Auch wurde die Implementation für das Einfügen in die Datenbank in eine separate Klasse (\texttt{MongoDBFindingservice}) ausgelagert, um eine bessere Übersicht und ein besseres Layering zu gewähren.
+Auch wurde die Implementation für das Einfügen in die Datenbank in eine separate Klasse (\texttt{MongoDBFindingService}) ausgelagert, um eine bessere Übersicht und ein besseres Layering zu gewähren.
 
 \begin{lstlisting}[caption={Exchange Brainsheet im Data Access Layer}, label=exchangeBrainsheetDAL]
 public void exchangeBrainsheet(BrainstormingFinding finding, Brainsheet oldBrainsheet, Brainsheet newBrainsheet){
@@ -177,9 +177,9 @@ public void exchangeBrainsheet(BrainstormingFinding finding, Brainsheet oldBrain
 Diese zwei Beispiele stellen noch lange nicht alle überarbeiteten Codestellen dar, geben aber eine gute Übersicht, wie der gesamte Code vereinfacht werden konnte.
 
 \paragraph*{Fazit}
-Gerade das Beispiel vom Austausch der Brainsheets (Listing \ref{putBrainsheetVorRef}) verdeutlicht, dass das Layering stark verbessert wurde. Vieles was vorher in einer Klasse war, konnte in verschiedene Klassen ausgelagert werden. Damit konnte die Übersicht und Komplexität deutlich verbessert werden.
+Gerade das Beispiel vom Austausch der Brainsheets (Listing \ref{putBrainsheetVorRef}) verdeutlicht, dass das Layering stark verbessert wurde. Damit konnte die Übersicht und Komplexität deutlich verbessert werden.
 
-Auch wurden im gesamten Backend Data-Transfer-Obekte (DTO) \cite{DTO} eingefügt. Dies ermöglicht eine stärkere Trennung von relevanten Informationen für Business-Objekte (BO) und relevanten Informationen für Data-Transfer-Obekte. Dies war vor allem im späteren Verlauf der Arbeit von grossem Wert.
+Auch wurden im gesamten Backend Data-Transfer-Obekte (DTO) \cite{DTO} eingefügt. Die Idee von DTOs ist es, alle Daten, welche über das Netzwerk gesendet werden in eben jenen Data-Transfer-Obekten zu speichern und zu übertragen. Im Unterschied zu den Business-Objects besitzen DTOs kein business-relevantes Verhalten. Sie sind ausschliesslich für die Übertragung der Daten verantwortlich. Dies war vor allem im späteren Verlauf der Arbeit von grossem Wert.
 
 Mit Hilfe der BodyParser-Klassen konnte die komplette Überprüfung und Deserialisierung der angelieferten JSON-Daten zentral geregelt werden. Somit ist immer sichergestellt, dass das DTO korrekt (alle erwarteten Informationen sind vorhanden und das Format stimmt) erstellt wird. 
 
@@ -187,13 +187,13 @@ Mit Hilfe der BodyParser-Klassen konnte die komplette Überprüfung und Deserial
 %TODO Refactoring beschreiben
 
 \subsubsection{Implementation Skizzen Feature}
-Nachdem die Refactoring-Phase beendet war, begannen wir die Skizzen-Funktion in unsere Applikation zu integrieren. Diese Funktion sollte es dem Endnutzer ermöglichen, nebst den \texttt{NoteIdeas} auch \texttt{SketchIdeas} (siehe Abbildung \ref{fig:domainmodell-methode635}) zu erfassen. Mit den \texttt{SketchIdeas} wird dem Endnutzer die Möglichkeit gegeben, Skizzen als Teil der Brainstorming-Runden zu zeichnen.
+Die Skizzen-Funktion soll es dem Endnutzer ermöglichen, nebst den \texttt{NoteIdeas} auch \texttt{SketchIdeas} (siehe Abbildung \ref{fig:domainmodell-methode635}) zu erfassen. Mit den \texttt{SketchIdeas} wird dem Endnutzer die Möglichkeit gegeben, Skizzen als Teil der Brainstorming-Runden zu zeichnen.
 
-Da es sich bei den einzelnen Skizzen um Bilder handelt, musste zunächst eine Möglichkeit geschaffen werden, diese Bilder in der Datenbank abzulegen. Dafür wurden in der Elaboration-Phase Analysen (siehe Kapitel \ref{seq:save_file_in_db}) durchgeführt und ein Prototyp erstellt, um die technische Machbarkeit zu verifizieren.
+Da es sich bei den einzelnen Skizzen um Binärdaten handelt, musste zunächst eine Möglichkeit geschaffen werden, diese Art von Daten in der Datenbank abzulegen. Dafür wurden in der Elaboration-Phase Analysen (siehe Kapitel \ref{seq:save_file_in_db}) durchgeführt und ein Prototyp erstellt, um die technische Machbarkeit zu verifizieren.
 
 \paragraph*{Implementation Backend}~\\
 In den nachfolgenden Listings wird aufgezeigt, wie die Sketch-Funktion im Backend umgesetzt wurde.
-Der genaue Kommunikations-Ablauf kann der Abbildung \ref{fig:Seq-Draw-Sketch} entnommen werden.
+Der genaue Kommunikations-Ablauf kann der Abbildung \ref{fig:Seq-Draw-Sketch} in Kapitel \ref{par:sequence-diagramm} entnommen werden.
 
 \begin{lstlisting}[caption={Upload File im File Controller}, label=uploadFileController]
 @BodyParser.Of(MultipartFormDataBodyParser.class)
@@ -216,7 +216,7 @@ public Result uploadFile(){
 }
 \end{lstlisting}
 
-Ähnlich wie bei den JSON-Daten, wird auch hier zunächst das Bild mittels eines BodyParsers (Zeile 1) in ein File umgewandelt (Zeilen 5-7), welches dann als Byte-Array dem File-Service (Zeile 12) übergeben werden kann. 
+Ähnlich wie bei den JSON-Daten, wird auch hier zunächst die Skizze mittels eines BodyParsers (Zeile 1) in ein File (in-Memory) umgewandelt (Zeilen 5-7), welches dann als Byte-Array dem File-Service (Zeile 12) übergeben werden kann. 
 
 \begin{lstlisting}[caption={Upload File im File Service}, label=uploadFileService]
 public String uploadFileAsStream(byte[] stream, String fileName) ... {
@@ -290,7 +290,7 @@ Wir erweiterten unsere Applikation daher um eine \texttt{PatternIdea}. Die verwe
 
 \paragraph*{Implementation Backend}~\\
 In den nachfolgenden Listings wird aufgezeigt, wie die Pattern-Funktion im Backend umgesetzt wurde.
-Der genaue Kommunikations-Ablauf kann der Abbildung \ref{fig:Seq-Insert-Pattern} entnommen werden.
+Der genaue Kommunikations-Ablauf kann der Abbildung \ref{fig:Seq-Insert-Pattern} im Kapitel \ref{par:sequence-diagramm} entnommen werden.
 
 \begin{lstlisting}[caption={Alle Pattern holen im Pattern Controller}, label=getAllPatternInController]
  public Result getAllPatternIdeas(){
