@@ -52,7 +52,30 @@ modelMapper.typeMap(QualityIdeaDTO.class, Idea.class).setProvider(request -> {
 Diese drei Schritte sollten ausreichen, damit das Backend auch mit einer QualityIdea interagieren kann. 
 
 \subsection{Anpassungen am Frontend}
-%TODO Anpassungen für Frontend schreiben 
+%TODO Anpassungen für Frontend schreiben
+
+\subsection{Erfüllung der nicht-funktionalen Anforderungen} 
+Wie im Kapitel \ref{subsub:nfr} beschrieben, war es unter anderem unser Ziel, unsere Applikation in Bezug auf Erweiterung und Modularität zu verbessern. Wir wollen daher hier nochmals speziell Bezug nehmen auf diese Ziele und beurteilen wie gut diese umgesetzt wurden.
+
+Wir sind der Meinung, dass sich in Punkto Erweiterbarkeit noch viele weitere Ideenarten für eine mögliche Integrierung eignen würden. Im Kapitel \ref{subsub:Ausblick} haben wir dafür drei konkrete Ideenarten aufgeschrieben. Zudem gibt es Ideenarten, wie z.B. die PictureIdea oder VideoIdea, welche wir zwar zu Beginn dieser Arbeit definiert hatten aber mangels Zeit nicht umsetzen konnten. Sicherlich gibt es noch viele weitere Ideenarten, welche sich in die bestehende Applikation integrieren liessen.
+
+Das Ziel der Erweiterbarkeit sehen wir daher als übertroffen an.
+
+Dank der vorliegenden Anleitung sind wir zudem der Ansicht, dass sich die Applikation innert wenigen Tagen um eine neue Ideenart erweitern liesse. In Zahlen ausgedrückt, sollte sich solch ein Vorhaben schätzungsweise innert 2 Tagen realisieren lassen. 
+
+Das Ziel der Modularität wäre somit optimal erreicht.
+
+\begin{center}
+    \begin{tabular}{ | p{6cm} | p{2.5cm} | p{2.5cm} | p{2.5cm} |}
+    	\hline
+    Kriterium & Minimum & Optimal & Übertroffen \\ 
+    	\hline
+    \textbf{Erweiterbarkeit} \newline Die Anzahl an neuen Ideenarten, welche mit der bestehenden Architektur als umsetzbar gelten, wird als ... angesehen & zu wenig (0-1) & ausreichend (1-5) & unbegrenzt ($>$5)\\
+    	\hline
+    \textbf{Modularität} \newline Die App ist innert ... Tagen um eine neue Ideenart erweitert & 5 Tage & 2 Tage & weniger als 1 Tag \\
+    	\hline
+    \end{tabular}
+\end{center}
 
 \subsection{Exkurs: Andere Datenbank verwenden}
 Der Vollständigkeitshalber soll in diesem Kapitel auch erläutert werden, wie die momentan verwendete MongoDB Datenbank ausgewechselt werden kann, sollte dies notwendig sein.
