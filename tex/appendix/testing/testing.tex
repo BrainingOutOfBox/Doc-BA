@@ -3,9 +3,14 @@
 Um sicher zu stellen, dass unsere Cross-Plattform Applikation in ihrer Kernfunktionalität richtig funktioniert, wurde ein systematischer Test anhand des nachfolgenden Testprotokolls durchgeführt.
 
 \subsection{Verweise}
-Die Testfälle leiten sich von den Fully-Dressed Use Cases aus Kapitel \ref{par:fully-dressed-uc} ab.
+Die Testfälle leiten sich von den Fully-Dressed Use Cases aus Kapitel \ref{par:fully-dressed-uc} ab. Da die Use-Cases 8c, 8e und 13 in dieser Arbeit im Fokus standen, wurde gerade auf diese Use-Cases ein spezielles Augenmerk beim Testen gelegt.
 
 \subsection{Testaufbau}
+Der Test wurde am 12. Mai 2019 von Elias Brunner und vier weiteren externen Testern durchgeführt. Bei den Testern handelte es sich um Familienmitglieder, welche den Test alle mit ihren eigenen iPhones (unterschiedliche iOS-Versionen) durchgeführt hatten. Die Testdurchführung erfolgte komplett manuell.
+
+Um unsere Applikation auf die Geräte der externen Tester zu verteilen, nutzen wir TestFlight \cite{testflight}. TestFlight ist ein Online-Service von Apple, welche es Entwicklern auf einfache Weise ermöglicht, ihre Applikationen an ausgewählte interne und externe Testern zu verteilen. 
+
+Da TestFlight allderdings durch Apple aufgekauft wurde, wird das Testen für die Android-Plattform seit 2014 nicht mehr unterstützt \cite{testflightWikipedia}. 
 
 \subsection{Testfälle}
 
@@ -17,15 +22,15 @@ Die Testfälle leiten sich von den Fully-Dressed Use Cases aus Kapitel \ref{par:
 		\hline\hline
 		Test Nr & Beschreibung & Erwartetes Resultat & Beo\-bach\-te\-tes Verhalten (Bestanden?) \\
 		\hline
-		1 & Als Participant möchte ich als Letzter die letzte Runde abschliessen. & Das System speichert meine Notizen auf dem Server und zeigt mir eine Meldung an, dass das Finding einsehbar ist. & TODO. \\
+		1 & Als Participant möchte ich als Letzter die letzte Runde abschliessen. & Das System speichert meine Notizen auf dem Server und zeigt mir eine Meldung an, dass das Finding einsehbar ist. & Ja, keine Meldung dafür automatischer Wechsel auf Endresultat. \\
 		\hline
-		2 & Als Participant möchte ich die Resultate der Gruppe ansehen. & Das System zeigt mir eine Übersicht mit allen Notizen der Teilnehmer. & TODO.\\
+		2 & Als Participant möchte ich die Resultate der Gruppe ansehen. & Das System zeigt mir eine Übersicht mit allen Notizen der Teilnehmer. & Ja.\\
 		\hline
-		3 & Als Participant möchte ich nicht als Letzter die letzte Runde abschliessen. & Das System speichert meine Notizen auf dem Server und zeigt mir die verbleibende Zeit an. & TODO.\\
+		3 & Als Participant möchte ich nicht als Letzter die letzte Runde abschliessen. & Das System speichert meine Notizen auf dem Server und zeigt mir die verbleibende Zeit an. & Ja, Führung für User könnte besser sein.\\
 		\hline
-		4 & Nach Ablauf der Zeit meldet mir das System, dass das Finding einsehbar ist. & Das System zeigt mir eine Übersicht mit allen Notizen der Teilnehmer. & TODO.\\
+		4 & Nach Ablauf der Zeit meldet mir das System, dass das Finding einsehbar ist. & Das System zeigt mir eine Übersicht mit allen Notizen der Teilnehmer. & Ja.\\
 		\hline
-		5 & Als Participant möchte ich nicht direkt zu den Resultaten der Gruppe navigieren sondern zurück zum Homescreen gelangen. & Das System zeigt mir den Homescreen an. Von dort aus gelange ich aber auch zu den Notizen der Teilnehmer. & TODO.  \\
+		5 & Als Participant möchte ich nicht direkt zu den Resultaten der Gruppe navigieren sondern zurück zum Homescreen gelangen. & Das System zeigt mir den Homescreen an. Von dort aus gelange ich aber auch zu den Notizen der Teilnehmer. & Ja.  \\
 		\hline
 	\end{longtable}
 \end{center}
@@ -38,11 +43,11 @@ Die Testfälle leiten sich von den Fully-Dressed Use Cases aus Kapitel \ref{par:
 		\hline\hline
 		Test Nr & Beschreibung & Erwartetes Resultat & Beo\-bach\-te\-tes Verhalten (Bestanden?) \\
 		\hline
-		1 & Als Participant möchte ich Ideen während der laufenden Rundenzeit zum aktuellen Problem erfassen. & Das System zeigt meine Ideen an. & TODO. \\
+		1 & Als Participant möchte ich Ideen während der laufenden Rundenzeit zum aktuellen Problem erfassen. & Das System zeigt meine Ideen an. & Ja, bei grössern Brainwaves nicht immer klar wo die Idee eingefügt wurde. \\
 		\hline
-		2 & Als Participant möchte ich meine Ideen frühzeitig abgeben. & Das System persistiert meine Ideen und zeigt mir eine Bestätigung an. & TODO.\\
+		2 & Als Participant möchte ich meine Ideen frühzeitig abgeben. & Das System persistiert meine Ideen und zeigt mir eine Bestätigung an. & Nein, Speicherung erfolgt aber keine Rückmeldung an den User.\\
 		\hline
-		3 & Als Participant möchte ich meine Ideen nicht frühzeitig abgeben. & Das System zeigt mir eine Meldung an, dass die Zeit der aktuellen Runde abgelaufen ist. Es persistiert die bis zu dem Zeitpunkt erfassten Ideen. & TODO. \\
+		3 & Als Participant möchte ich meine Ideen nicht frühzeitig abgeben. & Das System zeigt mir eine Meldung an, dass die Zeit der aktuellen Runde abgelaufen ist. Es persistiert die bis zu dem Zeitpunkt erfassten Ideen. & Nein, Speicherung erfolgt aber keine Rückmeldung an den User. \\
 		\hline
 	\end{longtable}
 \end{center}
@@ -56,7 +61,7 @@ Die Testfälle leiten sich von den Fully-Dressed Use Cases aus Kapitel \ref{par:
 		\hline\hline
 		Test Nr & Beschreibung & Erwartetes Resultat & Beo\-bach\-te\-tes Verhalten (Bestanden?) \\
 		\hline
-		1 & Als Participant möchte ich eine Skizze während der laufenden Rundenezit zum aktuellen Problem erfassen. & Das System speichert meine Skizze auf dem Server und zeigt mir eine Meldung an, dass die Skizze gespeichert wurde. & TODO. \\
+		1 & Als Participant möchte ich eine Skizze während der laufenden Rundenzeit zum aktuellen Problem erfassen. & Das System speichert meine Skizze auf dem Server und zeigt mir eine Meldung an, dass die Skizze gespeichert wurde. & Ja. \\
 		\hline
 	\end{longtable}
 \end{center}
@@ -69,11 +74,33 @@ Die Testfälle leiten sich von den Fully-Dressed Use Cases aus Kapitel \ref{par:
 		\hline\hline
 		Test Nr & Beschreibung & Erwartetes Resultat & Beo\-bach\-te\-tes Verhalten (Bestanden?) \\
 		\hline
-		1 & Als Participant möchte ich ein Pattern während der laufenden Rundenezit zum aktuellen Problem auswählen. & Das System speichert das ausgewählte Pattern und zeigt mir eine Meldung an, dass das Pattern in die Brainwave eingefügt wurde. & TODO. \\
+		1 & Als Participant möchte ich ein Pattern während der laufenden Rundenzeit zum aktuellen Problem auswählen. & Das System speichert das ausgewählte Pattern und zeigt mir eine Meldung an, dass das Pattern in die Brainwave eingefügt wurde. & Ja. \\
+		\hline
+	\end{longtable}
+\end{center}
+
+\renewcommand{\arraystretch}{1.35}
+\begin{center}
+	\begin{longtable}{| p{1cm} | p{4cm} | p{5cm} | p{3cm} |}
+		\hline
+		\multicolumn{4}{|c|}{\textbf{Use Case 13: Export Brainstorming Finding}}\\
+		\hline\hline
+		Test Nr & Beschreibung & Erwartetes Resultat & Beo\-bach\-te\-tes Verhalten (Bestanden?) \\
+		\hline
+		1 & Als Participant will ich ein ab\-ge\-schlos\-sen\-es Brainstorming Finding exportieren können & Das System speichert das erarbeitete Brainstorming Finding in geeigneter Form und zeigt bei erfolgreicher Speicherung eine Meldung an. & Ja, Speicherung erfolgt in die Zwischenablage. \\
 		\hline
 	\end{longtable}
 \end{center}
 
 \subsection{Testauswertung}
+Nach einmaliger Testdurchführung mit den vier externen Testern wurde folgende Rück\-mel\-dun\-gen für potenzielle Verbesserungen entgegengenommen:
+
+\begin{enumerate}
+	\item Der QR-Code, welcher beim Erstellen eines Teams generiert wird, sollte auch nach dem eigentlichen Erstellen auf einfache Art einsehbar sein. Sollten z.B. nicht alle Participants nach dem ersten Beitreten im Team sein, könnten diese so nachträglich eingeladen werden.
+	\item Bei Erstellen eines Teams ist es möglich, bei der Teamgrösse einen Buchstaben statt einer Zahl einzugeben, was zu einem Absturz der Applikation führt. Dies sollte unbedingt behoben werden.
+	\item Als letzte Rückmeldung wurde angemerkt, dass die Übersicht nicht immer gegeben ist. Gerade bei grösseren Teams mit 3 oder mehr Ideen pro Runde, ist nicht klar, wo die eingefügte Idee zu finden ist (speziell gegen Ende des BrainstormingFindings). Der Umstand, dass die Grösse der einzelnen Platzhalter für die Ideen grösszügig gewählt ist, führt dazu, dass man immer weit nach unten scrollen muss, um die eingefügte Idee zu sehen. Dies könnte vielleicht mit einer relativen Grössenangabe verbessert werden.
+\end{enumerate}
+
+Im Gegensatz zur Studienarbeit \cite{methode635-sa} , in welcher der automatische Rundenwechsel nicht optimal funktionierte, stellte dieser in der vorliegenden Testdurchführung keine Probleme mehr dar. Auch funktionierte der Wechsel vom laufenden Zustand (Running-State) in den beendet Zustand (Ended-State) einwandfrei.
 
 
