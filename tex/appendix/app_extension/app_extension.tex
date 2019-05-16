@@ -12,7 +12,7 @@ Alle nachfolgenden Anpassungen beziehen sich daher auf dieses Szenario. Andere I
 \subsection{Anpassungen am Backend}
 \begin{labeling}{Zweiter Schritt:}
 	\item [Erster Schritt:] Der erste Schritt im Backend besteht darin die entsprechenden Business-Objekte und Data-Transfer-Objekte mit all deren Attributen und Methoden anzulegen. Wichtig hierbei ist es, dass die neu erstellten Klassen von \texttt{Idea} bzw. \texttt{IdeaDTO} erben.
-	\item [Zweiter Schritt:] Ist dies geschafft, muss dem JSON-Serialisierer noch beigebracht werden, dass ein weiterer Subtyp hinzugefügt wurde. Hierzu muss in der \texttt{IdeaDTO}-Klasse ein weiterer JsonSubTyp hinzugefügt werden (Zeile 5).
+	\item [Zweiter Schritt:] Ist dies geschafft, muss dem JSON-Serialisierer noch gekannt gegeben werden, dass ein weiterer Subtyp hinzugefügt wurde. Hierzu muss in der \texttt{IdeaDTO}-Klasse ein weiterer JsonSubTyp hinzugefügt werden (Zeile 5).
 	
 \begin{lstlisting}[caption={Weiterer Ideen-Typ hinzufügen in der IdeaDTO-Klasse}, label=addIdeaType]
 @JsonTypeInfo(...)
@@ -49,7 +49,7 @@ modelMapper.typeMap(QualityIdeaDTO.class, Idea.class).setProvider(request -> {
 \end{lstlisting}
 \end{labeling}
 
-Diese drei Schritte sollten ausreichen, damit das Backend auch mit einer QualityIdea interagieren kann. 
+Diese drei Schritte reichen aus, damit das Backend auch mit einer QualityIdea interagieren kann. 
 
 \subsection{Anpassungen am Frontend}
 %TODO Anpassungen für Frontend schreiben
@@ -63,12 +63,12 @@ Das Ziel der Erweiterbarkeit sehen wir daher als übertroffen an.
 
 Dank der vorliegenden Anleitung sind wir zudem der Ansicht, dass sich die Applikation innert wenigen Tagen um eine neue Ideenart erweitern liesse. In Zahlen ausgedrückt, sollte sich solch ein Vorhaben schätzungsweise innert 2 Tagen realisieren lassen. 
 
-Das Ziel der Modularität wäre somit optimal erreicht.
+Das Ziel der Modularität wäre somit gut erreicht.
 
 \begin{center}
     \begin{tabular}{ | p{6cm} | p{2.5cm} | p{2.5cm} | p{2.5cm} |}
     	\hline
-    Kriterium & Minimum & Optimal & Übertroffen \\ 
+    Kriterium & Minimum & Gut & Übertroffen \\ 
     	\hline
     \textbf{Erweiterbarkeit} \newline Die Anzahl an neuen Ideenarten, welche mit der bestehenden Architektur als umsetzbar gelten, wird als ... angesehen & zu wenig (0-1) & ausreichend (1-5) & unbegrenzt ($>$5)\\
     	\hline
