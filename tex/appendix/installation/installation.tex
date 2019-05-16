@@ -1,11 +1,104 @@
 \section{Installationsanleitung}
 
 \subsection{Zweck dieses Dokuments}
+Die Installationsanleitung bietet interessierten Personen eine Schritt-für-Schritt Anleitung, wie das gesamte System installiert wird. Da sich die Installationsanleitung nicht wesentlich von jener aus unserer Studienarbeit \cite{methode635-sa} unterscheidet, konnten viele Teile übernommen werden. Dennoch wurde diese Installationsanleitung etwas angepasst und präzisiert. 
+ 
 \subsection{Anforderungen}
+Für die Installation der Cross-Plattform Applikation auf dem eigenen Smartphone wird Folgendes vorausgesetzt:
+
+\begin{itemize}
+  \item Visual Studio IDE Community Edition (7.6.11 (build 9))
+  \item Android + Xamarin.Forms
+  \item iOS + Xamarin.Forms
+  \item .NET Core + ASP.Net Core
+\end{itemize}
+Die Visual Studio IDE kann unter \href{https://visualstudio.microsoft.com/de/vs/}{www.visualstudio.microsoft.com} heruntergeladen werden. 
+
+Wem es nur darum geht, die Xamarin Applikation auszuprobieren, kann bei Kapitel \ref{subsub:installation} weiterlesen. Wer allerdings zusätzlich noch das PlayFramework laufen lassen möchte, benötigt zusätzlich noch Folgendes:
+
+\begin{itemize}
+  \item Java SE 1.8 oder höher
+  \item Ein Build-Tool wie SBT oder Gradle
+  \item Docker Community Edition
+\end{itemize}
+Weitere Informationen zur Installation von Java oder den Build-Tools sind unter \href{https://www.playframework.com/documentation/2.6.x/Requirements}{www.play\-frame\-work.com} zu finden.
+
 
 \subsection{Installation}
+Bevor die eigentliche Installation jedoch beginnen kann, muss man noch über den Quellcode verfügen. Dieser kann von unseren \href{https://github.com/BrainingOutOfBox}{Github Repositories} heruntergeladen werden.
 
 \subsubsection*{Installation der Cross-Plattform Applikation}
 \label{subsub:installation}
+Für die Installation der Xamarin Applikation auf einem \textbf{Android Smartphone} muss folgendermassen vorgegangen werden.
+
+\begin{enumerate}
+  \item Öffne das Projekt mit Visual Studio.
+  \item Wähle das \grqq Method635.App.Forms.Android \grqq als Startprojekt.
+  \item Schliesse dein Smartphone mittels USB-Kabel an deine Entwicklungshardware an.
+  \item Mittels F5 oder dem Play Button kann die Applikation auf dem Smartphone gestartet werden.
+\end{enumerate}
+Für die Installation der Xamarin Applikation auf einem \textbf{iOS Smartphone} muss etwas anders vorgegangen werden. Dabei sind allerdings ein Entwickler Account von Apple sowie ein Apple Mac notwendig.
+
+\begin{enumerate}
+  \item Öffne zuerst Xcode und erstelle ein leeres Projekt. Trage dabei 'ch.brainingoutofbox\-.method635' als Bundle Identifier ein.
+  \item Schliesse dein Smartphone mittels USB-Kabel an deine Entwicklungshardware an.
+  \item Signiere das leere Projekt und stelle es auf deinem iOS Gerät bereit. Dieser Vorgang erstellt auch ein sogenanntes 'Provisioning Profile'. 
+  \item Öffne nun das Method635-Projekt mit Visual Studio.
+  \item Wähle das \grqq Method635.App.Forms.iOS \grqq als Startprojekt.
+  \item Navigiere zur Datei Info.plist und öffne diese.
+  \item Wähle nun 'Manuelle Bereitstellung'. Unter den Optionen für die Signierung wählst du nun deinen Apple Entwickler Account aus und das zuvor erstellte Provisioning Profile.
+  \item Mittels F5 oder dem Play Button kann die Applikation auf dem Smartphone gestartet werden. 
+  \end{enumerate}
+
+\textbf{Bemerkung:} Sollte dabei der Fehler \grqq resource fork, Finder information, or similar detritus not allowed\grqq{} auftreten, kann dieser wie auf \href{https://stackoverflow.com/questions/39652867/code-sign-error-in-macos-high-sierra-xcode-resource-fork-finder-information}{www.stackoverflow.com} beschrieben, vermieden werden. Danach muss das Projekt aber zuerst bereinigt werden.
 
 \subsubsection*{Installation des PlayFrameworks}
+Für die Installation des PlayFrameworks muss zuerst eine Datenbank mit den entsprechenden Collections bereitgestellt werden. Dazu nutzen wir eine MongoDB-Instanz, welche in einem Docker-Container läuft.
+
+\begin{enumerate}
+  \item docker run -name methode635 -p 40002:27017 -d mongo:latest
+  \item docker exec -it methode635 bash
+  \item mongo --username root --password --authenticationDatabase admin --host localhost --port 40002
+  \item use Methode635
+  \item db.createCollection("BrainstormingFinding")
+  \item db.createCollection("BrainstormingTeam")
+  \item db.createCollection("Participant")
+  \item db.createCollection("Pattern")
+\end{enumerate}
+
+Weitere Informationen zu MongoDB als Docker-Container können unter \href{https://hub.docker.com/_/mongo/}{hub.docker.com} nachgelesen werden. Wer mehr über die createCollection Befehle erfahren möchte, findet unter \href{https://docs.mongodb.com/manual/reference/method/db.createCollection/index.html}{docs.mongodb.com} mehr dazu.
+
+Um das PlayFramework zu builden und laufen zu lassen genügt es, im \textbf{API Projekt-Ordner} folgenden Befehl auszuführen.
+
+\begin{enumerate}
+  \item sbt run "40000"
+\end{enumerate}
+
+Weitere Hilfestellungen im Umgang mit SBT und dem PlayFramework finden sich auf \href{https://www.playframework.com/documentation/2.6.x/PlayConsole}{playframework.com}. Um die Kommunikation zwischen iOS Geräten und dem Backend aufzubauen, ist es zwingend notwendig ein SSL Zertifikat zu verwenden. Nähere Angaben dazu können auf \href{https://www.playframework.com/documentation/2.6.x/ConfiguringHttps#SSL-Certificates}{www.playframework.com} nachgelesen werden.
+
+
+\textbf{Bemerkung:} Allenfalls muss für die Interaktion zwischen API und der Datenbank der Username, das Passwort sowie der Datenbankname geändert werden. Dies kann in der 'application.conf' Datei angepasst werden.
+
+\lstset{language=JAVA, showstringspaces=false, frame=single, captionpos=b, label=createParticipant, breaklines=true, numbers=left}
+\begin{lstlisting}[caption={Verbindung zur MongoDB}, label=DBVerbindung]
+db {
+# You can declare as many datasources as you want.
+  mongo.url = "localhost"
+  mongo.port = "40002"
+  mongo.database = "someDatabase"
+  mongo.username = "username"
+  mongo.password = "password"
+
+}
+
+\end{lstlisting}
+
+Auch muss im Quellcode der Cross-Plattform Applikation der URL auf die IP deines PC gewechselt werden. Dies kann in der 'backend-config.json' Datei geändert werden.
+
+\begin{lstlisting}[caption={Verbindung zum API}, label=APIVerbindung]
+"server": {
+    "hostname": "IPOfYourPC",
+    "port": 40000
+}
+\end{lstlisting}
+
