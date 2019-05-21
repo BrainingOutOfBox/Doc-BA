@@ -1,16 +1,18 @@
 \section{Testprotokoll}
 \subsection{Zweck dieses Dokuments}
-Um sicher zu stellen, dass unsere Cross-Plattform Applikation in ihrer Kernfunktionalität richtig funktioniert, wurde ein systematischer Test anhand des nachfolgenden Testprotokolls durchgeführt.
+Um sicher zu stellen, dass unsere Cross-Plattform Applikation in ihrer Kernfunktionalität richtig funktioniert, wurden mehrere systematische User-Tests anhand des nachfolgenden Testprotokolls durchgeführt.
 
 \subsection{Verweise}
 Die Testfälle leiten sich von den Fully-Dressed Use Cases aus Kapitel \ref{par:fully-dressed-uc} ab. Da die Use-Cases 8c, 8e und 13 in dieser Arbeit im Fokus standen, wurde gerade auf diese Use-Cases ein spezielles Augenmerk beim Testen gelegt.
 
 \subsection{Testaufbau}
-Der Test wurde am 12. Mai 2019 von Elias Brunner und vier weiteren externen Testern durchgeführt. Bei den Testern handelte es sich um Familienmitglieder, welche den Test alle mit ihren eigenen iPhones (unterschiedliche iOS-Versionen) durchgeführt hatten. Die Testdurchführung erfolgte komplett manuell.
+Der erste User-Test wurde am 12. Mai 2019 von Elias Brunner und vier weiteren externen Testern durchgeführt. Bei den Testern handelte es sich um Familienmitglieder, welche den Test alle mit ihren eigenen iPhones (unterschiedliche iOS-Versionen) durchgeführt hatten.
+Der zweite User-Test wurde am 21. Mai 2019 von Oliver Dias, Elias Brunner und Prof. Dr. Zimmermann durchgeführt. Dabei wurden drei iOS-Geräte (iPad und iPhone) mit der Version iOS 12.2 und ein Android Smartphone mit der Version 9 verwendet. 
+Die beiden Tests wurden komplett manuell durchgeführt.
 
-Um unsere Applikation auf die Geräte der externen Tester zu verteilen, nutzen wir TestFlight \cite{testflight}. TestFlight ist ein Online-Service von Apple, welche es Entwicklern auf einfache Weise ermöglicht, ihre Applikationen an ausgewählte interne und externe Testern zu verteilen. 
+Um unsere Applikation auf die iOS-Geräte der externen Tester zu verteilen, nutzen wir TestFlight \cite{testflight}. TestFlight ist ein Online-Service von Apple, welche es Entwicklern auf einfache Weise ermöglicht, ihre Applikationen an ausgewählte interne und externe Testern zu verteilen. 
 
-Da TestFlight allderdings durch Apple aufgekauft wurde, wird das Testen für die Android-Plattform seit 2014 nicht mehr unterstützt \cite{testflightWikipedia}. 
+Da TestFlight allerdings durch Apple aufgekauft wurde, wird das Testen für die Android-Plattform seit 2014 nicht mehr unterstützt \cite{testflightWikipedia}. 
 
 \subsection{Testfälle}
 
@@ -93,7 +95,7 @@ Da TestFlight allderdings durch Apple aufgekauft wurde, wird das Testen für die
 \end{center}
 
 \subsection{Testauswertung}
-Nach einmaliger Testdurchführung mit den vier externen Testern wurde folgende Rück\-mel\-dun\-gen für potenzielle Verbesserungen entgegengenommen:
+Nach einmaliger Testdurchführung am 12. Mai mit einem der Autoren und den vier externen Testern wurde folgende Rück\-mel\-dun\-gen für potenzielle Verbesserungen entgegengenommen:
 
 \begin{enumerate}
 	\item Der QR-Code, welcher beim Erstellen eines Teams generiert wird, sollte auch nach dem eigentlichen Erstellen auf einfache Art einsehbar sein. Sollten z.B. nicht alle Participants nach dem ersten Beitreten im Team sein, könnten diese so nachträglich eingeladen werden.
@@ -101,6 +103,13 @@ Nach einmaliger Testdurchführung mit den vier externen Testern wurde folgende R
 	\item Als letzte Rückmeldung wurde angemerkt, dass die Übersicht nicht immer gegeben ist. Gerade bei grösseren Teams mit 3 oder mehr Ideen pro Runde, ist nicht klar, wo die eingefügte Idee zu finden ist (speziell gegen Ende des BrainstormingFindings). Der Umstand, dass die Grösse der einzelnen Platzhalter für die Ideen grösszügig gewählt ist, führt dazu, dass man immer weit nach unten scrollen muss, um die eingefügte Idee zu sehen. Dies könnte vielleicht mit einer relativen Grössenangabe verbessert werden.
 \end{enumerate}
 
-Im Gegensatz zur Studienarbeit \cite{methode635-sa} , in welcher der automatische Rundenwechsel nicht optimal funktionierte, stellte dieser in der vorliegenden Testdurchführung keine Probleme mehr dar. Auch funktionierte der Wechsel vom laufenden Zustand (Running-State) in den beendet Zustand (Ended-State) einwandfrei.
+Nach einmaliger Testdurchführung des zweiten Tests am 21. Mai mit dem Betreuer und den zwei Autoren wurde folgende Rück\-mel\-dun\-gen für potenzielle Verbesserungen entgegengenommen:
 
+\begin{enumerate}
+	\item Wenn man als User das erste Mal ein Brainstorming durchführt, ist z.B. nicht sofort klar, welche Funktion die Buttons haben bzw. in welcher Reihenfolge diese gedrückt werden müssen, um eine Idee oder ein komplettes Sheet auszufüllen. Auch ist die Übersicht nicht immer gegeben (siehe Rückmeldung 3 von erstem Test). Dabei wurde aber vorgeschlagen, den User mit hilfreichen Nachrichten besser zu führen.
+	\item Zudem wurde angemerkt, dass es für den User hilfreich wäre, die Nummer der momentanen Runde sowie die Nummer des momentanen Blattes zu sehen. So ist klar, wie viele Runden noch zu spielen sind und welches Blatt man gerade ausfüllt.
+	\item Weiter wurden kleinere Verbesserungsvorschläge für bestehende Texte oder Meldungen entgegengenommen. So wurde z.B. auf Fehler in einzelnen Texten hingewiesen oder passendere Beschriftungen für Buttons vorgeschlagen.
+	\item  Wie schon beim ersten Test vom 12. Mai wurde generell angemerkt, dass die Userführung und die Übersicht beim eigentlichen Brainstorming-Prozess das grösste Potenzial für Verbesserungen aufweisen.
+\end{enumerate}
 
+Im Gegensatz zur Studienarbeit \cite{methode635-sa}, in welcher der automatische Rundenwechsel nicht optimal funktionierte, stellte dieser in den durchgeführten Tests keine Probleme mehr dar. Auch funktionierte der Wechsel vom laufenden Zustand (Running-State) in den beendet Zustand (Ended-State) einwandfrei. 
