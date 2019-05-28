@@ -170,7 +170,7 @@ findingCollection.updateOne(eq("identifier", finding.getIdentifier()),combine(se
 \end{lstlisting}
 Diese zwei Beispiele stellen noch lange nicht alle überarbeiteten Codestellen dar, geben aber eine gute Übersicht, wie der gesamte Code vereinfacht werden konnte.
 
-\paragraph*{Fazit}
+\paragraph*{Fazit}~\\
 Gerade das Beispiel vom Austausch der Brainsheets (Listing \ref{putBrainsheetVorRef}) verdeutlicht, dass das Layering stark verbessert wurde. Damit konnte die Übersicht und Komplexität deutlich verbessert werden.
 
 Auch wurden im gesamten Backend Data-Transfer-Obekte (DTO) \cite{DTO} eingefügt. Die Idee von DTOs ist es, alle Daten, welche über das Netzwerk gesendet werden in eben jenen Data-Transfer-Obekten zu speichern und zu übertragen. Im Unterschied zu den Business-Objects besitzen DTOs kein business-relevantes Verhalten. Sie sind ausschliesslich für die Übertragung der Daten verantwortlich. Dies war vor allem im späteren Verlauf der Arbeit von grossem Wert.
@@ -178,7 +178,57 @@ Auch wurden im gesamten Backend Data-Transfer-Obekte (DTO) \cite{DTO} eingefügt
 Mit Hilfe der BodyParser-Klassen konnte die komplette Überprüfung und Deserialisierung der angelieferten JSON-Daten zentral geregelt werden. Somit ist immer sichergestellt, dass das DTO korrekt (alle erwarteten Informationen sind vorhanden und das Format stimmt) erstellt wird. 
 
 \paragraph*{Refactoring Frontend}~\\
-%TODO Refactoring beschreiben
+Auf der Seite des Frontends standen folgende Punkte für das Refactoring an:
+\begin{enumerate}
+	\item Performanceverbesserung
+	\item State Machine für die Brainstorming Logik
+	\item Services, allgemeines Layering
+	\item Einfügen von DTOs
+	\item Logger
+	\item Localisation
+\end{enumerate}
+
+Zuerst wurde ein einfaches Layering vorgenommen. Alle Models wurden in ein separates Projekt ausgelagert und verwendet. Zusätzlich wurden einzelne Services wie der \texttt{UiNavigationService} erstellt, welcher jegliche Navigationsschritte ausführen kann und in die ViewModels injected wird. Durch das Einführen dieses Services hat sich bereits ein grösseres Problem gelöst: die Performance Issues. Vor diesem Service rief jedes ViewModel den durch das MVVM-Framework PrismForms bereitgestellten \texttt{NavigationService} auf. Dies führte dazu, dass bei jedem Navigationsschritt der \texttt{NavigationService} neu initialisiert wurde. Durch das Kapseln in eine eigene Klasse kann dieser als Singleton im IoC Container registriert werden, somit wird dieser nur beim Starten der Applikation initialisiert. 
+
+Nachdem die Navigation in einen Service ausgelagert wurde, musste die Implementation der Kern-Logik überarbeitet werden. Dazu wurde im Umfang der Studienarbeit bereits ein Konzept für eine State-Machine erarbeitet \cite{methode635-sa}. Diese wurde mittels Test-Driven-Design in der jetzigen Arbeit umgesetzt. Listing \ref{start-statemachine} zeigt, wie die Statemachine beim Start ermittelt, in welchem State sie sich befindet.
+\begin{lstlisting}[caption=Start der Klasse StateMachine, label=start-statemachine]
+public void Start()
+{
+	var currentRound = _context.CurrentFinding.CurrentRound;
+	IState evaluatedState = null;
+	if (currentRound == -1)
+	{
+		evaluatedState = new EndedState(_context, _brainstormingModel);
+	}
+	else if (currentRound == 0)
+	{
+		evaluatedState = new WaitingState(_logger, _brainstormingDalService, _context, _brainstormingModel);
+	}
+	else if (currentRound > 0)
+	{
+		evaluatedState = new RunningState(_logger, _brainstormingDalService, _context, _brainstormingModel);
+	}
+	if(currentRound < -1 || evaluatedState == null)
+	{
+		throw new ArgumentException("Invalid round or state not registered");
+	}
+	ChangeState(evaluatedState);
+}
+\end{lstlisting}
+Wie auf Zeile 4 ersichtlich wurde gegen ein Interface namens \texttt{IState} programmiert. Dieses Interface enthält eine \texttt{Init()}- und eine \texttt{CleanUp()}-Methode, sowie ein \texttt{PropertyChanged}-Event, der für das Notifizieren der Änderungen eines States zuständig ist. Durch das \texttt{IState}-Interface ist die Erweiterbarkeit gewährleistet (z.B. Einführen eines zusätzlichen 'Review' States). 
+
+Die StateMachine musste anschliessend von einem Service verwendet werden. Der \texttt{BrainstormingService} ist für die gesamte Kernlogik zuständig und behält somit eine Instanz der \texttt{StateMachine}. Auch im \texttt{BrainstormingService} wurde gegen ein Interface programmiert. Dessen Methoden sind der Abbildung \ref{fig:ibrainstormingservice} zu entnehmen.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.5\linewidth]{img/techn-bericht/ibrainstormingservice}
+	\caption{Methoden des IBrainstorming-Interfaces}
+	\label{fig:ibrainstormingservice}
+\end{figure}
+
+Neben diesen erwähnten Services wurden auch Services im Data-Access-Layer (DAL) eingeführt. Diese sind in einem separaten Projekt und können ebenfalls mittels deren Interface in die verwendenden Klassen injiziert werden. Sie sind für den gesamten Daten-Zugriff zuständig. Für das Abbilden der Endpunkte des Backends, wurde weiter ein Konfigurationsfile eingeführt. Dieses Json-File wird geparst und vom \texttt{ConfigurationService} den Repositories zur Verfügung gestellt. 
+
+Für das Einführen von DTOs wurde wie zu Beginn dieses Kapitels erwähnt, dass alle Models in ein separates Projekt ausgelagert wurde. Im DAL existiert ein Ordner mit DTOs, welche für das Parsen der Objekte vom Backend verwendet werden. Es wurde zusätzlich ein Mapping-Layer eingeführt, der die empfangenen und sendenden Objekte in bzw. von den Business Objekte abbildet. Dazu wurde das NuGet-Packet Automapper verwendet. 
 
 \subsubsection{Implementation Skizzen Feature}
 Die Skizzen-Funktion soll es dem Endnutzer ermöglichen, nebst den \texttt{NoteIdeas} auch \texttt{SketchIdeas} (siehe Abbildung \ref{fig:domainmodell-methode635}) zu erfassen. Mit den \texttt{SketchIdeas} wird dem Endnutzer die Möglichkeit gegeben, Skizzen als Teil der Brainstorming-Runden zu zeichnen.
