@@ -2,7 +2,7 @@
 Wesentliche Entscheide, welche wir während dem Projekt getroffen haben, sind hier detailliert begründet. Auch Gedanken oder Ideen, welche wir während der Analysephase hatten, dann aber wieder verworfen haben, sind hier mit Begründung aufgeschrieben.
 
 \subsubsection{Domain-Design-Entscheid}
-Schon sehr früh im Projekt kam die Idee auf, die BrainstormingFindings in verschiedene Arten (z.B. GeneralFinding oder SoftwareFinding) zu unterteilen (siehe Kapitel \ref{sec:sol-strategy}). Damit wollten wir erreichen, dass nicht jeder Ideentyp für jedes BrainstormingFinding zur Verfügung steht, zumal es auch nicht unbedingt für jede Kombination Sinn ergibt, diesen Ideentypen dafür zu verwenden. Zum Beispiel ist es wenig sinnvoll die PatternIdea bei einem GeneralFinding zu nutzen. Dies würde eher bei einem SoftwareFinding zum Einsatz kommen.
+Schon sehr früh im Projekt kam die Idee auf, die BrainstormingFindings in verschiedene Arten zu unterteilen. Die Rede war von ``Software Architektur Lösung`` (SoftwareFinding) und ``Generelle Lösung`` (GeneralFinding). Siehe dazu Kapitel \ref{sec:sol-strategy}. Damit wollten wir erreichen, dass nicht jeder Ideentyp für jedes BrainstormingFinding zur Verfügung steht, zumal es auch nicht unbedingt für jede Kombination Sinn ergibt, diesen Ideentypen dafür zu verwenden. Zum Beispiel ist es wenig sinnvoll die PatternIdea bei einem GeneralFinding zu nutzen. Dies würde eher bei einem SoftwareFinding zum Einsatz kommen.
 
 \begin{figure}[h]
 	\centering
@@ -13,11 +13,11 @@ Schon sehr früh im Projekt kam die Idee auf, die BrainstormingFindings in versc
 
 Doch dabei kommt die Überlegung auf, was wenn es noch andere Patterns als nur Software-Patterns gibt, welche man zur Verfügung stellen will. Dann müssten noch mehr solcher logischen Zusammenhänge beachtet werden, was die Erweiterbarkeit der Applikation mit zunehmenden BrainstormingFinding Arten erschwert.
 
-Je länger wir miteinander aber auch mit unserem Betreuer, Herr Zimmermann oder Silvan Gehrig darüber diskutierten, desto mehr kamen wir wieder auf unser ursprüngliches Domain-Design zurück, bei welchem es nur ein BrainstormingFinding gibt. 
+Je länger wir untereinander aber auch mit unserem Betreuer, Herr Zimmermann oder Silvan Gehrig darüber diskutierten, desto mehr kamen wir wieder auf unser ursprüngliches Domain-Design zurück, bei welchem es nur ein BrainstormingFinding gibt. 
 
 Dabei ist die Idee, alle Ideentypen zwar anzubieten aber die Auswahl des passenden Ideentypen komplett dem Endnutzer zu überlassen. Dies birgt allerdings die Gefahr, die Benutzung der Applikation durch eine zu grosse Auswahl an Ideentypen zu verschlechtern. Dieses Problem kann aber durch eine durchdachte Aufteilung in der Benutzeroberfläche eingedämmt werden. Unserer Meinung nach ist mit dem verwendeten Domainmodell (siehe Abbildung \ref{fig:domainmodell-methode635}) die Erweiterbarkeit für zukünftige Arbeiten eher gegeben, da weniger Stellen im Code bearbeitet werden müssen. 
 
-Aus diesem Grund haben wir uns für das ursprüngliche Domainmodell entschieden.
+Aus diesem Grund haben wir uns für das ursprüngliche Domainmodell mit nur einem BrainstormingFinding entschieden. Die Tipps von arc42 bzw. der Solution Strategy konnten dennoch gemäss Tabelle \ref{tab:arc42-mapping} integriert werden.
 
 \subsubsection{Architekturentscheide der Studienarbeit}
 Nachfolgend listen wir die Entscheide auf, welche in der vorangegangenen Studienarbeit in Bezug auf die eingesetzten Technologien getroffen wurden. Es soll dem Leser nochmals  verständlich machen, warum genau diese Technologien für diese Arbeit gewählt wurden.
