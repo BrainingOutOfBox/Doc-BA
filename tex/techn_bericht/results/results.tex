@@ -607,7 +607,38 @@ return null;
 Die Tatsache, dass wir neben unseren Business-Objekten sogenannte DTOs in unsere Applikation integrierten, konnte in dieser Funktion gut ausgenutzt werden. So wurde die Serialize-Methode lediglich in den Business-Objekten implementiert, da sie einen Bestandteil der Business-Logik darstellt und weniger essenziell für die Kommunikation ist.
 
 \paragraph*{Implementation Frontend}~\\
-%TODO Export beschreiben
+
+Der Export auf dem Frontend ist simpel gehalten; der String muss beim Betätigen des 'Export'-Buttons vom Backend geholt werden und ins Clipboard gespeichert werden. Da für das Verwalten des Clipboards unterschiedliche Implementationen für iOS und Android notwendig sind, musste für jede Plattform ein separater Service erstellt werden. Dazu kann der dafür vorgesehene \texttt{DependencyService} von Xamarin Forms verwendet werden. Listing \ref{clipboardservice-ios} zeigt die Implementation dieses Services auf der iOS-Plattform.
+\begin{lstlisting}[morekeywords={assembly,namespace,typeof,string}, label={clipboardservice-ios},caption={Clipboard Service auf iOS}]
+using Method635.App.BL.Interfaces;
+using Method635.App.Forms.iOS.Clipboard;
+using UIKit;
+using Xamarin.Forms;
+
+[assembly: Dependency(typeof(ClipboardService))]
+namespace Method635.App.Forms.iOS.Clipboard
+{
+	public class ClipboardService : IClipboardService
+	{
+			public void CopyToClipboard(string content)
+			{
+				UIPasteboard clipboard = UIPasteboard.General;
+				clipboard.String = content;
+			}
+		}
+	}
+\end{lstlisting}
+Besonders zu erwähnen ist die Zeile 6 (analog bei Android-Implementation), welche den \texttt{ClipboardService} beim Dependency-Service von Xamarin Forms registriert. 
+
+Da schon ein IoC Container durch das MVVM-Framework Prism Forms verwendet wird, macht es Sinn, nur einen Dependency Server der Applikationslogik mitzugeben. Deshalb wurden alle benötigten Services, die im Xamarin Forms Dependency-Service registriert wurden, ebenfalls beim Prism IoC-Container registriert. So werden alle Services nur von einer Quelle aufgelöst.
+
+Im Applikationssetup (\texttt{App.xaml.cs}) wird somit der ClipboardService folgendermassen registriert:
+\begin{lstlisting}
+var clipboardService = DependencyService.Get<IClipboardService>();
+containerRegistry.RegisterInstance(typeof(IClipboardService), clipboardService);
+\end{lstlisting}
+So kann in jedem registrierten ViewModel ein Konstruktorparameter vom Typ \texttt{IClipboard\-Service} eingeführt werden, dass dann automatisch die für die aktuelle Plattform korrekte Implementation des ClipboardServices enthält. Die einzige Methode auf dem Interface muss dann noch für das Speichern ins Clipboard aufgerufen werden. 
+
 
 \subsubsection{Verwendete Bibliotheken im Backend}
 Tabelle \ref{tab:verwendete-libraries-play} zeigt die Bibliotheken auf, die im Backend verwendet werden. 
@@ -638,16 +669,23 @@ In Tabelle \ref{tab:verwendete-libraries-frontend} sind die verwendeten Librarie
 		\hline
 		CarouselView.FormsPlugin & 5.2.0 & \href{https://github.com/alexrainman/CarouselView}{github.com} & MIT \\
 		Microsoft.AppCenter & 1.10.0 & \href{https://visualstudio.microsoft.com/app-center/}{AppCenter} & MIT \\
-		NUnit & 3.11.0 & \href{http://nunit.org}{nunit.org} & MIT\\
-		NUnit3TestAdapter & 3.11.2 & \href{https://github.com/nunit/docs/wiki/Visual-Studio-Test-Adapter}{github.com} & MIT\\
-		Prism.Forms & 7.0.0.396 & \href{https://github.com/PrismLibrary/Prism}{github.com} & MIT \\
-		Xamarin.Forms & 3.3.0.912540 & \href{https://docs.microsoft.com/en-us/xamarin/xamarin-forms/}{Microsoft Docs} & MIT \\
+		NUnit & 3.12.0 & \href{http://nunit.org}{nunit.org} & MIT\\
+		NUnit3TestAdapter & 3.13.0 & \href{https://github.com/nunit/docs/wiki/Visual-Studio-Test-Adapter}{github.com} & MIT\\
+		Prism.Forms & 7.1.0.431 & \href{https://github.com/PrismLibrary/Prism}{github.com} & MIT \\
+		Xamarin.Forms & 3.5.0.274416 & \href{https://docs.microsoft.com/en-us/xamarin/xamarin-forms/}{Microsoft Docs} & MIT \\
 		XamlStyler.Console & 3.0.0 & 
 		\href{https://github.com/Xavalon/XamlStyler}{github.com} & Apache 2.0\\
 		ZXing.Net.Mobile & 2.4.1 & \href{http://github.com/Redth/ZXing.Net.Mobile}{github.com} & Apache 2.0\\
 		ZXing.Net.Mobile.Forms & 2.4.1 &
 		\href{http://github.com/Redth/ZXing.Net.Mobile}{github.com} & Apache 2.0\\
+		AutoMapper & 8.1.1 & \href{https://github.com/AutoMapper/AutoMapper}{github.com} & MIT\\
+		Moq & 4.11.0 & \href{https://github.com/moq/moq4}{github.com} & BSD 3\\
+		Newtonsoft.Json & 12.0.2 & \href{https://github.com/JamesNK/Newtonsoft.Json}{github.com} & MIT\\
+		NLog & 4.6.4 & \href{https://github.com/NLog/NLog/}{github.com} & BSD 3\\
+		SkiaSharp & 1.68.0 & \href{https://github.com/mono/SkiaSharp}{github.com} & MIT\\
+		
 		\hline
+		
 	\end{tabular}
 	\caption{Direkt verwendete Bibliotheken Frontend}
 	\label{tab:verwendete-libraries-frontend}
