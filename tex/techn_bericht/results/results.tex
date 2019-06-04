@@ -326,7 +326,86 @@ Hierbei wird ein downloadStream geöffnet, welcher die Daten anhand der ID aus d
 Der zurückgelieferte Byte-Array wird anschliessend unverändert an den Client zurück\-geschickt. Allfällige Fehler während der Ausführung sowohl beim Hochladen wie auch beim Herunterladen werden im File-Controller abgefangen und als Fehler an den Client geschickt.
 
 \paragraph*{Implementation Frontend}~\\
-%TODO Sketch beschreiben
+Das Feature wird im Frontend durch folgende Schritte während dem Brainstorming erreicht:
+\begin{enumerate}
+	\item Klicken des 'More Ideas'-Buttons, der auf zusätzliche Ideentypen hindeutet
+	\item Auswählen des 'Sketch Idea' in der nächsten Ansicht
+\end{enumerate}
+Nachdem die Sketch-Ansicht erscheint, hat man Optionen zur Auswahl von Stiftgrösse und -farbe und kann die Skizze speichern oder die Zeichenfläche löschen.
+
+Abbildung \ref{fig:sketch-page} verdeutlicht den Navigationsablauf.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=1\linewidth]{img/techn-bericht/sketch-page}
+	\caption{Navigationsablauf zur SketchPage}
+	\label{fig:sketch-page}
+\end{figure}
+
+Durch das Betätigen des 'More Ideas'-Buttons wird der \texttt{UiNavigationService} aufgerufen, welcher wiederum auf die \texttt{InsertSpecialPage} navigiert. Dasselbe geschieht bei der Auswahl der 'Sketch Idea'-Kachel, nur wird dieses Mal die  \texttt{SketchPage} aufgerufen. 
+
+Die Implementation der Sketching-Page hält sich stark an die Dokumentation von Microsoft \cite{sketching-xf}. Hinzu kam die Funktionalität, das Bild zu speichern und an das Backend zu schicken. Dazu muss ein Snapshot des Canvas' zum Zeitpunkt des Betätigen des 'Save-Image'-Buttons gemacht werden. Der Code dazu ist in Listing \ref{save-clicked-sketch} zu finden.
+
+\begin{lstlisting}[label={save-clicked-sketch},caption={Save Click-Eventhandler}]
+private void Save_Clicked(object sender, EventArgs e)
+{
+	var info = new SKImageInfo((int)canvasView.CanvasSize.Width, (int)canvasView.CanvasSize.Height);
+	var surface = SKSurface.Create(info);
+	var canvas = surface.Canvas;
+	canvas.Clear();
+	
+	foreach (FingerPaintPolyline polyline in completedPolylines)
+	{
+		paint.Color = polyline.StrokeColor.ToSKColor();
+		paint.StrokeWidth = polyline.StrokeWidth;
+		canvas.DrawPath(polyline.Path, paint);
+	}
+	
+	foreach (FingerPaintPolyline polyline in inProgressPolylines.Values)
+	{
+		paint.Color = polyline.StrokeColor.ToSKColor();
+		paint.StrokeWidth = polyline.StrokeWidth;
+		canvas.DrawPath(polyline.Path, paint);
+	}
+	
+	canvas.Flush();
+	
+	var snap = surface.Snapshot();
+	SketchIdea sketchIdea = new SketchIdea();
+	byte[] bytes;
+	using (var data = snap.Encode(SKEncodedImageFormat.Png, 80))
+	{
+		sketchIdea.ImageStream = data.AsStream();
+		bytes = data.ToArray();
+	}
+	_brainstormingService.UploadSketchIdea(sketchIdea, bytes);
+	_brainstormingService.CommitIdea(sketchIdea);
+	DisplayAlert(AppResources.SketchSavedTitle, AppResources.SketchSavedMessage, AppResources.Ok);
+}
+\end{lstlisting}
+Zeilen 3-24 sind dafür zuständig, alle gezeichneten Linien sowie deren Farben und Dicke auf ein \texttt{SKSurface}-Objekt zu zeichnen. Darauf kann nun ein Snapshot gemacht werden. Auf dem daraus resultierenden Objekt kann nun ein png-encodierter Byte-Stream erstellt werden, der auf Zeile 32 dem \texttt{BrainstormingService} zum Upload mitgegeben wird. Die \texttt{SketchIdea} muss mitgegebenen werden, weil das Backend eine ID erstellt, unter welcher das Byte-Array abgelegt wird (siehe Zeile 9 in Listing \ref{uploadFileDBService}). Diese ID kommt als Antwort zurück und wird dem \texttt{SketchIdea}-Objekt gesetzt und dann commitet. Der gesamte Kommunikationsablauf kann dem Sequenz-Diagramm (Abbildung \ref{fig:Seq-Draw-Sketch}) im Kapitel \ref{sequence-diagram} entnommen werden. 
+
+Ist dieser Schritt ausgeführt, muss der Benutzer, wie in der Alert-Message mitgeteilt, selbst zurück zum Brainstorming navigieren. Zweimaliges Klicken auf den 'Zurück'-Pfeil oben links reicht dazu aus. Daraufhin wird sichtbar, dass die Zeichnung im entsprechenden Brainsheet platziert wurde. Dies dank dem Aufruf auf dem \texttt{BrainstormingService}, der die \texttt{SketchIdea} commitet und die Quelle des anzuzeigenden Bildes setzt. Die Implementation dazu ist im Code-Snippet \ref{commit-idea} aufgelistet.
+
+\begin{lstlisting}[caption={Commit-Idea Methode auf dem BrainstormingService}, label={commit-idea}]
+public async Task CommitIdea(Idea idea)
+{
+	try
+	{
+		SetIdea(idea);
+		commitIdeaIndex++;
+		
+		if (idea is PictureIdea pictureIdea)
+		{
+			await SetPictureImageSource(pictureIdea);
+		}
+	}
+	catch (ArgumentOutOfRangeException ex)
+	{
+		_logger.Error("Invalid index access!", ex);
+	}
+}
+\end{lstlisting}
 
 \subsubsection{Implementation Pattern Feature}
 Nebst der Skizzen-Funktion war es unser Ziel, dem Endnutzer eine Funktion anzubieten, welche es ihm ermöglicht, aus einer Liste von verschiedensten Pattern ein passendes Pattern auszuwählen. 
