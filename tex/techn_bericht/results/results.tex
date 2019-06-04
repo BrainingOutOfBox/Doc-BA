@@ -385,7 +385,7 @@ private void Save_Clicked(object sender, EventArgs e)
 \end{lstlisting}
 Zeilen 3-24 sind dafür zuständig, alle gezeichneten Linien sowie deren Farben und Dicke auf ein \texttt{SKSurface}-Objekt zu zeichnen. Darauf kann nun ein Snapshot gemacht werden. Auf dem daraus resultierenden Objekt kann nun ein png-encodierter Byte-Stream erstellt werden, der auf Zeile 32 dem \texttt{BrainstormingService} zum Upload mitgegeben wird. Die \texttt{SketchIdea} muss mitgegebenen werden, weil das Backend eine ID erstellt, unter welcher das Byte-Array abgelegt wird (siehe Zeile 9 in Listing \ref{uploadFileDBService}). Diese ID kommt als Antwort zurück und wird dem \texttt{SketchIdea}-Objekt gesetzt und dann commitet. Der gesamte Kommunikationsablauf kann dem Sequenz-Diagramm (Abbildung \ref{fig:Seq-Draw-Sketch}) im Kapitel \ref{sequence-diagram} entnommen werden. 
 
-Ist dieser Schritt ausgeführt, muss der Benutzer, wie in der Alert-Message mitgeteilt, selbst zurück zum Brainstorming navigieren. Zweimaliges Klicken auf den 'Zurück'-Pfeil oben links reicht dazu aus. Daraufhin wird sichtbar, dass die Zeichnung im entsprechenden Brainsheet platziert wurde. Dies dank dem Aufruf auf dem \texttt{BrainstormingService}, der die \texttt{SketchIdea} commitet und die Quelle des anzuzeigenden Bildes setzt. Die Implementation dazu ist im Code-Snippet \ref{commit-idea} aufgelistet.
+Ist dieser Schritt ausgeführt, muss der Benutzer, wie in der Alert-Message mitgeteilt, selber zurück zum Brainstorming navigieren. Zweimaliges Klicken auf den 'Zurück'-Pfeil oben links reicht dazu aus. Daraufhin wird sichtbar, dass die Zeichnung im entsprechenden Brainsheet platziert wurde. Dies dank dem Aufruf auf dem \texttt{BrainstormingService}, der die \texttt{SketchIdea} commitet und die Quelle des anzuzeigenden Bildes setzt. Die Implementation dazu ist im Code-Snippet \ref{commit-idea} aufgelistet.
 
 \begin{lstlisting}[caption={Commit-Idea Methode auf dem BrainstormingService}, label={commit-idea}]
 public async Task CommitIdea(Idea idea)
@@ -406,6 +406,8 @@ public async Task CommitIdea(Idea idea)
 	}
 }
 \end{lstlisting}
+
+Diese Methode ist für das Commiten aller Ideentypen zuständig (Note-, Sketch- und Patternideas). 
 
 \subsubsection{Implementation Pattern Feature}
 Nebst der Skizzen-Funktion war es unser Ziel, dem Endnutzer eine Funktion anzubieten, welche es ihm ermöglicht, aus einer Liste von verschiedensten Pattern ein passendes Pattern auszuwählen. 
@@ -471,7 +473,54 @@ public CompletableFuture<Queue<PatternIdea>> getAllPatternIdeas() {
 Der DB-Service wiederum findet alle Pattern und gibt diese nach Kategorie sortiert (Zeile 6-12) als Resultat zurück.
 
 \paragraph*{Implementation Frontend}~\\
-%TODO Pattern beschreiben
+
+Die Navigation zum Einfügen eines Patterns verläuft analog zum Einfügen einer Skizze, jedoch muss anstelle der hellblauen die orange Kachel 'Pattern Idea' ausgewählt werden. Diese Aktion führt zur Ansicht gemäss Abbildung \ref{fig:pattern-overview}.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=1\linewidth]{img/techn-bericht/pattern-overview}
+	\caption{Pattern Übersicht}
+	\label{fig:pattern-overview}
+\end{figure}
+
+Der angezeigte Inhalt wird vom Backend gesendet. Die Aufgabe des Frontends ist es, die Patterns gruppiert anzuzeigen sowie den Link klickbar darzustellen. Das Icon muss zudem angezeigt werden. 
+
+Das wird erreicht, indem die \texttt{ListView} von Xamarin Forms und deren erweiterte Group-Funktion verwendet wird. Dies erlaubt es, eine Liste von Patterns gemäss ihrer Kategorie (z.B. 'Software' oder 'Psychologie') zu gruppieren. 
+
+Listing \ref{grouped-pattern-list} zeigt, wie die zuständigen Properties im ViewModel gesetzt werden. Das \texttt{GroupDisplayBinding}-Property der \texttt{ListView} ist mit einem Binding auf das \texttt{Grouped\-Patterns}-Property verbunden. So dient ein \texttt{PatternIdeaModel} für jedes Item in der Liste als Informationsquelle.
+
+\begin{lstlisting}[label={grouped-pattern-list}]
+private void SetPatternList()
+{
+	var patterns = _brainstormingService.DownloadPatternIdeas();
+	var groupedPatterns = patterns.GroupBy(p => p.Category);
+	foreach(var group in groupedPatterns)
+	{
+		var patternList = new GroupedPatternList();
+		var patternIdeaModels = group.Select(p => new PatternIdeaModel(p)).ToList();
+		patternIdeaModels.ForEach((p)=>
+		{
+			_brainstormingService.SetPictureImageSource(p);
+		});
+		patternList.AddRange(patternIdeaModels);
+		patternList.Category = group.Key;
+		GroupedPatterns.Add(patternList);
+	}
+}
+\end{lstlisting}
+
+Wichtig zu erwähnen: \texttt{GroupedPatterns} ist vom Typ \texttt{List<GroupedPatternList>} und \texttt{GroupedPatternList} wiederum erbt von \texttt{List<PatternIdeaModel>}. Die Relation kann ebenfalls dem Klassendiagramm in Abbildung \ref{fig:pattern-page-classdiagram} entnommen werden.
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.8\linewidth]{img/techn-bericht/pattern-page-classdiagram}
+	\caption{Klassendiagramm der Pattern-Page ListView}
+	\label{fig:pattern-page-classdiagram}
+\end{figure}
+
+
+Hinzu kommt nun, dass bei einem Tap auf ein Item in der Liste das ausgewählte Pattern in das aktuelle Brainsheet eingfügt wird. Dazu wurde ein \texttt{TapGestureRecognizer} auf dem Grid der ViewCell hinzugefügt. Im dahinterliegenden Command wird wie schon bei der Skizze die \texttt{CommitIdea()}-Methode des Brainstorming Services mit dem geklickten Pattern als Parameter aufgerufen. 
+
+Zuletzt wird dem Benutzer noch eine Toast-Notification angezeigt, mit der Bestätigung, dass das Pattern dem Sheet hinzugefügt wurde und mit der Aufforderung, dass er von selbst zum Brainstorming zurücknavigiert.
 
 \subsubsection{Implementation Export Feature}
 Die letzte Funktion, welche wir in unserer Bachelorarbeit verwirklichen wollten, war die Möglichkeit, die erarbeiteten Lösungsvorschläge in geeigneter Form zu exportieren.
