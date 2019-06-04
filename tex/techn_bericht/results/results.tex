@@ -228,7 +228,9 @@ Die StateMachine musste anschliessend von einem Service verwendet werden. Der \t
 
 Neben diesen erwähnten Services wurden auch Services im Data-Access-Layer (DAL) eingeführt. Diese sind in einem separaten Projekt und können ebenfalls mittels deren Interface in die verwendenden Klassen injiziert werden. Sie sind für den gesamten Daten-Zugriff zuständig. Für das Abbilden der Endpunkte des Backends, wurde weiter ein Konfigurationsfile eingeführt. Dieses Json-File wird geparst und vom \texttt{ConfigurationService} den Repositories zur Verfügung gestellt. 
 
-Für das Einführen von DTOs wurde wie zu Beginn dieses Kapitels erwähnt, dass alle Models in ein separates Projekt ausgelagert wurde. Im DAL existiert ein Ordner mit DTOs, welche für das Parsen der Objekte vom Backend verwendet werden. Es wurde zusätzlich ein Mapping-Layer eingeführt, der die empfangenen und sendenden Objekte in bzw. von den Business Objekte abbildet. Dazu wurde das NuGet-Packet Automapper verwendet. 
+Für das Einführen von DTOs wurde wie zu Beginn dieses Kapitels erwähnt, dass alle Models in ein separates Projekt ausgelagert wurde. Im DAL existiert ein Ordner mit DTOs, welche für das Parsen der Objekte vom Backend verwendet werden. Es wurde zusätzlich ein Mapping-Layer eingeführt, der die Objekte in die Business Objekte abbildet. Dazu wurde das NuGet-Packet Automapper verwendet. 
+
+Das Auslagern und Zerstückeln der Logik in Services und das Verwenden von Interfaces erleichterte uns die Implementation der nachfolgend beschriebenen Features erheblich. Weiter konnten besonders durch die verschiedenen States in der \texttt{StateMachine} späteres Fehlverhalten viel besser eingeschränkt und korrigiert werden. 
 
 \subsubsection{Implementation Skizzen Feature}
 Die Skizzen-Funktion soll es dem Endnutzer ermöglichen, nebst den \texttt{NoteIdeas} auch \texttt{SketchIdeas} (siehe Abbildung \ref{fig:domainmodell-methode635}) zu erfassen. Mit den \texttt{SketchIdeas} wird dem Endnutzer die Möglichkeit gegeben, Skizzen als Teil der Brainstorming-Runden zu zeichnen.
