@@ -5,7 +5,7 @@
 Dieses Dokument stellt eine Anleitung für eine allfällige Erweiterung der vorhandenen Ideen-Typen dar. Ziel dieses Dokumentes ist es demzufolge, Hilfestellungen in solch einem Fall zu bieten. 
 
 \subsection{Szenario}
-Um diese Anleitung etwas einfacher und konkreter zu gestallten, gehen wir von einem bestimmten Szenario aus. Das Szenario sieht vor, dass man sich dazu entschieden hat die Applikation um den Ideen-Typ 'QualityIdea' zu erweitern.
+Um diese Anleitung etwas einfacher und konkreter zu gestalten, gehen wir von einem bestimmten Szenario aus. Das Szenario sieht vor, dass man sich dazu entschieden hat die Applikation um den Ideen-Typ 'QualityIdea' zu erweitern. Bei einer 'QualityIdea' geht es dabei um nicht-funktionale Anforderungen, die sich an den ISO 25010 Standard halten (siehe Abbildung \ref{fig:ISO 25010} in Kapitel \ref{subsub:nfr}). So könnte man sich vorstellen, dass ähnlich wie bei den 'PatternIdeas' eine Auswahlliste von nicht-funktionalen Anforderungen bereitgestellt wird. 
 
 Alle nachfolgenden Anpassungen beziehen sich daher auf dieses Szenario. Andere Ideen-Typen sind aber analog zu integrieren.
 
@@ -52,7 +52,43 @@ modelMapper.typeMap(QualityIdeaDTO.class, Idea.class).setProvider(request -> {
 Diese drei Schritte reichen aus, damit das Backend auch mit einer QualityIdea interagieren kann. 
 
 \subsection{Anpassungen am Frontend}
-%TODO Anpassungen für Frontend schreiben
+
+Das Hinzufügen von neuen Ideentypen kann im Frontend in drei Schritte ausgeführt werden:
+\begin{enumerate}
+	\item Erweiterung des Datenmodells
+	\item Ansicht für das Einfügen des neuen Ideentyps
+	\item Anzeigen der eingefügten Idee in den Sheets
+\end{enumerate}
+Die nachfolgenden Unterkapitel beschreiben die aufgelisteten Schritte.
+
+\subsubsection{Erweiterung des Datenmodells}
+
+\begin{labeling}{Zweiter Schritt:}
+	\item[Erster Schritt:] Der erste Schritt ist analog zum Backend; die benötigte Idee als Business-Objekt sowie Daten-Transfer-Objekt erstellen. Auch hier ist es notwendig, von der abstrakten Klasse \texttt{Idea} bzw. \texttt{IdeaDto} abzuleiten. 
+	\item[Zweiter Schritt:] Ebenfalls muss die neue Idee dem Mapper bekannt gemacht werden. Dazu in der Methode \texttt{MapIdeas()} in der Klasse \texttt{Brainstorming\-Mapping\-Profile} das Mapping von und zum DTO erstellen und mit \texttt{Include<>()} als Subtyp der \texttt{Idea} registrieren. 
+	\item[Dritter Schritt:] Damit die JSON-Serialiserung wie gewünscht funktioniert, muss in der Klasse \texttt{IdeaConverter} das JSON-Attribut 'Type' gelesen und geschrieben werden. Dazu einen neuen \texttt{const string} mit Wert 'qualityIdea' initialisieren und im Switch-Case der \texttt{ReadJson()}-Methode analog zu den anderen Ideen das deserialisierte Objekt zurückgeben. Zusätzlich wird in der \texttt{WriteJson()}-Methode ein weiteres \texttt{else if} benötigt, das den entsprechenden String der Konstante ins 'Type'-Attribut schreibt.
+\end{labeling}
+
+Mit diesen Schritten ist das Datenmodell erfolgreich erweitert.
+
+\subsubsection{Ansicht fürs Einfügen von neuen Ideentypen}
+Hierbei geht es um die Möglichkeit, mit einer neuen Page die \texttt{QualityIdea} einfügen zu können.
+
+\begin{labeling}{Zweiter Schritt:}
+	\item[Erster Schritt: ]	Neue Prism View und neues ViewModel erstellen mit der gewünschten Ansicht fürs Einfügen einer \texttt{QualityIdea}. Wichtig ist, dass das ViewModel den \texttt{Brainstorming\-Service} kennt. Dieser wird benötigt, um die Idee den Sheets hinzuzufügen (\texttt{CommitIdea()}). 
+	\item[Zweiter Schritt: ] In der \texttt{InsertPage} ein Frame mit einem \texttt{TapGestureRecognizer} erstellen, das im dahinterliegenden Command die Navigation auf die erstellte Page ausführt.
+\end{labeling}
+
+Somit ist es dem Benutzer möglich, eine neue Idee auszuwählen und dem Brainsheet hinzuzufügen. 
+
+\subsubsection{Neue Idee im Sheet anzeigen}
+\begin{labeling}{Zweiter Schritt:}
+	\item[Erster Schritt: ] Jede Idee hat ihr eigenes \texttt{DataTemplate}, das das Aussehen innerhalb des Sheets definiert. Diese sind in den Content-Page-Resources der \texttt{Brain\-storming\-Page} definiert. Hier muss ein neues Template definiert werden, dass die Idee und deren Attribute wie gewünscht darstellt. 
+	\item[Zweiter Schritt: ] Um das erstellte Template auszuwählen, muss die Klasse \texttt{Idea\-Template\-Selector} erweitert werden. Eine weitere Überprüfung des Typs auf \texttt{Qua\-lity\-Idea} reicht dabei aus, das neue Template zurückzugeben.
+\end{labeling}
+
+Hiermit sind alle benötigten Schritte erledigt und der neue Ideentyp ist integriert. 
+
 
 \subsection{Erfüllung der nicht-funktionalen Anforderungen} 
 Wie im Kapitel \ref{subsub:nfr} beschrieben, war es unter anderem unser Ziel, unsere Applikation in Bezug auf Erweiterung und Modularität zu verbessern. Wir wollen daher hier nochmals speziell Bezug nehmen auf diese Ziele und beurteilen wie gut diese umgesetzt wurden.
