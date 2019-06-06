@@ -75,16 +75,16 @@ Mit diesen Schritten ist das Datenmodell erfolgreich erweitert.
 Hierbei geht es um die Möglichkeit, mit einer neuen Page die \texttt{QualityIdea} einfügen zu können.
 
 \begin{labeling}{Zweiter Schritt:}
-	\item[Erster Schritt: ]	Neue Prism View und neues ViewModel erstellen mit der gewünschten Ansicht fürs Einfügen einer \texttt{QualityIdea}. Wichtig ist, dass das ViewModel den \texttt{Brainstorming\-Service} kennt. Dieser wird benötigt, um die Idee den Sheets hinzuzufügen (\texttt{CommitIdea()}). 
-	\item[Zweiter Schritt: ] In der \texttt{InsertPage} ein Frame mit einem \texttt{TapGestureRecognizer} erstellen, das im dahinterliegenden Command die Navigation auf die erstellte Page ausführt.
+	\item[Erster Schritt:]	Neue Prism View und neues ViewModel erstellen mit der gewünschten Ansicht fürs Einfügen einer \texttt{QualityIdea}. Wichtig ist, dass das ViewModel den \texttt{Brainstorming\-Service} kennt. Dieser wird benötigt, um die Idee den Sheets hinzuzufügen (\texttt{CommitIdea()}). 
+	\item[Zweiter Schritt:] In der \texttt{InsertPage} ein Frame mit einem \texttt{TapGestureRecognizer} erstellen, das im dahinterliegenden Command die Navigation auf die erstellte Page ausführt.
 \end{labeling}
 
 Somit ist es dem Benutzer möglich, eine neue Idee auszuwählen und dem Brainsheet hinzuzufügen. 
 
 \subsubsection{Neue Idee im Sheet anzeigen}
 \begin{labeling}{Zweiter Schritt:}
-	\item[Erster Schritt: ] Jede Idee hat ihr eigenes \texttt{DataTemplate}, das das Aussehen innerhalb des Sheets definiert. Diese sind in den Content-Page-Resources der \texttt{Brain\-storming\-Page} definiert. Hier muss ein neues Template definiert werden, dass die Idee und deren Attribute wie gewünscht darstellt. 
-	\item[Zweiter Schritt: ] Um das erstellte Template auszuwählen, muss die Klasse \texttt{Idea\-Template\-Selector} erweitert werden. Eine weitere Überprüfung des Typs auf \texttt{Qua\-lity\-Idea} reicht dabei aus, das neue Template zurückzugeben.
+	\item[Erster Schritt:] Jede Idee hat ihr eigenes \texttt{DataTemplate}, das das Aussehen innerhalb des Sheets definiert. Diese sind in den Content-Page-Resources der \texttt{Brain\-storming\-Page} definiert. Hier muss ein neues Template definiert werden, dass die Idee und deren Attribute wie gewünscht darstellt. 
+	\item[Zweiter Schritt:] Um das erstellte Template auszuwählen, muss die Klasse \texttt{Idea\-Template\-Selector} erweitert werden. Eine weitere Überprüfung des Typs auf \texttt{Qua\-lity\-Idea} reicht dabei aus, das neue Template zurückzugeben.
 \end{labeling}
 
 Hiermit sind alle benötigten Schritte erledigt und der neue Ideentyp ist integriert. 
