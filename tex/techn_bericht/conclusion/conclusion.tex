@@ -41,7 +41,8 @@ Dieses Kapitel dient dazu Fehlverhalten in unserem System zu dokumentieren.
 		\desclabelstyle{\multilinelabel}
 		\desclabelwidth{3.5cm}
 		\setlength{\itemsep}{5ex}}
-	\item [Navigation] Some Text here
+	\item [Falscher Zustand nach erstmaligem Auswählen eines beendeten Brainstormings] Wird nach einem beendeten Brainstorming zurück in die Übersicht aller Brainstormings gewechselt und das durchgeführte ausgewählt, wird der Zustand der Statemachine falsch eruiert (\texttt{RunningState} anstatt \texttt{EndedState}). Dies führt dazu, dass der Timer weiterläuft und schlussendlich ins Negative zählt. Dies hängt damit zusammen, dass der \texttt{Brainstorming\-Service} durch das mehrmalige Aufrufen der ViewModels aufgrund des Navigationsproblems (siehe Kapitel \ref{subsub:navigation}) im  Kontextobjekt veraltete Werte enthält, welche in der Berechnung der Statemachine in einem falschen Zustand resultieren. 
+	
 	\item [Security] Obwohl das Thema Security kein eigentliches Problem darstellt, soll an dieser Stelle erwähnt werden, dass wir kein spezielles Augenmerk auf dieses Thema geworfen haben. Bei einer allfälligen Folgearbeit wäre es daher sinnvoll, dieses Thema stärker in den Fokus zu rücken und notwendige Anpassungen an der bestehenden Applikation vorzunehmen. Auch wäre es ratsam sich Gedanken für den Zugriff von Skizzen zu machen, welche möglicherweise als intern oder schützenswert zu klassifizieren sind.
 \end{basedescript}
 
