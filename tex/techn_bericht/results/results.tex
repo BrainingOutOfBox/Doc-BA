@@ -24,7 +24,6 @@ Dieser Abschnitt ist so aufgebaut, dass anhand von zwei Beispielen aufgezeigt we
 
 Das nachfolgende Listing \ref{participantErstellenVorRef} zeigt einen Ausschnitt aus der \texttt{Participant\-Controller} Klasse wie es vor dem Refactoring war. Das Listing \ref{participantErstellenNachRef} zeigt dieselbe Methode nach dem Refactoring.
 
-\lstset{language=JAVA, showstringspaces=false, frame=single, captionpos=b, label=createParticipant, breaklines=true, numbers=left}
 \begin{lstlisting}[caption={Participant erstellen vor Refactoring}, label=participantErstellenVorRef]
 public Result createParticipant(){
 
@@ -146,16 +145,15 @@ Die gesamte Logik für den Austausch der Brainsheets wurde in die \texttt{Findin
 
 \begin{lstlisting}[caption={Exchange Brainsheet im Business Layer}, label=exchangeBrainsheetBusinessLayer]
 public boolean exchangeBrainsheet(String findingIdentifier, Brainsheet newBrainsheet) {
-BrainstormingFinding finding = service.getFinding(findingIdentifier).get();
-if (finding == null){
-    return false;
-} else {
-    if (newBrainsheet.getNrOfSheet() < finding.getBrainsheets().size()) {
-       service.exchangeBrainsheet(finding, newBrainsheet);
-       return true;
-    }
-    return false;
-}
+	BrainstormingFinding finding = service.getFinding(findingIdentifier).get();
+	if (finding == null){
+	    return false;
+	} else if (newBrainsheet.getNrOfSheet() < finding.getBrainsheets().size()) {
+	       service.exchangeBrainsheet(finding, newBrainsheet);
+	       return true;
+	    }
+	}
+	return false;
 }
 \end{lstlisting}
 
@@ -164,16 +162,16 @@ Auch wurde die Implementation für das Einfügen in die Datenbank in eine separa
 \begin{lstlisting}[caption={Exchange Brainsheet im Data Access Layer}, label=exchangeBrainsheetDAL]
 public void exchangeBrainsheet(BrainstormingFinding finding, Brainsheet newBrainsheet){
     
-//update Brainsheet at the correct index
-findingCollection.updateOne(eq("identifier", finding.getIdentifier()),combine(set("brainsheets."+newBrainsheet.getNrOfSheet(), newBrainsheet), inc("deliveredBrainsheetsInCurrentRound", 1)), (result, t) -> Logger.info(result.getModifiedCount() + " new Brainsheet successfully updated"));
+	//update Brainsheet at the correct index
+	findingCollection.updateOne(eq("identifier", finding.getIdentifier()),combine(set("brainsheets."+newBrainsheet.getNrOfSheet(), newBrainsheet), inc("deliveredBrainsheetsInCurrentRound", 1)), (result, t) -> Logger.info(result.getModifiedCount() + " new Brainsheet successfully updated"));
 }
 \end{lstlisting}
 Diese zwei Beispiele stellen noch lange nicht alle überarbeiteten Codestellen dar, geben aber eine gute Übersicht, wie der gesamte Code vereinfacht werden konnte.
 
 \paragraph*{Fazit}~\\
-Gerade das Beispiel vom Austausch der Brainsheets (Listing \ref{putBrainsheetVorRef}) verdeutlicht, dass das Layering stark verbessert wurde. Damit konnte die Übersicht und Komplexität deutlich verbessert werden.
+Gerade das Beispiel vom Austausch der Brainsheets (Listing \ref{putBrainsheetVorRef}) verdeutlicht, dass das Layering stark verbessert wurde. Damit konnte die Übersicht und Komplexität deutlich verbessert bzw. verringert werden.
 
-Auch wurden im gesamten Backend Data-Transfer-Obekte (DTO) \cite{DTO} eingefügt. Die Idee von DTOs ist es, alle Daten, welche über das Netzwerk gesendet werden in eben jenen Data-Transfer-Obekten zu speichern und zu übertragen. Im Unterschied zu den Business-Objects besitzen DTOs kein business-relevantes Verhalten. Sie sind ausschliesslich für die Übertragung der Daten verantwortlich. Dies war vor allem im späteren Verlauf der Arbeit von grossem Wert.
+Auch wurden im gesamten Backend Data-Transfer-Objekte (DTO) \cite{DTO} eingefügt. Die Idee von DTOs ist es, alle Daten, welche über das Netzwerk gesendet werden in eben jenen Data-Transfer-Obekten zu speichern und zu übertragen. Im Unterschied zu den Business-Objects besitzen DTOs kein business-relevantes Verhalten. Sie sind ausschliesslich für die Übertragung der Daten verantwortlich. Dies war vor allem im späteren Verlauf der Arbeit von grossem Wert.
 
 Mit Hilfe der BodyParser-Klassen konnte die komplette Überprüfung und Deserialisierung der angelieferten JSON-Daten zentral geregelt werden. Somit ist immer sichergestellt, dass das DTO korrekt (alle erwarteten Informationen sind vorhanden und das Format stimmt) erstellt wird. 
 
@@ -188,7 +186,7 @@ Auf der Seite des Frontends standen folgende Punkte für das Refactoring an:
 	\item Localisation
 \end{enumerate}
 
-Zuerst wurde ein einfaches Layering vorgenommen. Alle Models wurden in ein separates Projekt ausgelagert und verwendet. Zusätzlich wurden einzelne Services wie der \texttt{UiNavigationService} erstellt, welcher jegliche Navigationsschritte ausführen kann und in die ViewModels injected wird. Durch das Einführen dieses Services hat sich bereits ein grösseres Problem gelöst: die Performance Issues. Vor diesem Service rief jedes ViewModel den durch das MVVM-Framework PrismForms bereitgestellten \texttt{NavigationService} auf. Dies führte dazu, dass bei jedem Navigationsschritt der \texttt{NavigationService} neu initialisiert wurde. Durch das Kapseln in eine eigene Klasse kann dieser als Singleton im IoC Container registriert werden, somit wird dieser nur beim Starten der Applikation initialisiert. 
+Zuerst wurde ein einfaches Layering vorgenommen. Alle Models wurden in ein separates Projekt ausgelagert. Zusätzlich wurden einzelne Services wie der \texttt{UiNavigationService} erstellt, welcher jegliche Navigationsschritte ausführen kann und in die ViewModels injected wird. Durch das Einführen dieses Services hat sich bereits ein grösseres Problem gelöst: die Performance Issues. Vor diesem Service rief jedes ViewModel den durch das MVVM-Framework Prism Forms bereitgestellten \texttt{NavigationService} auf. Dies führte dazu, dass bei jedem Navigationsschritt der \texttt{NavigationService} neu initialisiert wurde. Durch das Kapseln in eine eigene Klasse kann dieser als Singleton im IoC Container registriert werden, somit wird dieser nur beim Starten der Applikation initialisiert. 
 
 Nachdem die Navigation in einen Service ausgelagert wurde, musste die Implementation der Kern-Logik überarbeitet werden. Dazu wurde im Umfang der Studienarbeit bereits ein Konzept für eine State-Machine erarbeitet \cite{methode635-sa}. Diese wurde mittels Test-Driven-Design in der jetzigen Arbeit umgesetzt. Listing \ref{start-statemachine} zeigt, wie die Statemachine beim Start ermittelt, in welchem State sie sich befindet.
 \begin{lstlisting}[caption=Start der Klasse StateMachine, label=start-statemachine]
@@ -217,7 +215,7 @@ public void Start()
 \end{lstlisting}
 Wie auf Zeile 4 ersichtlich wurde gegen ein Interface namens \texttt{IState} programmiert. Dieses Interface enthält eine \texttt{Init()}- und eine \texttt{CleanUp()}-Methode, sowie ein \texttt{PropertyChanged}-Event, der für das Notifizieren der Änderungen eines States zuständig ist. Durch das \texttt{IState}-Interface ist die Erweiterbarkeit gewährleistet (z.B. Einführen eines zusätzlichen 'Review' States). 
 
-Die StateMachine musste anschliessend von einem Service verwendet werden. Der \texttt{BrainstormingService} ist für die gesamte Kernlogik zuständig und behält somit eine Instanz der \texttt{StateMachine}. Auch im \texttt{BrainstormingService} wurde gegen ein Interface programmiert. Dessen Methoden sind der Abbildung \ref{fig:ibrainstormingservice} zu entnehmen.
+Die StateMachine musste anschliessend von einem Service verwendet werden. Der \texttt{BrainstormingService} ist für die gesamte Kernlogik zuständig und hält somit eine Instanz der \texttt{StateMachine}. Auch im \texttt{BrainstormingService} wurde gegen ein Interface programmiert. Dessen Methoden sind der Abbildung \ref{fig:ibrainstormingservice} zu entnehmen.
 
 \begin{figure}[h]
 	\centering
@@ -228,7 +226,10 @@ Die StateMachine musste anschliessend von einem Service verwendet werden. Der \t
 
 Neben diesen erwähnten Services wurden auch Services im Data-Access-Layer (DAL) eingeführt. Diese sind in einem separaten Projekt und können ebenfalls mittels deren Interface in die verwendenden Klassen injiziert werden. Sie sind für den gesamten Daten-Zugriff zuständig. Für das Abbilden der Endpunkte des Backends, wurde weiter ein Konfigurationsfile eingeführt. Dieses Json-File wird geparst und vom \texttt{ConfigurationService} den Repositories zur Verfügung gestellt. 
 
-Für das Einführen von DTOs wurde wie zu Beginn dieses Kapitels erwähnt, dass alle Models in ein separates Projekt ausgelagert wurde. Im DAL existiert ein Ordner mit DTOs, welche für das Parsen der Objekte vom Backend verwendet werden. Es wurde zusätzlich ein Mapping-Layer eingeführt, der die Objekte in die Business Objekte abbildet. Dazu wurde das NuGet-Packet Automapper verwendet. 
+Für das Einführen von DTOs wurde in einem ersten Schritt, wie zu Beginn dieses Kapitels erwähnt, alle Models in ein separates Projekt ausgelagert. Im DAL existiert ein Ordner mit DTOs, welche für das Parsen der Objekte vom Backend verwendet werden. Es wurde danach ein Mapping-Layer eingeführt, der die Daten-Transfer-Objekte in die Business Objekte und umgekehrt abbildet. Dazu wurde das NuGet-Packet Automapper verwendet. 
+
+
+\paragraph{Fazit}~\\
 
 Das Auslagern und Zerstückeln der Logik in Services und das Verwenden von Interfaces erleichterte uns die Implementation der nachfolgend beschriebenen Features erheblich. Weiter konnten besonders durch die verschiedenen States in der \texttt{StateMachine} späteres Fehlverhalten viel besser eingeschränkt und korrigiert werden. 
 
@@ -246,15 +247,15 @@ Der genaue Kommunikations-Ablauf kann der Abbildung \ref{fig:Seq-Draw-Sketch} in
 public Result uploadFile(){
     try {
 
-    final Http.MultipartFormData<File> formData = request().body().asMultipartFormData();
-    final Http.MultipartFormData.FilePart<File> filePart = formData.getFile("name");
-    final File file = filePart.getFile();
-
-    final byte[] fileData = Files.readAllBytes(file.toPath());
-    final String fileName = file.getName();
-
-    String fileId = service.uploadFileAsStream(fileData, fileName);
-    return ok(Json.toJson(new SuccessMessage("Success", fileId)));
+	    final Http.MultipartFormData<File> formData = request().body().asMultipartFormData();
+	    final Http.MultipartFormData.FilePart<File> filePart = formData.getFile("name");
+	    final File file = filePart.getFile();
+	
+	    final byte[] fileData = Files.readAllBytes(file.toPath());
+	    final String fileName = file.getName();
+	
+	    String fileId = service.uploadFileAsStream(fileData, fileName);
+	    return ok(Json.toJson(new SuccessMessage("Success", fileId)));
 
     } catch (IOException | InterruptedException | ExecutionException  e) {
         return internalServerError(Json.toJson(new ErrorMessage("Error", e.getMessage())));
@@ -323,7 +324,7 @@ public byte[] downloadFileAsStream(String id) ...{
 
 Hierbei wird ein downloadStream geöffnet, welcher die Daten anhand der ID aus der Datenbank liest und in ein Byte-Array schreibt (Zeile 8). Auch hier wird am Ende der Stream wieder geschlossen (Zeile 15).
 
-Der zurückgelieferte Byte-Array wird anschliessend unverändert an den Client zurück\-geschickt. Allfällige Fehler während der Ausführung sowohl beim Hochladen wie auch beim Herunterladen werden im File-Controller abgefangen und als Fehler an den Client geschickt.
+Der zurückgelieferte Byte-Array wird anschliessend unverändert an den Client zurück\-geschickt. Allfällige Fehler während der Ausführung sowohl beim Hochladen als auch beim Herunterladen werden im File-Controller abgefangen und als Fehler an den Client geschickt.
 
 \paragraph*{Implementation Frontend}~\\
 Das Feature wird im Frontend durch folgende Schritte während dem Brainstorming erreicht:
@@ -344,7 +345,7 @@ Abbildung \ref{fig:sketch-page} verdeutlicht den Navigationsablauf.
 
 Durch das Betätigen des 'More Ideas'-Buttons wird der \texttt{UiNavigationService} aufgerufen, welcher wiederum auf die \texttt{InsertSpecialPage} navigiert. Dasselbe geschieht bei der Auswahl der 'Sketch Idea'-Kachel, nur wird dieses Mal die  \texttt{SketchPage} aufgerufen. 
 
-Die Implementation der Sketching-Page hält sich stark an die Dokumentation von Microsoft \cite{sketching-xf}. Hinzu kam die Funktionalität, das Bild zu speichern und an das Backend zu schicken. Dazu muss ein Snapshot des Canvas' zum Zeitpunkt des Betätigen des 'Save-Image'-Buttons gemacht werden. Der Code dazu ist in Listing \ref{save-clicked-sketch} zu finden.
+Der Grossteil der Implementation der Sketching-Page hält sich stark an das Beispiel in der Dokumentation von Microsoft \cite{sketching-xf}. Ergänzend kam die Funktionalität, das Bild zu speichern und an das Backend zu schicken. Dazu muss ein Snapshot des Canvas' zum Zeitpunkt des Betätigen des 'Save-Image'-Buttons gemacht werden. Der Code dazu ist in Listing \ref{save-clicked-sketch} zu finden.
 
 \begin{lstlisting}[label={save-clicked-sketch},caption={Save Click-Eventhandler}]
 private void Save_Clicked(object sender, EventArgs e)
@@ -440,9 +441,9 @@ Der genaue Kommunikations-Ablauf kann der Abbildung \ref{fig:Seq-Insert-Pattern}
 }
 \end{lstlisting}
 
-Um alle verfügbaren Pattern abzurufen wird auf dem Pattern-Service (Zeile 2) die Methode \textit{getAllPatternIdeas} aufgerufen. Anschliessend werden die gefundenen Pattern lediglich in ein DTO umgewandelt (Zeile 8) und fast unverändert als JSON an den Client gesendet (Zeile 14).
+Um alle verfügbaren Patterns abzurufen wird auf dem Pattern-Service (Zeile 2) die Methode \textit{getAllPatternIdeas} aufgerufen. Anschliessend werden die gefundenen Patterns lediglich in ein DTO umgewandelt (Zeile 8) und fast unverändert als JSON an den Client gesendet (Zeile 14).
 
-Der Endnutzer kann nun aus einer Liste der verfügbaren Pattern das gewünschte Pattern auswählen. Dieses wird, wie schon die \texttt{SketchIdea} oder \texttt{NoteIdea}, als Teil des \texttt{Brainsheets} an das Backend geschickt. 
+Der Endnutzer kann nun aus einer Liste der verfügbaren Patterns das gewünschte Pattern auswählen. Dieses wird, wie schon die \texttt{SketchIdea} oder \texttt{NoteIdea}, als Teil des \texttt{Brainsheets} an das Backend geschickt. 
 
 Wie in allen Controller-Klassen werden auch hier allfällige Fehler während der Ausführung abgefangen und an den Client gesendet (Zeile 16/17).
 
@@ -470,7 +471,7 @@ public CompletableFuture<Queue<PatternIdea>> getAllPatternIdeas() {
 }
 \end{lstlisting}
 
-Der DB-Service wiederum findet alle Pattern und gibt diese nach Kategorie sortiert (Zeile 6-12) als Resultat zurück.
+Der DB-Service wiederum findet alle Patterns und gibt diese nach Kategorie sortiert (Zeile 6-12) als Resultat zurück.
 
 \paragraph*{Implementation Frontend}~\\
 
@@ -509,7 +510,7 @@ private void SetPatternList()
 }
 \end{lstlisting}
 
-Wichtig zu erwähnen: \texttt{GroupedPatterns} ist vom Typ \texttt{List<GroupedPatternList>} und \texttt{GroupedPatternList} wiederum erbt von \texttt{List<PatternIdeaModel>}. Die Relation kann ebenfalls dem Klassendiagramm in Abbildung \ref{fig:pattern-page-classdiagram} entnommen werden.
+\textbf{Wichtig zu erwähnen}: \texttt{GroupedPatterns} ist vom Typ \texttt{List<GroupedPatternList>} und \texttt{GroupedPatternList} wiederum erbt von \texttt{List<PatternIdeaModel>}. Die Relation kann ebenfalls dem Klassendiagramm in Abbildung \ref{fig:pattern-page-classdiagram} entnommen werden.
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.8\linewidth]{img/techn-bericht/pattern-page-classdiagram}
@@ -520,12 +521,12 @@ Wichtig zu erwähnen: \texttt{GroupedPatterns} ist vom Typ \texttt{List<GroupedP
 
 Hinzu kommt nun, dass bei einem Tap auf ein Item in der Liste das ausgewählte Pattern in das aktuelle Brainsheet eingfügt wird. Dazu wurde ein \texttt{TapGestureRecognizer} auf dem Grid der ViewCell hinzugefügt. Im dahinterliegenden Command wird wie schon bei der Skizze die \texttt{CommitIdea()}-Methode des Brainstorming Services mit dem geklickten Pattern als Parameter aufgerufen. 
 
-Zuletzt wird dem Benutzer noch eine Toast-Notification angezeigt, mit der Bestätigung, dass das Pattern dem Sheet hinzugefügt wurde und mit der Aufforderung, dass er von selbst zum Brainstorming zurücknavigiert.
+Zuletzt wird dem Benutzer noch eine Toast-Notification angezeigt, mit der Bestätigung, dass das Pattern dem Sheet hinzugefügt wurde und mit der Aufforderung, dass er von selbst zum Brainstorming zurücknavigieren soll.
 
 \subsubsection{Implementation Export Feature}
 Die letzte Funktion, welche wir in unserer Bachelorarbeit verwirklichen wollten, war die Möglichkeit, die erarbeiteten Lösungsvorschläge in geeigneter Form zu exportieren.
 
-Nach einer kleineren Analysephase und einer Beratungsrunde mit unserem Betreuer fiel die Wahl nach der geeigneten Form auf Markdown \cite{markdown}. Der Vorteil von Markdown sahen wir vor allem darin, dass man Markdown schnell und einfach z.B. auf GitHub hochladen kann. Da man als Entwickler tendenziell viel mit GitHub oder ähnlichen Tools/Webseiten arbeitet, empfanden wir diese Umsetzung am  einfachsten und intuitivsten von der Handhabung.
+Nach einer kleineren Analysephase und einer Beratungsrunde mit unserem Betreuer fiel die Wahl nach der geeigneten Form auf Markdown \cite{markdown}. Der Vorteil von Markdown sahen wir vor allem darin, dass man Markdown schnell und einfach z.B. auf GitHub hochladen kann. Da man als Entwickler und Software-Architekten tendenziell viel mit GitHub oder ähnlichen Tools/Webseiten arbeitet, empfanden wir diese Umsetzung am  einfachsten und intuitivsten von der Handhabung.
 
 \paragraph*{Implementation Backend}~\\
 Die Möglichkeit des Exports wird hauptsächlich durch das Backend bereit gestellt. Dabei wurden die Business-Objekte um eine Serialize-Methode erweitert, welche beschreibt, wie die Objekte im Markdown aussehen sollten bzw. welche Informationen wie (Text, BoldText, ItalicText, Header, etc.) dargestellt werden sollten. 
@@ -535,35 +536,35 @@ In den nachfolgenden Listings wird aufgezeigt, wie die Export-Funktion und die S
 \begin{lstlisting}[caption={Serialize-Methode von BrainstormingFinding}, label=markdownBrainstormingFinding]
 public class BrainstormingFinding implements MarkdownCascadable {
 ...
-public String getPredecessor() {
-    return new Heading(getName(),1).toString() + "\n";
-}
-
-...
-public String getSuccessor() {
-    StringBuilder successor = new StringBuilder();
-
-    successor.append(new BoldText("Basic Information").toString()).append("\n")
-    .append(new Text("Description: ").toString())
-    .append(getProblemDescription()).append("\n")
-            ...
-    return successor.toString();
-}
-
-...
-public String serialize() throws MarkdownSerializationException {
-
-    if (getName().equals("") || getNrOfIdeas() == 0 || getType().equals("") || getBrainstormingTeam().equals("")) {
-        throw new MarkdownSerializationException("name is null or description");
-    }
-
-    StringBuilder brainsheets = new StringBuilder();
-
-    for (Brainsheet brainsheet: getBrainsheets()){
-        brainsheets.append(brainsheet.serialize());
-    }
-    
-    return getPredecessor() + getSuccessor() + brainsheets.toString();
+	public String getPredecessor() {
+	    return new Heading(getName(),1).toString() + "\n";
+	}
+	
+	...
+	public String getSuccessor() {
+	    StringBuilder successor = new StringBuilder();
+	
+	    successor.append(new BoldText("Basic Information").toString()).append("\n")
+	    .append(new Text("Description: ").toString())
+	    .append(getProblemDescription()).append("\n")
+	            ...
+	    return successor.toString();
+	}
+	
+	...
+	public String serialize() throws MarkdownSerializationException {
+	
+	    if (getName().equals("") || getNrOfIdeas() == 0 || getType().equals("") || getBrainstormingTeam().equals("")) {
+	        throw new MarkdownSerializationException("name is null or description");
+	    }
+	
+	    StringBuilder brainsheets = new StringBuilder();
+	
+	    for (Brainsheet brainsheet: getBrainsheets()){
+	        brainsheets.append(brainsheet.serialize());
+	    }
+	    
+	    return getPredecessor() + getSuccessor() + brainsheets.toString();
 	}
 }
 
@@ -573,18 +574,18 @@ Im \textit{FindingController} wird nun die \texttt{exportBrainstorming}-Methode 
 
 \begin{lstlisting}[caption={Export-Methode im FindingController}, label=markdownFindingController]
 public Result exportBrainstorming(...){
-try {
-String result = service.exportBrainstorming(findingIdentifier);
-
-    if (result != null) {
-        return ok(result);
-    } else {
-        return badRequest(...);
-    }
-    
-} catch (InterruptedException | ... e) {
-    return internalServerError(Json.toJson(new ErrorMessage("Error", e.getMessage())));
-}
+	try {
+		String result = service.exportBrainstorming(findingIdentifier);
+	
+	    if (result != null) {
+	        return ok(result);
+	    } else {
+	        return badRequest(...);
+	    }
+	    
+	} catch (InterruptedException | ... e) {
+	    return internalServerError(Json.toJson(new ErrorMessage("Error", e.getMessage())));
+	}
 }
 \end{lstlisting}
 
@@ -592,19 +593,19 @@ Der Business-Service wiederum holt das \textit{BrainstormingFinding} (Zeile 2) u
 
 \begin{lstlisting}[caption={Export-Methode im FindingService}, label=markdownFindingService]
 public String exportBrainstorming(String findingIdentifier) ...{
-BrainstormingFinding finding = service.getFinding(findingIdentifier).get();
+	BrainstormingFinding finding = service.getFinding(findingIdentifier).get();
 
-if (finding != null) {
-    BrainstormingTeam team = teamService.getTeam(finding.getBrainstormingTeam()).get();
-    finding.setBrainstormingTeam(team.getName());
-    return finding.serialize();
-}
+	if (finding != null) {
+	    BrainstormingTeam team = teamService.getTeam(finding.getBrainstormingTeam()).get();
+	    finding.setBrainstormingTeam(team.getName());
+	    return finding.serialize();
+	}
 
-return null;
+	return null;
 }
 \end{lstlisting}
 
-Die Tatsache, dass wir neben unseren Business-Objekten sogenannte DTOs in unsere Applikation integrierten, konnte in dieser Funktion gut ausgenutzt werden. So wurde die Serialize-Methode lediglich in den Business-Objekten implementiert, da sie einen Bestandteil der Business-Logik darstellt und weniger essenziell für die Kommunikation ist.
+Die Tatsache, dass wir neben unseren Business-Objekten DTOs in unsere Applikation integrierten, konnte in dieser Funktion gut ausgenutzt werden. So wurde die Serialize-Methode lediglich in den Business-Objekten implementiert, da sie einen Bestandteil der Business-Logik darstellt und weniger essenziell für die Kommunikation ist.
 
 \paragraph*{Implementation Frontend}~\\
 
@@ -628,9 +629,9 @@ namespace Method635.App.Forms.iOS.Clipboard
 		}
 	}
 \end{lstlisting}
-Besonders zu erwähnen ist die Zeile 6 (analog bei Android-Implementation), welche den \texttt{ClipboardService} beim Dependency-Service von Xamarin Forms registriert. 
+Besonders zu erwähnen ist die Zeile 6 (analog bei Android-Implementation), welche den \texttt{ClipboardService} beim Dependency Service von Xamarin Forms registriert. 
 
-Da schon ein IoC Container durch das MVVM-Framework Prism Forms verwendet wird, macht es Sinn, nur einen Dependency Server der Applikationslogik mitzugeben. Deshalb wurden alle benötigten Services, die im Xamarin Forms Dependency-Service registriert wurden, ebenfalls beim Prism IoC-Container registriert. So werden alle Services nur von einer Quelle aufgelöst.
+Da schon ein IoC Container durch das MVVM-Framework Prism Forms verwendet wird, macht es Sinn, nur einen Dependency Service der Applikationslogik mitzugeben. Deshalb wurden alle benötigten Services, die im Xamarin Forms Dependency Service registriert wurden, ebenfalls beim Prism IoC-Container registriert. So werden alle Services nur von einer Quelle aufgelöst.
 
 Im Applikationssetup (\texttt{App.xaml.cs}) wird somit der ClipboardService folgendermassen registriert:
 \begin{lstlisting}
@@ -697,7 +698,7 @@ Wie aus dem Projektplan (siehe Kapitel \ref{subsec:timeline}) zu entnehmen ist, 
 
 Obwohl das Refactoring etwas mehr Zeit als zunächst gedacht benötigte, konnten wir die gesetzten Ziele allesamt erreichen. Die restlichen drei Use-Cases aus dem Kapitel \ref{par:fully-dressed-uc} waren für uns schon von Beginn weg niedriger priorisiert. Dies aus dem Grund, da diese keine businesskritische Funktion darstellten bzw. durch die anderen Use-Cases teilweise abgedeckt werden konnten (Links können z.B. auch als normaler Text eingegeben werden). Weitere nicht implementierten Features sind: Use-Case 2: Logout auf Back- und Frontend sowie Use-Case 4: Delete Account und Use-Case 6: Leave Brainstorming Team auf dem Frontend. Da wir uns auf die oben erwähnten Arbeiten konzentrieren, war es auch nie ein definiertes Ziel dieser Arbeit, diese umzusetzen. 
 
-Die Ziele aus der Aufgabenstellung (siehe Anhang \ref{sec:aufgabenstellung}) wurden wir folgt erreicht. Die Erweiterbarkeit ist durch die Applikation gegeben. Wie im Anhang \ref{sec:Ideen_Erweiterung} beschrieben, ist es ohne grosse Aufwände möglich, die bestehende Applikation um weitere Ideen-Typen zu erweitern. Auch steht der Integration von anderen Brainstorming- und Innovationsmethoden nichts im Wege.
+Die Ziele aus der Aufgabenstellung (siehe Anhang \ref{sec:aufgabenstellung}) wurden wie folgt erreicht. Die Erweiterbarkeit ist durch die Applikation gegeben. Wie im Anhang \ref{sec:Ideen_Erweiterung} beschrieben, ist es ohne grosse Aufwände möglich, die bestehende Applikation um weitere Ideen-Typen zu erweitern. Auch steht der Integration von anderen Brainstorming- und Innovationsmethoden nichts im Wege.
 
 Auch die Ausnutzung der Smartphone-Fähigkeiten bzw. die Verwendung der verschiedenen Medien wurde erweitert. Dank des Touchscreen ist es z.B. möglich Skizzen zu zeichnen. Die Patternfunktion ermöglicht es zudem ein vordefiniertes Pattern als weiteres, neues Medium zu nutzen.
 
