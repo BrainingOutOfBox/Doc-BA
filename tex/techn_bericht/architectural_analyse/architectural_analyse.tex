@@ -2,7 +2,7 @@
 \label{architektur}
 %TODO Architektur anpassen
 
-In diesem Kapitel gehen wir detailliert auf die Architektur und das Deployment unseres Projektes ein. Es ist allerdings zu vermerken, dass dieses Kapitel komplett aus der Studienarbeit \cite{methode635-sa} hervorgegangen ist. Es soll hier dennnoch der Vollständigkeit halber aufgeführt werden.
+In diesem Kapitel gehen wir detailliert auf die Architektur und das Deployment unseres Projektes ein. Es ist allerdings zu vermerken, dass dieses Kapitel grösstenteils aus der Studienarbeit \cite{methode635-sa} hervorgegangen ist. Es soll hier dennnoch der Vollständigkeit halber aufgeführt werden.
 
 \subsubsection{Logische Architektur}
 Wir teilen die Architektur des gesamten Systems in drei Schichten auf. In der Abbildung \ref{fig:architektur-methode635} sind diese als Presentation-, Businesslogic- und Persistence-Schicht zu erkennen.
@@ -18,7 +18,11 @@ Die Präsentationsschicht ist die Schicht über die der Benutzer mit der Xamarin
 
 Die AppLogic-Komponente ist für das korrekte Verarbeiten und Weiterleiten der Eingaben an das PlayFramework verantwortlich.
 
-Die AppTiming-Komponente ist zuständig für das Zeitmanagement während den einzelnen Runden. Diese Komponente überwacht daher die noch verbleibende Zeit.
+Die AppTiming-Komponente ist zuständig für das Zeitmanagement während dem Brainstorming. Diese Komponente überwacht daher die noch verbleibende Zeit.
+
+Die AppStateMachine-Komponente ist für den Runden-Wechsel-Mechanismus zuständig. 
+
+Um die Inhalte des Brainstormings sowie die Benutzerdaten an das Backend zu übermitteln, gibt es die AppDataAccess-Komponente. Im Gegensatz zur DataAccess-Komponente auf dem Backend verarbeitet diese Komponente JSON-Files. 
 
 Auf der anderen Seite haben wir das PlayFramework, welches wiederum Access-Komponenten, Routing-Komponenten, eine Timing-Komponente, Logik-Komponenten und eine DataAccess-Komponente enthält.
 
@@ -30,18 +34,22 @@ Die Persistence-Schicht ist für alle Datenzugriffe zuständig.
 
 Konkret steht uns je ein DataStore für die \textit{BrainstormingFindings}, für die \textit{BrainstormingTeams} und für die \textit{Participants} zur Verfügung.
 
-\paragraph*{Komponenten}
+\paragraph*{Komponenten}~\\
+
 Nachfolgend sind nochmals alle Komponenten aufgelistet und kurz beschrieben. Für eine ausführlichere Beschreibung ist der Text oberhalb zu lesen.
 
-\begin{description}[leftmargin=!,labelwidth=\widthof{\bfseries DataAccessComponent}]
+\begin{description}[leftmargin=!,labelwidth=\widthof{\bfseries AppStateMachineComponent}]
 	
 	\item[ViewComponent] Die View-Komponenten der Xamarin App sind für das korrekte Anzeigen der Informationen verantwortlich. Sie definieren das Aussehen der Applikation.
 	
 	\item[AppTimingComponent] Die Xamarin App hält in der logischen Schicht eine Timing-Komponente, welche dafür sorgt, dass ein 
-	
 	\textit{BrainstormingFinding} nach Ablauf der Zeit abgesendet wird.
 	
-	\item[AppLogicComponent] Die Logik-Komponente der Xamarin App regelt weitere Logik, wie z.B. den Zugriff auf das PlayFramework.
+	\item[AppStateMachineComponent] Die Komponente für das Evaluieren des Zustandes des Brainstormings.
+	
+	\item[AppLogicComponent] Die Logik-Komponente der Xamarin App regelt weitere Logik, wie z.B. das Hinzufügen einer Idee.
+	
+	\item[AppDataAccessComponent] Die Komponente für das Serialisieren und Deserialisieren von JSON Dateien für das und vom Backend.
 	
 	\item[AccessComponent] Die Access-Komponente auf dem PlayFramework regelt den Zugriff mittels JWT-Token. JWT-Tokens werden bei erfolgreichem Login an den Benutzer der App gesendet. 
 	
