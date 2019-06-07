@@ -1,8 +1,8 @@
 \subsection{Anforderungsspezifikation}
-In dieser Sektion werden die Ergebnisse der Anforderungsanalyse in Form von diversen Diagrammen und Tabellen festgehalten. Ziel ist es, nötige Einschränkungen für das System zu definieren während genug Spielraum für die Umsetzung gelassen wird. 
+In diesem Kapitel werden die Ergebnisse der Anforderungsanalyse in Form von diversen Diagrammen und Tabellen festgehalten. Ziel ist es, nötige Einschränkungen für das System zu definieren.
 
 \subsubsection{Funktionale Anforderungen}\label{sec:functional-requirements}
-Aufgrund der Fortsetzung der Arbeit existieren im Bezug auf die Anforderungen Überlappungen bei allen Use Cases, die für den wesentlichen Ablauf der Applikation nötig sind. Im Folgenden werden die Gemeinsamkeiten und Unterschiede beschrieben und detailliert auf Neuigkeiten eingegangen. 
+Aufgrund der Fortsetzung der Arbeit existieren im Bezug auf die Anforderungen Überlappungen bei allen Use Cases, die für den wesentlichen Ablauf der Applikation nötig sind. Im Folgenden werden die Gemeinsamkeiten und Unterschiede beschrieben und detailliert auf Neuheit eingegangen. 
 
 
 \begin{figure}[h]
@@ -15,7 +15,7 @@ Abbildung \ref{fig:uc-methode635} zeigt das Use-Case Diagramm für diese Arbeit.
 
 Wichtig zu erwähnen ist dabei, dass UC12: Create Brainstorming Finding erst im Nachhinein hinzugekommen ist. Dies ist so, weil zu Beginn der Entwicklung wir die Annahme trafen, dass für jedes Team genau ein Brainstorming entsteht und zwar zum Zeitpunkt des Starts des Brainstorming Findings (UC9). Wie wir aber im Verlaufe der Zeit feststellten, war die Umsetzung mit mehreren Brainstorming Findings pro Team innert vertretbarer Zeit möglich. So entstand ein zusätzlicher Use-Case, der nicht mehr implizit mit UC9: Start Brainstorming Finding ausgeführt wurde.
 
-Weiter sind Use-Cases in satter Farbe erkennbar. Bei diesen handelt es sich um diejenigen, welche in dieser Arbeit im Fokus liegen. Komplett neu hinzugekommen sind UC8e: Insert Pattern, UC8f: Insert Video und UC13: Export BrainstormingFinding. Als zentraler Use-Case wird zudem UC8c: Draw Sketch angesehen. Im folgenden Kapitel werden nun die in dieser Arbeit relevanten Use-Cases kurz beschrieben. Im Kapitel \ref{par:fully-dressed-uc} sind alle zu implementierenden Sub-Use-Cases von UC8: Create Brainwave im fully-dressed Stil detailliert erläutert.
+Weiter sind Use-Cases in satter Farbe erkennbar. Bei diesen handelt es sich um diejenigen, welche in dieser Arbeit im Fokus liegen. Komplett neu hinzugekommen sind UC8e: Insert Pattern, UC8f: Insert Video und UC13: Export BrainstormingFinding. Als zentraler Use-Case wird zudem UC8c: Draw Sketch angesehen. Im folgenden Kapitel werden nun die in dieser Arbeit relevanten Use-Cases kurz beschrieben. Im Kapitel \ref{par:fully-dressed-uc} sind alle Sub-Use-Cases von UC8: Create Brainwave im fully-dressed Stil detailliert erläutert.
 \paragraph{Brief Use-Cases}~\\
 Die für diese Arbeit relevanten Use-Cases sind hier beschrieben.
 
@@ -42,7 +42,7 @@ Die für diese Arbeit relevanten Use-Cases sind hier beschrieben.
 	
 	\item[\textit{UC11: }Delete Brainstorming Team] Als Moderator will ich ein Brainstorming Team löschen können.
 	
-	\item[\textit{UC13: }Export Brainstorming Finding] Als Participant will ich ein abgeschlossenes \textit{BrainstormingFinding }exportieren können. 
+	\item[\textit{UC13: }Export Brainstorming Finding] Als Participant will ich ein abgeschlossenes BrainstormingFinding exportieren können. 
 \end{basedescript}
 \vspace{1cm}
 
@@ -86,7 +86,7 @@ Die fully-dressed Use-Cases folgen den im Modul \textit{Software Engineering 1} 
 		\hline\hline
 		\textit{Primary Actor} & Participant\\
 		\hline
-		\textit{Stakeholders \& Interests} & Ein Participant wünscht als Teil seiner Brainwave einen Bild zu teilen. \\
+		\textit{Stakeholders \& Interests} & Ein Participant wünscht als Teil seiner Brainwave ein Bild zu teilen. \\
 		\hline
 		\textit{Preconditions} & Participant existiert im System (UC3), ist eingeloggt (UC1) und einer Gruppe beigetreten (UC5). Des weiteren existiert mindestens ein BrainstormingFinding (UC12), welches schon gestartet ist (U9).\\
 		\hline
@@ -255,7 +255,7 @@ Zusätzlich dazu haben wir in Abbildung \ref{fig:Seq-Draw-Sketch} und \ref{fig:S
 		\setlength{\itemsep}{5ex}}
 	
 	\item[\textit{UC8c Draw Sketch:}] Nachdem eine Brainwave gestartet ist (siehe 12 in Abbildung \ref{fig:Seq-Methode635}) und sich der Participant dazu entschlossen hat, eine Skizze zu zeichnen und damit zufrieden ist, speichert er diese in seine Brainwave. Dabei wird ein POST-Request an das API gesendet, welcher das gezeichnete Bild in der Datenbank speichert. Als Antwort wird eine ID an den Participant bzw. an die Applikation zurück geschickt.
-	In einem nächsten Schritt wird wie bis anhin (siehe 12.1 in Abbildung \ref{fig:Seq-Methode635}) das gesamte Brainsheet, welches nun auch die ID in der entsprechenden SketchIdee gespeichert hat, an die API geschickt.
+	In einem nächsten Schritt wird wie bis anhin (siehe 12.1 in Abbildung \ref{fig:Seq-Methode635}) das gesamte Brainsheet, welches nun auch die ID in der entsprechenden SketchIdea gespeichert hat, an die API geschickt.
 \end{basedescript}
 
 \begin{figure}[h]
@@ -270,7 +270,7 @@ Zusätzlich dazu haben wir in Abbildung \ref{fig:Seq-Draw-Sketch} und \ref{fig:S
 		\desclabelwidth{4.5cm}
 		\setlength{\itemsep}{5ex}}	
 	\item[\textit{UC8e Insert Pattern:}] Nachdem eine Brainwave gestartet ist (siehe 12 in Abbildung \ref{fig:Seq-Methode635}) und sich der Participant dazu entschlossen hat, ein Pattern als Idee zu nutzen, klickt er auf das Plus-Zeichen neben der Texteingabe und wählt das Pattern als Ideentyp aus. Nun wird ein GET-Request an das API gesendet, was als Antwort eine Liste aller verfügbaren Patterns zur Folge hat. Der Participant kann nun das gewünschte Pattern auswählen.
-	Auch hier wird nun wieder, wie bis anhin (siehe 12.1 in Abbildung \ref{fig:Seq-Methode635}), das gesamte Brainsheet, welches nun auch das Pattern in der entsprechenden PatternIdee gespeichert hat, an die API geschickt.
+	Auch hier wird nun wieder, wie bis anhin (siehe 12.1 in Abbildung \ref{fig:Seq-Methode635}), das gesamte Brainsheet, welches nun auch das Pattern in der entsprechenden PatternIdea gespeichert hat, an die API geschickt.
 \end{basedescript}
 
 \begin{figure}[h]
@@ -283,7 +283,7 @@ Zusätzlich dazu haben wir in Abbildung \ref{fig:Seq-Draw-Sketch} und \ref{fig:S
 \newpage
 \subsubsection{Nicht-Funktionale Anforderungen}
 \label{subsub:nfr}
-Wie schon in unserer Studienarbeit halten wir uns auch hier wieder an die Standards ISO 9126\cite{ISO9126} bzw. dessen Nachfolger ISO 25010\cite{ISO9126_ISO25010}, welcher Gegensatz zum Standard ISO 9126 noch ausführlicher ist. Beide ISO-Normen liefern daher eine gute Checkliste für jegliche Art von Systemanforderungen.
+Wie schon in unserer Studienarbeit halten wir uns auch hier wieder an die Standards ISO 9126\cite{ISO9126} bzw. dessen Nachfolger ISO 25010\cite{ISO9126_ISO25010}, welcher Gegensatz zum Standard ISO 9126 noch ausführlicher ist. Beide ISO-Normen liefern daher eine gute Checkliste für jegliche Art von nicht-funktionalen Anforderungen.
 
 \begin{figure}[h]
 	\centering

@@ -14,7 +14,7 @@ Wir teilen die Architektur des gesamten Systems in drei Schichten auf. In der Ab
 	\label{fig:architektur-methode635}
 \end{figure}
 
-Die Präsentationsschicht ist die Schicht über die der Benutzer mit der Xamarin App kommuniziert. Konkreter gesagt, umfasst diese die verschiedenen View-Komponenten, welche für das Aussehen der App verantwortlich sind. Jegliche Interaktionen über die Oberfläche werden anschliessend in der Schicht der Businesslogic weiter verarbeitet. In dieser Schicht haben wir zum einen wieder unsere Xamarin App, welche selbst Logik-Komponenten wie die Timing-Komponente oder weitere App spezifische Logik-Komponenten enthält.
+Die Präsentationsschicht ist die Schicht über die der Benutzer mit der Xamarin App kommuniziert. Konkreter gesagt, umfasst diese die verschiedenen View-Komponenten, welche für das Aussehen der App verantwortlich sind. Jegliche Interaktionen über die Oberfläche werden anschliessend in der Schicht der Businesslogic weiter verarbeitet. In dieser Schicht haben wir wieder unsere Xamarin App, welche selbst Logik-Komponenten wie die Timing-Komponente oder weitere App spezifische Logik-Komponenten enthält.
 
 Die AppLogic-Komponente ist für das korrekte Verarbeiten und Weiterleiten der Eingaben an das PlayFramework verantwortlich.
 
@@ -22,11 +22,11 @@ Die AppTiming-Komponente ist zuständig für das Zeitmanagement während den ein
 
 Auf der anderen Seite haben wir das PlayFramework, welches wiederum Access-Komponenten, Routing-Komponenten, eine Timing-Komponente, Logik-Komponenten und eine DataAccess-Komponente enthält.
 
-Die Timing-Komponente und die Logic-Komponente haben die selben Aufgaben wie ihre Gegenstücke in der Xamarin App. Auch hier verwalten diese das Zeitmanagement während den einzelnen Runden und stellen sicher, dass nach Ablauf der Zeit oder sobald alle \textit{BrainSheets} abgegeben wurden, eine neue Runde beginnt. Des Weitern ist die Logic-Komponente zum Beispiel verantwortlich, dass ein \textit{Participant} einer Gruppe nicht zweimal beitreten kann oder diese verlassen kann, wenn er sie schon einmal verlassen hat. 
+Die Timing-Komponente und die Logic-Komponente haben die selben Aufgaben wie ihre Gegenstücke in der Xamarin App. Auch hier verwalten diese das Zeitmanagement während den einzelnen Runden und stellen sicher, dass nach Ablauf der Zeit oder sobald alle \textit{Brainsheets} abgegeben wurden, eine neue Runde beginnt. Des Weitern ist die Logic-Komponente zum Beispiel verantwortlich, dass ein \textit{Participant} einer Gruppe nicht zweimal beitreten kann oder diese verlassen kann, wenn er sie schon einmal verlassen hat. 
 
 Die DataAccess-Komponente stellt sicher, dass jegliche Daten korrekt geladen oder gespeichert werden.
 
-Mit der Schicht der Datenhaltung (Persistence) haben wir eine Schicht zur Verfügung, welche eine Persistence-Komponente hält. 
+Die Persistence-Schicht ist für alle Datenzugriffe zuständig. 
 
 Konkret steht uns je ein DataStore für die \textit{BrainstormingFindings}, für die \textit{BrainstormingTeams} und für die \textit{Participants} zur Verfügung.
 
@@ -34,14 +34,25 @@ Konkret steht uns je ein DataStore für die \textit{BrainstormingFindings}, für
 Nachfolgend sind nochmals alle Komponenten aufgelistet und kurz beschrieben. Für eine ausführlichere Beschreibung ist der Text oberhalb zu lesen.
 
 \begin{description}[leftmargin=!,labelwidth=\widthof{\bfseries DataAccessComponent}]
+	
 	\item[ViewComponent] Die View-Komponenten der Xamarin App sind für das korrekte Anzeigen der Informationen verantwortlich. Sie definieren das Aussehen der Applikation.
-	\item[AppTimingComponent] Die Xamarin App hält in der logischen Schicht eine Timing-Komponente, welche dafür sorgt, dass ein \textit{BrainstormingFinding} nach Ablauf der Zeit abgesendet wird.
+	
+	\item[AppTimingComponent] Die Xamarin App hält in der logischen Schicht eine Timing-Komponente, welche dafür sorgt, dass ein 
+	
+	\textit{BrainstormingFinding} nach Ablauf der Zeit abgesendet wird.
+	
 	\item[AppLogicComponent] Die Logik-Komponente der Xamarin App regelt weitere Logik, wie z.B. den Zugriff auf das PlayFramework.
-	\item[AccessComponent] Die Access-Komponente auf dem PlayFramework regelt den Zugriff mittels JWT-Token\cite{jwt}. JWT-Tokens werden bei erfolgreichem Login an den Benutzer der App gesendet. So kann sichergestellt werden, dass nur registrierte Benutzer mit dem PlayFramework interagieren können.
+	
+	\item[AccessComponent] Die Access-Komponente auf dem PlayFramework regelt den Zugriff mittels JWT-Token. JWT-Tokens werden bei erfolgreichem Login an den Benutzer der App gesendet. 
+	
 	\item[Routing] Die Routing-Komponente sorgt anhand der URL für das Aufrufen der korrekten Funktion.
+	
 	\item[TimingComponent] Wie die Xamarin App hält auch das PlayFramework eine Timing-Komponente, um den Zustand der Zeit verwalten zu können.
+	
 	\item[LogicComponent] In der Logik-Komponente werden die eigentlichen Funktionen geschrieben. Hier ist auch die Logik für den Austausch der Blätter untergebracht.
+	
 	\item[DataAccessComponent] Die DataAccess-Komponente stellt das Bindeglied zwischen dem PlayFramework und dem DataStore dar. Es ermöglicht erst den Zugriff auf die gespeicherten Daten.
+	
 	\item[PersistenceComponent] Die Persistence-Komponente regelt das korrekte und dauerhafte Speichern in die einzelnen DataStores.
 \end{description}
 
