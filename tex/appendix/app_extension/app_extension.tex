@@ -65,7 +65,7 @@ Die nachfolgenden Unterkapitel beschreiben die aufgelisteten Schritte.
 
 \begin{labeling}{Zweiter Schritt:}
 	\item[Erster Schritt:] Der erste Schritt ist analog zum Backend; die benötigte Idee muss als Business-Objekt sowie Daten-Transfer-Objekt erstellt werden. Auch hier ist es notwendig, von der abstrakten Klasse \texttt{Idea} bzw. \texttt{IdeaDto} abzuleiten. 
-	\item[Zweiter Schritt:] Ebenfalls muss die neue Idee dem Mapper bekannt gemacht werden. Dazu ist der Methode \texttt{MapIdeas()} in der Klasse \texttt{Brainstorming\-Mapping\-Profile} das Mapping von und zum DTO zu erstellen und mit \texttt{Include<>()} der \texttt{Idea} zu registrieren. 
+	\item[Zweiter Schritt:] Ebenfalls muss die neue Idee dem Mapper bekannt gemacht werden. Dazu ist der Methode \texttt{MapIdeas()} in der Klasse \texttt{Brainstorming\-Mapping\-Profile} das Mapping von und zum DTO zu erstellen und mit \texttt{In\-clude<>()} der \texttt{Idea} zu registrieren. Bei Unklarheiten kann die ausführliche \href{https://docs.automapper.org/en/stable/}{Dokumentation von Automapper} weiterhelfen.
 	\item[Dritter Schritt:] Damit die JSON-Serialiserung wie gewünscht funktioniert, muss in der Klasse \texttt{IdeaConverter} das JSON-Attribut 'Type' gelesen und geschrieben werden. Dazu muss ein neuer \texttt{const string} mit Wert 'qualityIdea' initialisiert werden und im Switch-Case der \texttt{ReadJson()}-Methode, analog zu den anderen Ideen, das deserialisierte Objekt zurückgegeben werden. Zusätzlich wird in der \texttt{WriteJson()}-Methode ein weiteres \texttt{else if} benötigt, das den entsprechenden String der Konstante ins 'Type'-Attribut schreibt.
 \end{labeling}
 
@@ -75,7 +75,7 @@ Mit diesen Schritten ist das Datenmodell erfolgreich erweitert.
 Hierbei geht es um die Möglichkeit, mit einer neuen Page die \texttt{QualityIdea} einfügen zu können.
 
 \begin{labeling}{Zweiter Schritt:}
-	\item[Erster Schritt:]	Es muss eine neue Prism View und ein neues ViewModel mit der gewünschten Ansicht fürs Einfügen einer \texttt{QualityIdea} erstellt werden. Wichtig ist, dass das ViewModel den \texttt{Brainstorming\-Service} kennt. Dieser wird benötigt, um die Idee den Sheets hinzuzufügen (\texttt{CommitIdea()}). 
+	\item[Erster Schritt:]	Es muss eine neue Prism View und ein neues ViewModel mit der gewünschten Ansicht fürs Einfügen einer \texttt{QualityIdea} erstellt werden. Wichtig ist, dass das ViewModel den \texttt{Brainstorming\-Service} kennt. Dieser wird benötigt, um die Idee den Sheets hinzuzufügen (\texttt{Commit\-Idea()}). 
 	\item[Zweiter Schritt:] In der \texttt{InsertPage} ist ein Frame mit einem \texttt{TapGestureRecognizer} zu erstellen, das im dahinterliegenden Command die Navigation auf die erstellte Page ausführt.
 \end{labeling}
 
